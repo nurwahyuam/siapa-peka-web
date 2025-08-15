@@ -2,6 +2,9 @@ import { Head } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Navbar from "@/Components/Navbar";
+import Statistik from "@/Components/Statistik";
+import Avarrage from "@/Components/Avarrage";
 
 export default function Welcome() {
   const mapRef = useRef(null);
@@ -40,8 +43,13 @@ export default function Welcome() {
   return (
     <>
       <Head title="Peta Kota/Kabupaten Jawa Timur" />
-      <div className="min-h-screen bg-white">
-        <div id="map" className="w-full h-screen"></div>
+      <div className="min-h-screen bg-white relative">
+        <div id="map" className="w-full h-screen z-0"></div>
+        <div className="absolute top-0 left-0 w-full z-10">
+          <Navbar />
+          <Statistik />
+          <Avarrage />
+        </div>
       </div>
     </>
   );
