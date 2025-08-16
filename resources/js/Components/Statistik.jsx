@@ -8,14 +8,14 @@ export default function Statistik() {
         <>
         <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`${isOpen ? "hidden" : ""} fixed top-40 right-6 bg-black text-white px-4 py-4 rounded-full shadow-lg hover:rotate-180 trabsition-transform duration-300`}
+            className={`${isOpen ? "hidden" : ""} fixed bottom-48 right-6 lg:top-40 lg:bottom-auto bg-black text-white p-4  rounded-full shadow-lg hover:rotate-180 transition-transform duration-300`}
         >
             <ChevronLeft />
         </button>
 
 
         {isOpen && (
-            <div className="fixed top-40 right-10 w-96 h-auto bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 animate-slide-up">
+            <div className="fixed top-72 sm:top-40 sm:right-10 w-96 h-auto bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 animate-slide-up">
                 <div className="relative flex items-center justify-center">
 
                     <button
