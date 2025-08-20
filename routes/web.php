@@ -14,11 +14,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+<<<<<<< HEAD
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
+=======
+Route::get('/manage/create', function () {
+    return Inertia::render('Admin/Manage/Create'); 
+})->name('manage');
+
+Route::get('/statistic/read', function () {
+    return Inertia::render('Admin/Statistic/Read'); 
+})->name('statistic');
+>>>>>>> refs/remotes/origin/main
 
 require __DIR__.'/auth.php';
