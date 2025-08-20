@@ -3,6 +3,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
+
 import { useState } from 'react';
 import {
   LayoutDashboard,
@@ -28,7 +29,7 @@ export default function AuthenticatedLayout({ header, children }) {
             {/* Logo */}
             <div className="flex items-center justify-center h-16 border-b border-gray-200 px-4">
               <Link href="/" className="flex items-center">
-                <img src="assets/dp3ak.png" className="h-8 w-auto" alt="Logo DP3AK" />
+                <img src="/assets/dp3ak.png" className="h-8 w-auto" alt="Logo DP3AK" />
                 <span className="ml-2 text-xl font-bold text-gray-800 uppercase">siapa peka</span>
               </Link>
             </div>
@@ -45,8 +46,8 @@ export default function AuthenticatedLayout({ header, children }) {
               </NavLink>
               
               <NavLink 
-                href={route('statistic.read')} 
-                active={route().current('statistic.read')}
+                href={route('statistic')} 
+                active={route().current('statistic')}
                 className="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
               >
                 <BarChart3 className="h-5 w-5 mr-3" />
@@ -54,8 +55,8 @@ export default function AuthenticatedLayout({ header, children }) {
               </NavLink>
               
               <NavLink 
-                href={route('manage.tambah')} 
-                active={route().current('manage.tambah')}
+                href={route('manage')} 
+                active={route().current('manage')}
                 className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
               >
                 <SquareChartGantt className="h-5 w-5 mr-3" />
@@ -95,7 +96,7 @@ export default function AuthenticatedLayout({ header, children }) {
           {/* Logo */}
           <div className="flex items-center justify-center h-16 border-b border-gray-200 px-4">
             <Link href="/" className="flex items-center">
-              <img src="assets/dp3ak.png" className="h-8 w-auto" alt="Logo DP3AK" />
+              <img src="/assets/dp3ak.png" className="h-8 w-auto" alt="Logo DP3AK" />
               <span className="ml-2 text-xl font-bold text-gray-800 uppercase">siapa peka</span>
             </Link>
           </div>

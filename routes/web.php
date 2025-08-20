@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/manage/create', function () {
+    return Inertia::render('Admin/Manage/Create'); 
+})->name('manage');
+
+Route::get('/statistic/read', function () {
+    return Inertia::render('Admin/Statistic/Read'); 
+})->name('statistic');
+
 require __DIR__.'/auth.php';
