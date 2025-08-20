@@ -50,7 +50,9 @@ class ImportCityFeatures extends Command
                             CityFeature::updateOrCreate(
                                 ['code' => $properties['Code']],
                                 [
-                                    'name'     => ucwords(strtolower($properties['Name'])),
+                                    'name'     => ((int)$properties['Code'] >= 3501 && (int)$properties['Code'] <= 3529)
+                                        ? 'Kabupaten ' . ucwords(strtolower($properties['Name']))
+                                        : 'Kota ' . ucwords(strtolower($properties['Name'])),
                                     'kind'     => ((int)$properties['Code'] >= 3501 && (int)$properties['Code'] <= 3529)
                                         ? 'City'
                                         : 'Regency',
