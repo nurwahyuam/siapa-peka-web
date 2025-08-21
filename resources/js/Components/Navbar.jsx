@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, BarChart3, TrendingUp, PieChart, Users, Calendar, Award } from 'lucide-react';
 
-function Navbar() {
+export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeModal, setActiveModal] = useState(null);
 
@@ -200,7 +200,7 @@ function Navbar() {
                             <img src="/assets/dp3ak.png" alt="logo dp3ak" className="w-auto h-8 sm:h-10 md:h-12 object-contain" />
                         </div>
 
-                        <h1 className="font-extrabold text-xl sm:text-2xl lg:text-3xl text-indigo-700 hidden md:block uppercase">
+                        <h1 className="font-bebas text-2xl sm:text-2xl lg:text-4xl md:block uppercase">
                             Siapa Peka
                         </h1>
 
@@ -238,13 +238,8 @@ function Navbar() {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`lg:hidden mt-4 transition-all duration-300 ${isMenuOpen ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-4 pointer-events-none'}`}>
+                <div className={`lg:hidden mt-4 transition-all duration-300 ${isMenuOpen ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-4 pointer-events-none hidden'}`}>
                     <div className="bg-white/90 backdrop-blur-md shadow-lg rounded-2xl px-6 py-4 border border-gray-200/20">
-                        <div className="md:hidden mb-4 pb-4 border-b border-gray-200/30">
-                            <h1 className="font-extrabold text-xl text-gray-800 uppercase text-center">
-                                Siapa Peka
-                            </h1>
-                        </div>
 
                         <div className="flex flex-col space-y-3">
                             <button
@@ -318,5 +313,3 @@ function Navbar() {
         </>
     );
 }
-
-export default Navbar;
