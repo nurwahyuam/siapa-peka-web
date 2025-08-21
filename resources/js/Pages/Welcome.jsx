@@ -110,7 +110,7 @@ export default function Welcome() {
                     // Hover popup
                     layer.on('mouseover', function() {
                         this.bindPopup(
-                            `<b className="capitalize">${jenis} ${feature.properties.name || 'N/A'}</b><br/>
+                            `<b className="capitalize">${feature.properties.name || 'N/A'}</b><br/>
                             Provinsi: ${feature.properties.province || 'N/A'}<br/>
                             Kode: ${feature.properties.code || "N/A"}`
                         ).openPopup();
