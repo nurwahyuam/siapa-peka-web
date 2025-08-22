@@ -1,245 +1,348 @@
 import { useState } from "react";
-import { X, ChevronLeft, TrendingUp, TrendingDown, DollarSign, BarChart3 } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, BarChart, Bar } from "recharts";
+import { X, ChevronLeft, Users, User, UserCheck, BarChart3 } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 
-// Dummy data untuk crypto market
-const priceData = [
-    { time: '00:00', BTC: 43250, ETH: 2650, BNB: 310, ADA: 0.52, SOL: 98 },
-    { time: '04:00', BTC: 43180, ETH: 2630, BNB: 308, ADA: 0.51, SOL: 96 },
-    { time: '08:00', BTC: 43500, ETH: 2680, BNB: 315, ADA: 0.53, SOL: 101 },
-    { time: '12:00', BTC: 43750, ETH: 2720, BNB: 320, ADA: 0.54, SOL: 103 },
-    { time: '16:00', BTC: 43650, ETH: 2700, BNB: 318, ADA: 0.53, SOL: 102 },
-    { time: '20:00', BTC: 43900, ETH: 2750, BNB: 325, ADA: 0.55, SOL: 105 },
+// Data dummy untuk statistik penduduk Indonesia
+const populationData = {
+  "2020": [
+    { provinsi: 'DKI Jakarta', laki: 4221, perempuan: 4215, total: 8436 },
+    { provinsi: 'Jawa Barat', laki: 24731, perempuan: 24685, total: 49416 },
+    { provinsi: 'Jawa Tengah', laki: 16997, perempuan: 17042, total: 34039 },
+    { provinsi: 'Jawa Timur', laki: 194436, perempuan: 194932, total: 389368 },
+    { provinsi: 'Banten', laki: 6213, perempuan: 6178, total: 12391 },
+  ],
+  "2021": [
+    { provinsi: 'DKI Jakarta', laki: 4250, perempuan: 4245, total: 8495 },
+    { provinsi: 'Jawa Barat', laki: 24980, perempuan: 24930, total: 49910 },
+    { provinsi: 'Jawa Tengah', laki: 17120, perempuan: 17165, total: 34285 },
+    { provinsi: 'Jawa Timur', laki: 195800, perempuan: 196300, total: 392100 },
+    { provinsi: 'Banten', laki: 6280, perempuan: 6245, total: 12525 },
+  ],
+  "2022": [
+    { provinsi: 'DKI Jakarta', laki: 4280, perempuan: 4275, total: 8555 },
+    { provinsi: 'Jawa Barat', laki: 25230, perempuan: 25180, total: 50410 },
+    { provinsi: 'Jawa Tengah', laki: 17245, perempuan: 17290, total: 34535 },
+    { provinsi: 'Jawa Timur', laki: 197200, perempuan: 197700, total: 394900 },
+    { provinsi: 'Banten', laki: 6350, perempuan: 6315, total: 12665 },
+  ],
+  "2023": [
+    { provinsi: 'DKI Jakarta', laki: 4310, perempuan: 4305, total: 8615 },
+    { provinsi: 'Jawa Barat', laki: 25480, perempuan: 25430, total: 50910 },
+    { provinsi: 'Jawa Tengah', laki: 17370, perempuan: 17415, total: 34785 },
+    { provinsi: 'Jawa Timur', laki: 198600, perempuan: 199100, total: 397700 },
+    { provinsi: 'Banten', laki: 6420, perempuan: 6385, total: 12805 },
+  ]
+};
+
+// Data untuk grafik perkembangan penduduk
+const growthData = [
+  { tahun: '2018', total: 264000, laki: 132500, perempuan: 131500 },
+  { tahun: '2019', total: 267500, laki: 134000, perempuan: 133500 },
+  { tahun: '2020', total: 270600, laki: 135500, perempuan: 135100 },
+  { tahun: '2021', total: 273800, laki: 137100, perempuan: 136700 },
+  { tahun: '2022', total: 275500, laki: 138000, perempuan: 137500 },
+  { tahun: '2023', total: 278000, laki: 139200, perempuan: 138800 },
 ];
 
-const marketCapData = [
-    { name: 'Bitcoin', value: 850000, color: '#F7931A' },
-    { name: 'Ethereum', value: 320000, color: '#627EEA' },
-    { name: 'BNB', value: 48000, color: '#F3BA2F' },
-    { name: 'Solana', value: 42000, color: '#9945FF' },
-    { name: 'Cardano', value: 18000, color: '#0033AD' },
-    { name: 'Others', value: 280000, color: '#8884d8' },
+// Data untuk distribusi jenis kelamin
+const genderDistribution = [
+  { name: 'Laki-laki', value: 139200, color: '#3B82F6' },
+  { name: 'Perempuan', value: 138800, color: '#EC4899' },
 ];
 
-const volumeData = [
-    { crypto: 'BTC', volume: 28500, change: 5.2 },
-    { crypto: 'ETH', volume: 15200, change: -2.1 },
-    { crypto: 'BNB', volume: 8900, change: 3.8 },
-    { crypto: 'SOL', volume: 6400, change: 12.4 },
-    { crypto: 'ADA', volume: 4200, change: -1.5 },
+// Data untuk provinsi dengan penduduk terbanyak
+const topProvinces = [
+  { provinsi: 'Jawa Barat', penduduk: 50910, persentase: 18.3 },
+  { provinsi: 'Jawa Timur', penduduk: 39770, persentase: 14.3 },
+  { provinsi: 'Jawa Tengah', penduduk: 34785, persentase: 12.5 },
+  { provinsi: 'Sumatera Utara', penduduk: 14790, persentase: 5.3 },
+  { provinsi: 'Banten', penduduk: 12805, persentase: 4.6 },
 ];
 
-export default function Statistik() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState('price');
+export default function StatistikPenduduk() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedYear, setSelectedYear] = useState('2023');
 
-    const formatPrice = (value) => {
-        if (value >= 1000) {
-        return `$${(value / 1000).toFixed(1)}k`;
-        }
-        return `$${value.toFixed(2)}`;
-    };
+  const formatNumber = (value) => {
+    return new Intl.NumberFormat('id-ID').format(value);
+  };
 
-    const formatMarketCap = (value) => {
-        return `$${(value / 1000).toFixed(0)}B`;
-    };
+  const formatPopulation = (value) => {
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(1)}JT`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}RB`;
+    }
+    return value;
+  };
 
-    return (
-        <>
-        <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`${
-            isOpen ? "hidden" : ""
-            } fixed bottom-48 right-6 lg:top-40 lg:bottom-auto bg-black text-white p-4 rounded-full shadow-lg hover:rotate-180 transition-transform duration-300`}
-        >
-            <ChevronLeft />
-        </button>
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`${
+          isOpen ? "hidden" : ""
+        } fixed bottom-48 right-6 lg:top-40 lg:bottom-auto bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300 z-10`}
+      >
+        <ChevronLeft />
+      </button>
 
-        {isOpen && (
-            <div className="fixed top-28 right-4 w-[800px] max-w-[95vw] h-[600px] bg-white shadow-2xl rounded-lg border border-gray-200 animate-slide-up overflow-hidden">
-                <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
-                    <button
-                    onClick={() => setIsOpen(false)}
-                    className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
-                    >
-                    <X size={20} />
-                    </button>
-                    <h2 className="text-xl font-bold text-center flex items-center gap-2">
-                    <BarChart3 className=" hidden sm:block" size={24} />
-                    Cryptocurrency Market Dashboard
-                    </h2>
-                </div>
-
-                {/* Tab Navigation */}
-                <div className="flex border-b border-gray-200 bg-gray-50">
-                    <button
-                    onClick={() => setActiveTab('price')}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                        activeTab === 'price'
-                        ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                    >
-                    Price Trends
-                    </button>
-                    <button
-                    onClick={() => setActiveTab('marketcap')}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                        activeTab === 'marketcap'
-                        ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                    >
-                    Market Cap
-                    </button>
-                    <button
-                    onClick={() => setActiveTab('volume')}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                        activeTab === 'volume'
-                        ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                    >
-                    Trading Volume
-                    </button>
-                </div>
-
-                <div className="p-4 h-[480px] overflow-auto">
-                    {activeTab === 'price' && (
-                    <div>
-                        <div className="mb-4">
-                        <h3 className="text-lg font-semibold mb-2">24H Price Movement</h3>
-                        <div className="grid grid-cols-5 gap-4 mb-4">
-                            {[
-                            { name: 'BTC', price: 43900, change: 1.5, color: '#F7931A' },
-                            { name: 'ETH', price: 2750, change: 3.8, color: '#627EEA' },
-                            { name: 'BNB', price: 325, change: 4.8, color: '#F3BA2F' },
-                            { name: 'ADA', price: 0.55, change: 5.8, color: '#0033AD' },
-                            { name: 'SOL', price: 105, change: 7.1, color: '#9945FF' },
-                            ].map((crypto) => (
-                            <div key={crypto.name} className="bg-gray-50 p-3 rounded-lg">
-                                <div className="font-semibold text-sm">{crypto.name}</div>
-                                <div className="text-lg font-bold" style={{ color: crypto.color }}>
-                                ${crypto.price.toLocaleString()}
-                                </div>
-                                <div className={`text-sm flex items-center gap-1 ${
-                                crypto.change > 0 ? 'text-green-600' : 'text-red-600'
-                                }`}>
-                                {crypto.change > 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-                                {Math.abs(crypto.change)}%
-                                </div>
-                            </div>
-                            ))}
-                        </div>
-                        </div>
-                        
-                        <ResponsiveContainer width="100%" height={320}>
-                        <LineChart data={priceData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="time" />
-                            <YAxis tickFormatter={formatPrice} />
-                            <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, '']} />
-                            <Legend />
-                            <Line type="monotone" dataKey="BTC" stroke="#F7931A" strokeWidth={3} dot={{ r: 4 }} />
-                            <Line type="monotone" dataKey="ETH" stroke="#627EEA" strokeWidth={2} dot={{ r: 3 }} />
-                            <Line type="monotone" dataKey="BNB" stroke="#F3BA2F" strokeWidth={2} dot={{ r: 3 }} />
-                            <Line type="monotone" dataKey="SOL" stroke="#9945FF" strokeWidth={2} dot={{ r: 3 }} />
-                        </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-                    )}
-
-                    {activeTab === 'marketcap' && (
-                    <div>
-                        <div className="mb-4">
-                        <h3 className="text-lg font-semibold mb-2">Market Capitalization Distribution</h3>
-                        <div className="text-sm text-gray-600 mb-4">
-                            Total Market Cap: <span className="font-bold text-blue-600">$1.56T</span>
-                        </div>
-                        </div>
-                        
-                        <ResponsiveContainer width="100%" height={350}>
-                        <AreaChart data={marketCapData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis tickFormatter={formatMarketCap} />
-                            <Tooltip formatter={(value) => [`$${(value / 1000).toFixed(1)}B`, 'Market Cap']} />
-                            <Area 
-                            type="monotone" 
-                            dataKey="value" 
-                            stroke="#8884d8" 
-                            fill="url(#colorGradient)" 
-                            strokeWidth={2}
-                            />
-                            <defs>
-                            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1}/>
-                            </linearGradient>
-                            </defs>
-                        </AreaChart>
-                        </ResponsiveContainer>
-
-                        <div className="mt-4 grid grid-cols-3 gap-4">
-                        {marketCapData.slice(0, 3).map((item) => (
-                            <div key={item.name} className="bg-gray-50 p-3 rounded-lg text-center">
-                            <div className="font-semibold text-sm">{item.name}</div>
-                            <div className="text-lg font-bold" style={{ color: item.color }}>
-                                {formatMarketCap(item.value)}
-                            </div>
-                            </div>
-                        ))}
-                        </div>
-                    </div>
-                    )}
-
-                    {activeTab === 'volume' && (
-                    <div>
-                        <div className="mb-4">
-                        <h3 className="text-lg font-semibold mb-2">24H Trading Volume</h3>
-                        <div className="text-sm text-gray-600 mb-4">
-                            Total Volume: <span className="font-bold text-green-600">$63.2B</span>
-                        </div>
-                        </div>
-
-                        <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={volumeData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="crypto" />
-                            <YAxis tickFormatter={(value) => `$${(value / 1000).toFixed(1)}B`} />
-                            <Tooltip formatter={(value) => [`$${value.toFixed(1)}B`, 'Volume']} />
-                            <Bar dataKey="volume" fill="#8884d8" radius={[4, 4, 0, 0]}>
-                            {volumeData.map((entry, index) => (
-                                <Bar key={`cell-${index}`} fill={entry.change > 0 ? '#10B981' : '#EF4444'} />
-                            ))}
-                            </Bar>
-                        </BarChart>
-                        </ResponsiveContainer>
-
-                        <div className="mt-4">
-                        <h4 className="font-semibold mb-3">Volume Changes (24H)</h4>
-                        <div className="space-y-2">
-                            {volumeData.map((item) => (
-                            <div key={item.crypto} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                <div className="font-semibold">{item.crypto}</div>
-                                <div className="text-gray-600">${item.volume.toFixed(1)}B</div>
-                                </div>
-                                <div className={`flex items-center gap-1 font-semibold ${
-                                item.change > 0 ? 'text-green-600' : 'text-red-600'
-                                }`}>
-                                {item.change > 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-                                {Math.abs(item.change)}%
-                                </div>
-                            </div>
-                            ))}
-                        </div>
-                        </div>
-                    </div>
-                    )}
-                </div>
+      {isOpen && (
+        <div className="fixed top-28 right-4 w-[640px] h-[420px] bg-white shadow-2xl rounded-lg border border-gray-200 animate-slide-up overflow-hidden z-50">
+          <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-bold text-center flex items-center gap-2">
+              <Users className="hidden sm:block" size={24} />
+              Statistik Penduduk Indonesia
+            </h2>
+            
+            {/* Pilihan Tahun */}
+            <div className="absolute right-4">
+                <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                    className="px-3 py-2 text-sm rounded-md border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    {[2020, 2021, 2022, 2023].map((year) => (
+                    <option key={year} value={year}>
+                        {year}
+                    </option>
+                    ))}
+                </select>
             </div>
-        )}
-        </>
-    );
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="flex border-b border-gray-200 bg-gray-50">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-6 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'overview'
+                  ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              Gambaran Umum
+            </button>
+            <button
+              onClick={() => setActiveTab('distribution')}
+              className={`px-6 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'distribution'
+                  ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              Distribusi
+            </button>
+            <button
+              onClick={() => setActiveTab('provinces')}
+              className={`px-6 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'provinces'
+                  ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              Per Provinsi
+            </button>
+          </div>
+
+          <div className="p-4 h-full overflow-auto">
+            {activeTab === 'overview' && (
+              <div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-2">Data Penduduk Indonesia ({selectedYear})</h3>
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                      <div className="font-semibold text-sm text-blue-700 flex items-center gap-1">
+                        <User size={16} />
+                        Laki-laki
+                      </div>
+                      <div className="text-lg font-bold text-blue-600">
+                        {formatNumber(growthData.find(d => d.tahun === selectedYear)?.laki * 1000 || 0)}
+                      </div>
+                    </div>
+                    <div className="bg-pink-50 p-3 rounded-lg border border-pink-100">
+                      <div className="font-semibold text-sm text-pink-700 flex items-center gap-1">
+                        <UserCheck size={16} />
+                        Perempuan
+                      </div>
+                      <div className="text-lg font-bold text-pink-600">
+                        {formatNumber(growthData.find(d => d.tahun === selectedYear)?.perempuan * 1000 || 0)}
+                      </div>
+                    </div>
+                    <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                      <div className="font-semibold text-sm text-purple-700 flex items-center gap-1">
+                        <Users size={16} />
+                        Total
+                      </div>
+                      <div className="text-lg font-bold text-purple-600">
+                        {formatNumber(growthData.find(d => d.tahun === selectedYear)?.total * 1000 || 0)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <h4 className="font-semibold mb-2">Perkembangan Jumlah Penduduk (2018-2023)</h4>
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={growthData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="tahun" />
+                    <YAxis tickFormatter={formatPopulation} />
+                    <Tooltip 
+                      formatter={(value) => [`${formatNumber(value * 1000)}`, '']}
+                      labelFormatter={(label) => `Tahun ${label}`}
+                    />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="total" 
+                      name="Total Penduduk"
+                      stroke="#8B5CF6" 
+                      strokeWidth={3} 
+                      dot={{ r: 4 }} 
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="laki" 
+                      name="Laki-laki"
+                      stroke="#3B82F6" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="perempuan" 
+                      name="Perempuan"
+                      stroke="#EC4899" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeTab === 'distribution' && (
+              <div className="flex flex-col items-center">
+                <h3 className="text-lg font-semibold mb-4">Distribusi Jenis Kelamin ({selectedYear})</h3>
+                
+                <div className="flex w-full">
+                  <div className="w-1/2">
+                    <ResponsiveContainer width="100%" height={250}>
+                      <PieChart>
+                        <Pie
+                          data={genderDistribution}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                        >
+                          {genderDistribution.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => [`${formatNumber(value * 1000)}`, '']} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="w-1/2 pl-4">
+                    <h4 className="font-semibold mb-3">Proporsi Jenis Kelamin</h4>
+                    <div className="space-y-3">
+                      {genderDistribution.map((item) => (
+                        <div key={item.name} className="flex items-center">
+                          <div 
+                            className="w-4 h-4 rounded-sm mr-2" 
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <span className="text-sm">{item.name}</span>
+                              <span className="text-sm font-semibold">
+                                {((item.value / (genderDistribution[0].value + genderDistribution[1].value)) * 100).toFixed(1)}%
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                              <div 
+                                className="h-2 rounded-full" 
+                                style={{ 
+                                  width: `${(item.value / (genderDistribution[0].value + genderDistribution[1].value)) * 100}%`, 
+                                  backgroundColor: item.color 
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-6 p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">
+                        Rasio Jenis Kelamin: <span className="font-semibold">
+                          {((genderDistribution[0].value / genderDistribution[1].value) * 100).toFixed(1)}
+                        </span> (Laki-laki per 100 Perempuan)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'provinces' && (
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Penduduk per Provinsi ({selectedYear})</h3>
+                
+                <div className="mb-6">
+                  <h4 className="font-semibold mb-2">5 Provinsi dengan Penduduk Terbanyak</h4>
+                  <div className="space-y-3">
+                    {topProvinces.map((prov, index) => (
+                      <div key={prov.provinsi} className="flex items-center">
+                        <div className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-800 rounded-full mr-3">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex justify-between">
+                            <span className="font-medium">{prov.provinsi}</span>
+                            <span className="font-semibold">{formatNumber(prov.penduduk * 1000)}</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div 
+                              className="h-2 rounded-full bg-blue-500" 
+                              style={{ width: `${prov.persentase}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <h4 className="font-semibold mb-2">Distribusi Penduduk per Provinsi (ribu jiwa)</h4>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={populationData[selectedYear]}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="provinsi" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => [`${formatNumber(value)}`, '']} />
+                    <Legend />
+                    <Bar dataKey="laki" name="Laki-laki" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="perempuan" name="Perempuan" fill="#EC4899" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
