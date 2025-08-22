@@ -79,8 +79,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
 
                                 <NavLink
-                                    href={route("manage")}
-                                    active={route().current("manage")}
+                                    href={route("manage.index")}
+                                    active={route().current("manage.index")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
                                     <SquareChartGantt className="h-5 w-5 mr-3" />

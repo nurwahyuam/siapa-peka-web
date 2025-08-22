@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ChildBride extends Model
+class Application extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'city_feature_id',
         'period_id',
-        'number_of_men_under_19',
-        'number_of_women_under_19',
-        'total'
+        'submitted',
+        'accepted',
+        'source'
     ];
 
     public function cityFeature(): BelongsTo

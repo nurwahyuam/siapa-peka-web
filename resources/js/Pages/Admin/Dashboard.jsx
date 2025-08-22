@@ -133,7 +133,7 @@ export default function Dashboard() {
                     </h2>
                     <div className="p-2 flex items-center space-x-2">
                         <Calendar className="h-5 w-5 text-gray-500" />
-                        <select 
+                        <select
                             value={selectedPeriod}
                             onChange={(e) => setSelectedPeriod(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -186,7 +186,7 @@ export default function Dashboard() {
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-gray-800">Trend Mingguan</h3>
-                            <select 
+                            <select
                                 value={selectedMetric}
                                 onChange={(e) => setSelectedMetric(e.target.value)}
                                 className="border border-gray-300 rounded px-2 py-1 text-sm"
@@ -202,17 +202,17 @@ export default function Dashboard() {
                                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                                 <XAxis dataKey="name" stroke="#666" />
                                 <YAxis stroke="#666" />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: '#fff', 
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#fff',
                                         border: '1px solid #ccc',
                                         borderRadius: '8px'
-                                    }} 
+                                    }}
                                 />
-                                <Area 
-                                    type="monotone" 
-                                    dataKey={selectedMetric} 
-                                    stroke="#8884d8" 
+                                <Area
+                                    type="monotone"
+                                    dataKey={selectedMetric}
+                                    stroke="#8884d8"
                                     fill="#8884d8"
                                     fillOpacity={0.3}
                                     strokeWidth={2}
@@ -229,12 +229,12 @@ export default function Dashboard() {
                                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                                 <XAxis dataKey="name" stroke="#666" />
                                 <YAxis stroke="#666" />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: '#fff', 
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#fff',
                                         border: '1px solid #ccc',
                                         borderRadius: '8px'
-                                    }} 
+                                    }}
                                 />
                                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                                     {barChartData.map((entry, index) => (

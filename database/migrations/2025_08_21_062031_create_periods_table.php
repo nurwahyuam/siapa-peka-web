@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('periods', function (Blueprint $table) {
             $table->id();
-            $table->enum('name', ['Triwulan 1', 'Triwulan 2', 'Triwulan 3', 'Triwulan 4']);
-            $table->year('year');
+            $table->integer('year');
+            $table->enum('name', ['Setahun', 'Triwulan 1', 'Triwulan 2', 'Triwulan 3', 'Triwulan 4'])->default('Setahun');
             $table->timestamps();
         });
     }

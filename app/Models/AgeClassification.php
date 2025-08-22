@@ -2,30 +2,28 @@
 
 namespace App\Models;
 
-use App\Models\Period;
-use App\Models\CityFeature;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AgeClassification extends Model
 {
     use HasFactory;
 
-    protected $table = 'age_classifications';
     protected $fillable = [
-        'id_city_features',
-        'id_periods',
+        'city_feature_id',
+        'period_id',
         'less_than_15',
-        'between_15_and_19',
+        'between_15_19'
     ];
 
-    public function CityFeature()
+    public function cityFeature(): BelongsTo
     {
-        return $this->belongsTo(CityFeature::class, 'id_city_features');
+        return $this->belongsTo(CityFeature::class);
     }
 
-    public function Period()
+    public function period(): BelongsTo
     {
-        return $this->belongsTo(Period::class, 'id_periods');
+        return $this->belongsTo(Period::class);
     }
 }

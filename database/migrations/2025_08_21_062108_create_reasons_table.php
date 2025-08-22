@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reasons_for_dispensations', function (Blueprint $table) {
+        Schema::create('reasons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_city_features')->constrained('city_features')->onDelete('cascade');
-            $table->foreignId('id_periods')->constrained('periods')->onDelete('cascade');
+            $table->foreignId('city_feature_id')->constrained()->onDelete('cascade');
+            $table->foreignId('period_id')->constrained()->onDelete('cascade');
             $table->integer('pregnant')->default(0);
-            $table->integer('economy')->default(0);
-            $table->integer('avoiding_adultery')->default(0);
             $table->integer('promiscuity')->default(0);
+            $table->integer('economy')->default(0);
             $table->integer('traditional_culture')->default(0);
+            $table->integer('avoiding_adultery')->default(0);
             $table->timestamps();
+
+            // Unique constraint untuk mencegah duplikasi data
+            $table->unique(['city_feature_id', 'period_id']);
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reasons_for_dispensations');
+        Schema::dropIfExists('reasons');
     }
 };

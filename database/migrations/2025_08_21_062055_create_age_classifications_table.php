@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('age_classifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_city_features')->constrained('city_features')->onDelete('cascade');
-            $table->foreignId('id_periods')->constrained('periods')->onDelete('cascade');
+            $table->foreignId('city_feature_id')->constrained()->onDelete('cascade');
+            $table->foreignId('period_id')->constrained()->onDelete('cascade');
             $table->integer('less_than_15')->default(0);
             $table->integer('between_15_19')->default(0);
             $table->timestamps();
+
+            // Unique constraint untuk mencegah duplikasi data
+            $table->unique(['city_feature_id', 'period_id']);
         });
     }
 

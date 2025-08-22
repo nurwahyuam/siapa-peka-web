@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('application_for_dispensations', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_city_features')->constrained('city_features')->onDelete('cascade');
-            $table->foreignId('id_periods')->constrained('periods')->onDelete('cascade');
+            $table->foreignId('city_feature_id')->constrained()->onDelete('cascade');
+            $table->foreignId('period_id')->constrained()->onDelete('cascade');
             $table->integer('submitted')->default(0);
             $table->integer('accepted')->default(0);
+            $table->enum("source", ['Kementerian Agama', 'Provinsi Jawa Timur'])->default('Kementerian Agama');
             $table->timestamps();
+
+            // Unique constraint untuk mencegah duplikasi data
+            $table->unique(['city_feature_id', 'period_id']);
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('application_for_dispensations');
+        Schema::dropIfExists('applications');
     }
 };
