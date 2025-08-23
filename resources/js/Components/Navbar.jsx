@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { X, BarChart3, TrendingUp, PieChart, Users, Calendar, Award } from 'lucide-react';
+import React, { useState } from "react";
+import {
+    X,
+    BarChart3,
+    TrendingUp,
+    PieChart,
+    Users,
+    Calendar,
+    Award,
+} from "lucide-react";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,8 +27,8 @@ export default function Navbar() {
     };
 
     const modalContent = {
-        summary: {
-            title: "Summary Report",
+        ringkasan: {
+            title: "Laporan Ringkasan",
             icon: <BarChart3 className="w-6 h-6" />,
             content: (
                 <div className="space-y-6">
@@ -29,8 +37,12 @@ export default function Navbar() {
                             <div className="flex items-center space-x-3">
                                 <Users className="w-8 h-8 text-blue-600" />
                                 <div>
-                                    <p className="text-sm text-blue-600 font-medium">Total Users</p>
-                                    <p className="text-2xl font-bold text-blue-800">1,247</p>
+                                    <p className="text-sm text-blue-600 font-medium">
+                                        Total Data Masuk
+                                    </p>
+                                    <p className="text-2xl font-bold text-blue-800">
+                                        1,247
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -38,8 +50,12 @@ export default function Navbar() {
                             <div className="flex items-center space-x-3">
                                 <Award className="w-8 h-8 text-green-600" />
                                 <div>
-                                    <p className="text-sm text-green-600 font-medium">Active Today</p>
-                                    <p className="text-2xl font-bold text-green-800">856</p>
+                                    <p className="text-sm text-green-600 font-medium">
+                                        Total Diterima
+                                    </p>
+                                    <p className="text-2xl font-bold text-green-800">
+                                        856
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -47,157 +63,426 @@ export default function Navbar() {
                             <div className="flex items-center space-x-3">
                                 <Calendar className="w-8 h-8 text-purple-600" />
                                 <div>
-                                    <p className="text-sm text-purple-600 font-medium">This Month</p>
-                                    <p className="text-2xl font-bold text-purple-800">23.4k</p>
+                                    <p className="text-sm text-purple-600 font-medium">
+                                        Total Dikabulkan
+                                    </p>
+                                    <p className="text-2xl font-bold text-purple-800">
+                                        23.4k
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="bg-gray-50 p-4 rounded-xl">
-                        <h4 className="font-semibold text-gray-800 mb-3">Recent Activity</h4>
+                        <h4 className="font-semibold text-gray-800 mb-3">
+                            Pendidikan Terakhir Pelamar Dispensasi
+                        </h4>
                         <div className="space-y-2">
                             <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                <span className="text-gray-700">New user registered</span>
-                                <span className="text-sm text-gray-500">2 min ago</span>
+                                <span className="text-gray-700">
+                                    Sekolah Dasar
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                    15 Orang
+                                </span>
                             </div>
                             <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                <span className="text-gray-700">Survey completed</span>
-                                <span className="text-sm text-gray-500">15 min ago</span>
+                                <span className="text-gray-700">
+                                    Sekolah Menengah Pertama
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                    28 Orang
+                                </span>
                             </div>
                             <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                <span className="text-gray-700">Data exported</span>
-                                <span className="text-sm text-gray-500">1 hour ago</span>
+                                <span className="text-gray-700">
+                                    Sekolah Menengah Atas
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                    33 Orang
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
+                                <span className="text-gray-700">
+                                    Sekolah Menengah Kejuran 
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                    33 Orang
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
+                                <span className="text-gray-700">
+                                    Tidak Sekolah
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                    30 Orang
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            )
+            ),
         },
-        average: {
-            title: "Average Analysis",
+        rerata: {
+            title: "Analisis Rerata",
             icon: <TrendingUp className="w-6 h-6" />,
             content: (
                 <div className="space-y-6">
-                    <div className="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
-                        <h4 className="font-semibold text-gray-800 mb-4">Performance Metrics</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="text-center">
-                                <p className="text-3xl font-bold text-orange-600">78.5%</p>
-                                <p className="text-sm text-gray-600">Completion Rate</p>
+                    <div className="flex items-center gap-3 w-full ">
+                        <div className="w-full bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                            <h4 className="font-semibold text-gray-800 mb-4">
+                                Kabupaten Tertinggi
+                            </h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-center">
+                                    <p className="text-3xl font-bold text-orange-600">
+                                        78.5%
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        Total Diterima
+                                    </p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-3xl font-bold text-red-600">
+                                        4.2%
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        Total Dikabulkan
+                                    </p>
+                                </div>
                             </div>
-                            <div className="text-center">
-                                <p className="text-3xl font-bold text-red-600">4.2</p>
-                                <p className="text-sm text-gray-600">Average Rating</p>
+                        </div>
+
+                        <div className="w-full bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                            <h4 className="font-semibold text-gray-800 mb-4">
+                                Kabupaten Terendah
+                            </h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-center">
+                                    <p className="text-3xl font-bold text-orange-600">
+                                        78.5%
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        Total Diterima
+                                    </p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-3xl font-bold text-red-600">
+                                        4.2%
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        Total Dikabulkan
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-gray-800">Category Breakdown</h4>
+                        <h4 className="font-semibold text-gray-800">
+                            Keseluruhan Rerata
+                        </h4>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <span className="text-gray-700">Kepa Assessment</span>
+                                <span className="text-gray-700">
+                                    Kabupaten Pasuruan
+                                </span>
                                 <div className="flex items-center space-x-2">
                                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                                         <div className="w-4/5 h-full bg-blue-500"></div>
                                     </div>
-                                    <span className="text-sm font-medium text-gray-600">80%</span>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        80%
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-gray-700">Awareness Level</span>
+                                <span className="text-gray-700">
+                                    Kabupaten Bangkalan
+                                </span>
                                 <div className="flex items-center space-x-2">
                                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                                         <div className="w-3/5 h-full bg-green-500"></div>
                                     </div>
-                                    <span className="text-sm font-medium text-gray-600">60%</span>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-gray-700">Knowledge Score</span>
+                                <span className="text-gray-700">
+                                    Kabupaten Banyuwangi
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Gresik
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Blitar
+                                </span>
                                 <div className="flex items-center space-x-2">
                                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                                         <div className="w-full h-full bg-purple-500"></div>
                                     </div>
-                                    <span className="text-sm font-medium text-gray-600">95%</span>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        95%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kota Blitar
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Bojonegoro
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Bondowoso
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Jember
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Jombang
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Sumenep
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Kediri
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kota Kediri
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                    Kabupaten Probolinggo
+                                </span>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div className="w-3/5 h-full bg-green-500"></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        60%
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            )
+            ),
         },
         statistik: {
-            title: "Detailed Statistics",
+            title: "Detail Statistik",
             icon: <PieChart className="w-6 h-6" />,
             content: (
                 <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
-                            <h4 className="font-semibold text-indigo-800 mb-3">User Demographics</h4>
+                            <h4 className="font-semibold text-indigo-800 mb-3">
+                                Klasifikasi Umur
+                            </h4>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">Age 18-25</span>
-                                    <span className="text-sm font-medium">35%</span>
+                                    <span className="text-sm text-gray-600">
+                                        Kurang dari 15 Tahun
+                                    </span>
+                                    <span className="text-sm font-medium">
+                                        35%
+                                    </span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">Age 26-35</span>
-                                    <span className="text-sm font-medium">40%</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">Age 36+</span>
-                                    <span className="text-sm font-medium">25%</span>
+                                    <span className="text-sm text-gray-600">
+                                        15 s.d 19 Tahun
+                                    </span>
+                                    <span className="text-sm font-medium">
+                                        65%
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="bg-teal-50 p-4 rounded-xl border border-teal-200">
-                            <h4 className="font-semibold text-teal-800 mb-3">Response Time</h4>
+                            <h4 className="font-semibold text-teal-800 mb-3">
+                                Waktu Respon
+                            </h4>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">kurang 5 minutes</span>
-                                    <span className="text-sm font-medium">45%</span>
+                                    <span className="text-sm text-gray-600">
+                                        kurang 5 menit
+                                    </span>
+                                    <span className="text-sm font-medium">
+                                        45%
+                                    </span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">5-15 minutes</span>
-                                    <span className="text-sm font-medium">30%</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">lebih 15 minutes</span>
-                                    <span className="text-sm font-medium">25%</span>
+                                    <span className="text-sm text-gray-600">
+                                        5-15 menit
+                                    </span>
+                                    <span className="text-sm font-medium">
+                                        30%
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="bg-gray-50 p-4 rounded-xl">
-                        <h4 className="font-semibold text-gray-800 mb-4">Weekly Trends</h4>
+                        <h4 className="font-semibold text-gray-800 mb-4">
+                            Tren Mingguan
+                        </h4>
                         <div className="grid grid-cols-7 gap-2 text-center">
-                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
-                                <div key={day} className="bg-white p-2 rounded-lg">
-                                    <p className="text-xs text-gray-500 mb-1">{day}</p>
-                                    <div className={`h-12 rounded ${
-                                        index === 2 ? 'bg-blue-500' :
-                                        index === 4 ? 'bg-green-500' :
-                                        index === 0 ? 'bg-purple-500' : 'bg-gray-300'
-                                    }`}></div>
-                                    <p className="text-xs font-medium mt-1">{Math.floor(Math.random() * 200) + 50}</p>
+                            {[
+                                "Mon",
+                                "Tue",
+                                "Wed",
+                                "Thu",
+                                "Fri",
+                                "Sat",
+                                "Sun",
+                            ].map((day, index) => (
+                                <div
+                                    key={day}
+                                    className="bg-white p-2 rounded-lg"
+                                >
+                                    <p className="text-xs text-gray-500 mb-1">
+                                        {day}
+                                    </p>
+                                    <div
+                                        className={`h-12 rounded ${
+                                            index === 2
+                                                ? "bg-blue-500"
+                                                : index === 4
+                                                ? "bg-green-500"
+                                                : index === 0
+                                                ? "bg-purple-500"
+                                                : "bg-gray-300"
+                                        }`}
+                                    ></div>
+                                    <p className="text-xs font-medium mt-1">
+                                        {Math.floor(Math.random() * 200) + 50}
+                                    </p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
-            )
-        }
+            ),
+        },
     };
 
     return (
         <>
             <nav className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
-                <div className="bg-white/90 backdrop-blur-md shadow-lg rounded-full px-4 sm:px-6 py-3 border border-gray-200/20" style={{ height: "70px" }}>
+                <div
+                    className="bg-white/90 backdrop-blur-md shadow-lg rounded-full px-4 sm:px-6 py-3 border border-gray-200/20"
+                    style={{ height: "70px" }}
+                >
                     <div className="flex items-center justify-between h-full">
                         <div className="flex items-center">
-                            <img src="/assets/dp3ak.png" alt="logo dp3ak" className="w-auto h-8 sm:h-10 md:h-12 object-contain" />
+                            <img
+                                src="/assets/dp3ak.png"
+                                alt="logo dp3ak"
+                                className="w-auto h-8 sm:h-10 md:h-12 object-contain"
+                            />
                         </div>
 
                         <h1 className="font-bebas text-2xl sm:text-2xl lg:text-4xl md:block uppercase">
@@ -206,19 +491,19 @@ export default function Navbar() {
 
                         <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
                             <button
-                                onClick={() => openModal('summary')}
+                                onClick={() => openModal("ringkasan")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
                             >
-                                summary
+                                ringkasan
                             </button>
                             <button
-                                onClick={() => openModal('average')}
+                                onClick={() => openModal("rerata")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
                             >
-                                average
+                                rerata
                             </button>
                             <button
-                                onClick={() => openModal('statistik')}
+                                onClick={() => openModal("statistik")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
                             >
                                 statistik
@@ -230,32 +515,53 @@ export default function Navbar() {
                             className="lg:hidden flex flex-col items-center justify-center w-6 h-6 space-y-1"
                             aria-label="Toggle menu"
                         >
-                            <div className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
-                            <div className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></div>
-                            <div className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+                            <div
+                                className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${
+                                    isMenuOpen
+                                        ? "rotate-45 translate-y-1.5"
+                                        : ""
+                                }`}
+                            ></div>
+                            <div
+                                className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${
+                                    isMenuOpen ? "opacity-0" : ""
+                                }`}
+                            ></div>
+                            <div
+                                className={`w-5 h-0.5 bg-gray-700 transition-all duration-300 ${
+                                    isMenuOpen
+                                        ? "-rotate-45 -translate-y-1.5"
+                                        : ""
+                                }`}
+                            ></div>
                         </button>
                     </div>
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`lg:hidden mt-4 transition-all duration-300 ${isMenuOpen ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-4 pointer-events-none hidden'}`}>
+                <div
+                    className={`lg:hidden mt-4 transition-all duration-300 ${
+                        isMenuOpen
+                            ? "opacity-100 transform translate-y-0"
+                            : "opacity-0 transform -translate-y-4 pointer-events-none hidden"
+                    }`}
+                >
                     <div className="bg-white/90 backdrop-blur-md shadow-lg rounded-2xl px-6 py-4 border border-gray-200/20">
-
                         <div className="flex flex-col space-y-3">
                             <button
-                                onClick={() => openModal('summary')}
+                                onClick={() => openModal("ringkasan")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
                             >
-                                summary
+                                ringkasan
                             </button>
                             <button
-                                onClick={() => openModal('average')}
+                                onClick={() => openModal("rerata")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
                             >
-                                average
+                                rerata
                             </button>
                             <button
-                                onClick={() => openModal('statistik')}
+                                onClick={() => openModal("statistik")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
                             >
                                 statistik

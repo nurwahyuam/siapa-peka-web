@@ -43,16 +43,27 @@ class ImportApiProvJatim extends Command
             // Mapping periode: romawi → enum di DB
             $periodeRaw = strtoupper($item['periode_update']); // contoh: "TRIWULAN I 2025"
             $map = [
-                'I'   => 'Triwulan 1',
-                'II'  => 'Triwulan 2',
-                'III' => 'Triwulan 3',
-                'IV'  => 'Triwulan 4',
+                'I'   => 'Triwulan I',
+                'II'  => 'Triwulan II',
+                'III' => 'Triwulan III',
+                'IV'  => 'Triwulan IV',
             ];
 
             preg_match('/TRIWULAN\s+([IVX]+)/', $periodeRaw, $matches);
             $periodeName = $map[$matches[1] ?? ''] ?? 'Setahun';
 
-            $period = Period::firstOrCreate(['name' => $periodeName]);
+            // Ambil tahun dari string "TRIWULAN I 2025"
+            preg_match('/(\d{4})$/', $periodeRaw, $yearMatch);
+            $year = $yearMatch[1] ?? null;
+
+            if (!$year) {
+                $this->warn("⚠️ Tahun tidak ditemukan dari periode_update: {$periodeRaw}");
+                continue;
+            }
+
+            $period = Period::firstOrCreate(
+                ['name' => $periodeName, 'year' => $year]
+            );
 
             // Insert/update child_brides
             ChildBride::updateOrCreate(

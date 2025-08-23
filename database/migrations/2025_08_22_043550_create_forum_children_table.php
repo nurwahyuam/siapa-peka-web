@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('periods', function (Blueprint $table) {
+        Schema::create('forum_children', function (Blueprint $table) {
             $table->id();
-            $table->integer('year');
-            $table->enum('name', ['Setahun', 'Triwulan I', 'Triwulan II', 'Triwulan III', 'Triwulan IV'])->default('Setahun');
+            $table->string("question")->nullable();
+            $table->boolean("answer");
+            $table->integer('response_count')->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('periods');
+        Schema::dropIfExists('forum_children');
     }
 };

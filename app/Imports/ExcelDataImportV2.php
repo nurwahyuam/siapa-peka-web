@@ -20,15 +20,26 @@ class ExcelDataImportV2 implements ToModel
     public function model(array $row)
     {
         $year = $row[10] ?? null;
-        $yearName = ucwords(strtolower($row[9])) ?? null;
+        $yearName = $row[8] ?? null;
+
+        if ($yearName) {
+            $parts = explode(' ', strtolower($yearName));
+            $parts = array_map(fn($p) => strtoupper($p), $parts); // semua ke uppercase
+            $parts[0] = ucfirst(strtolower($parts[0])); // kata pertama rapikan
+
+            $yearName = implode(' ', $parts);
+        }
 
         $yearValue = is_numeric($year) ? (int) $year : (int) preg_replace('/[^0-9]/', '', $year);
 
         if ($yearValue == 0) return null;
 
-        $period = Period::firstOrCreate(
-            ['year' => $yearValue],
-            ['name' => $yearName]
+        $period = Period::updateOrCreate(
+            [
+                'year' => $yearValue,
+                'name' => $yearName,
+            ],
+            []
         );
 
         $cityCode = $row[11] ?? null;

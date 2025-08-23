@@ -2,16 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\Application;
 use App\Models\Period;
+use App\Models\Application;
 use App\Models\CityFeature;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class ExcelDataImportV3 implements ToModel
+class ExcelDataImportV3 implements ToModel, WithStartRow
 {
     use SkipsErrors;
+
     public function startRow(): int
     {
         return 2;
@@ -19,27 +22,41 @@ class ExcelDataImportV3 implements ToModel
 
     public function model(array $row)
     {
-        $year = $row[10] ?? null;
-        $yearName = ucwords(strtolower($row[9])) ?? null;
+        $year = $row[9] ?? null;
+        $yearName = $row[8] ?? null;
+
+        if ($yearName) {
+            $parts = explode(' ', strtolower($yearName));
+            $parts = array_map(fn($p) => strtoupper($p), $parts); // semua ke uppercase
+            $parts[0] = ucfirst(strtolower($parts[0])); // kata pertama rapikan
+
+            $yearName = implode(' ', $parts);
+        }
 
         $yearValue = is_numeric($year) ? (int) $year : (int) preg_replace('/[^0-9]/', '', $year);
 
-        if ($yearValue == 0) return null;
+        if ($yearValue == 0) {
+            Log::warning('Lewatkan baris karena year kosong/0', ['row' => $row]);
+            return null;
+        }
 
-        $period = Period::firstOrCreate(
-            ['year' => $yearValue],
-            ['name' => $yearName]
+        $period = Period::updateOrCreate(
+            [
+                'year' => $yearValue,
+                'name' => $yearName,
+            ],
+            []
         );
 
         $cityCode = $row[10] ?? null;
-
         if (!$cityCode) {
+            Log::warning('Lewatkan baris karena year kosong/0', ['row' => $row]);
             return null;
         }
 
         $cityFeature = CityFeature::where('code', $cityCode)->first();
-
         if (!$cityFeature) {
+            Log::warning('Lewatkan baris karena year kosong/0', ['row' => $row]);
             return null;
         }
 
@@ -56,22 +73,5 @@ class ExcelDataImportV3 implements ToModel
         );
 
         return null;
-    }
-
-    /**
-     * Format nama tahun dengan kapitalisasi yang benar
-     * Contoh: "TAHUN 2024" menjadi "Tahun 2024"
-     */
-    protected function formatYearName($yearName)
-    {
-        if (empty($yearName)) {
-            return $yearName;
-        }
-
-        // Ubah ke lowercase terlebih dahulu
-        $lowercase = Str::lower($yearName);
-
-        // Ubah huruf pertama setiap kata menjadi kapital
-        return Str::title($lowercase);
     }
 }
