@@ -104,7 +104,7 @@ export default function Navbar() {
                             </div>
                             <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
                                 <span className="text-gray-700">
-                                    Sekolah Menengah Kejuran 
+                                    Sekolah Menengah Kejuran
                                 </span>
                                 <span className="text-sm text-gray-500">
                                     33 Orang
@@ -370,108 +370,11 @@ export default function Navbar() {
                 </div>
             ),
         },
-        statistik: {
-            title: "Detail Statistik",
-            icon: <PieChart className="w-6 h-6" />,
-            content: (
-                <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
-                            <h4 className="font-semibold text-indigo-800 mb-3">
-                                Klasifikasi Umur
-                            </h4>
-                            <div className="space-y-2">
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">
-                                        Kurang dari 15 Tahun
-                                    </span>
-                                    <span className="text-sm font-medium">
-                                        35%
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">
-                                        15 s.d 19 Tahun
-                                    </span>
-                                    <span className="text-sm font-medium">
-                                        65%
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-teal-50 p-4 rounded-xl border border-teal-200">
-                            <h4 className="font-semibold text-teal-800 mb-3">
-                                Waktu Respon
-                            </h4>
-                            <div className="space-y-2">
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">
-                                        kurang 5 menit
-                                    </span>
-                                    <span className="text-sm font-medium">
-                                        45%
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">
-                                        5-15 menit
-                                    </span>
-                                    <span className="text-sm font-medium">
-                                        30%
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-gray-50 p-4 rounded-xl">
-                        <h4 className="font-semibold text-gray-800 mb-4">
-                            Tren Mingguan
-                        </h4>
-                        <div className="grid grid-cols-7 gap-2 text-center">
-                            {[
-                                "Mon",
-                                "Tue",
-                                "Wed",
-                                "Thu",
-                                "Fri",
-                                "Sat",
-                                "Sun",
-                            ].map((day, index) => (
-                                <div
-                                    key={day}
-                                    className="bg-white p-2 rounded-lg"
-                                >
-                                    <p className="text-xs text-gray-500 mb-1">
-                                        {day}
-                                    </p>
-                                    <div
-                                        className={`h-12 rounded ${
-                                            index === 2
-                                                ? "bg-blue-500"
-                                                : index === 4
-                                                ? "bg-green-500"
-                                                : index === 0
-                                                ? "bg-purple-500"
-                                                : "bg-gray-300"
-                                        }`}
-                                    ></div>
-                                    <p className="text-xs font-medium mt-1">
-                                        {Math.floor(Math.random() * 200) + 50}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            ),
-        },
     };
 
     return (
         <>
-            <nav className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+            <nav className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-16l md:px-24 lg:px-32 xl:px-48">
                 <div
                     className="bg-white/90 backdrop-blur-md shadow-lg rounded-full px-4 sm:px-6 py-3 border border-gray-200/20"
                     style={{ height: "70px" }}
@@ -485,28 +388,22 @@ export default function Navbar() {
                             />
                         </div>
 
-                        <h1 className="font-bebas text-2xl sm:text-2xl lg:text-4xl md:block uppercase">
+                        <h1 className="font-bold text-indigo-500 text-2xl sm:text-2xl lg:text-4xl md:block uppercase">
                             Siapa Peka
                         </h1>
 
                         <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
                             <button
                                 onClick={() => openModal("ringkasan")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
+                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-lg font-medium capitalize hover:scale-105 transform"
                             >
                                 ringkasan
                             </button>
                             <button
                                 onClick={() => openModal("rerata")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
+                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-lg font-medium capitalize hover:scale-105 transform"
                             >
                                 rerata
-                            </button>
-                            <button
-                                onClick={() => openModal("statistik")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium capitalize hover:scale-105 transform"
-                            >
-                                statistik
                             </button>
                         </div>
 
@@ -559,12 +456,6 @@ export default function Navbar() {
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
                             >
                                 rerata
-                            </button>
-                            <button
-                                onClick={() => openModal("statistik")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
-                            >
-                                statistik
                             </button>
                         </div>
                     </div>

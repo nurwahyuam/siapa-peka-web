@@ -39,4 +39,8 @@ class Period extends Model
     {
         return $this->hasMany(ChildBride::class);
     }
+    public function forumChildren(): HasMany
+    {
+        return $this->hasMany(ForumChild::class);
+    }
 }

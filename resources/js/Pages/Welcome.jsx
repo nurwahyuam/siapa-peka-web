@@ -1,19 +1,35 @@
-import { Head, usePage } from "@inertiajs/react";
+import { Head, usePage, router } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Navbar from "@/Components/Navbar";
 import Statistik from "@/Components/Statistik";
-import Avarrage from "@/Components/Avarrage";
+import Legenda from "@/Components/Legenda";
+import ModalDetail from "@/Components/ModalDetail";
 
 export default function Welcome() {
     const mapRef = useRef(null);
     const geoJsonLayerRef = useRef(null);
-    const { cityFeatures } = usePage().props;
-    const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
+    const { cityFeatures, availableYears, selectedYear } = usePage().props;
     const [selectedFeature, setSelectedFeature] = useState(null);
+    const [currentYear, setCurrentYear] = useState(selectedYear);
+    const [colorScheme, setColorScheme] = useState("accepted");
+    const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
+    const [isStatsOpen, setIsStatsOpen] = useState(false); // State untuk
+    const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modalstatistik
 
-    const getColor = (category) => {
+    // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
+    const getColorByAccepted = (accepted) => {
+        if (accepted === 0) return "#CCCCCC";
+        if (accepted <= 10) return "#00FF00";
+        if (accepted <= 50) return "#FFFF00";
+        if (accepted <= 100) return "#FFA500";
+        if (accepted > 100) return "#FF0000";
+        return "#808080";
+    };
+
+    // Fungsi untuk mendapatkan warna berdasarkan kategori risiko
+    const getColorByCategory = (category) => {
         switch (category) {
             case "Rendah":
                 return "#00FF00";
@@ -28,34 +44,88 @@ export default function Welcome() {
         }
     };
 
+    // Definisikan fungsi getStyle yang konsisten
+    const getStyle = (feature, isHovered = false) => {
+        const isKabupaten = feature.properties.kind === "City";
+        const color =
+            colorScheme === "accepted"
+                ? getColorByAccepted(feature.properties.total_accepted)
+                : getColorByCategory(feature.properties.kategori);
+
+        return {
+            fillColor: color,
+            color: isHovered ? "#FFFFFF" : "#000000",
+            weight: isHovered ? 3 : 1.5,
+            fillOpacity: 0.8,
+        };
+    };
+
+    // Handler functions
+    const handleYearChange = (year) => {
+        setCurrentYear(year);
+        router.get("/", { year }, { preserveState: true, replace: true });
+    };
+
+    const handleColorSchemeChange = (scheme) => {
+        setColorScheme(scheme);
+    };
+
+    const handleHighRiskChange = (checked) => {
+        setShowHighRiskOnly(checked);
+    };
+
     const showModal = (feature) => {
         setSelectedFeature(feature);
+        setIsModalOpen(true); // Buka modal
     };
 
     const closeModal = () => {
+        setIsModalOpen(false); // Tutup modal
         setSelectedFeature(null);
+    };
+
+    // Fungsi untuk handle statistik dibuka/ditutup
+    const handleStatsToggle = (isOpen) => {
+        setIsStatsOpen(isOpen);
+
+        if (mapRef.current) {
+            if (isOpen) {
+                // Geser peta ke kanan saat statistik dibuka
+                mapRef.current.setView([-8, 115], 8, {
+                    animate: true,
+                    duration: 0.8,
+                    easeLinearity: 0.25,
+                });
+            } else {
+                // Kembalikan ke posisi semula saat statistik ditutup
+                mapRef.current.setView([-8, 113.2], 8, {
+                    animate: true,
+                    duration: 0.8,
+                    easeLinearity: 0.25,
+                });
+            }
+        }
     };
 
     useEffect(() => {
         if (!mapRef.current) {
             const mapInstance = L.map("map", {
-                zoomControl: false, // Disable default zoom control
-                scrollWheelZoom: false, // Disable mouse wheel zoom
-                doubleClickZoom: false, // Disable double click zoom
-                touchZoom: false, // Disable touch zoom
-                boxZoom: false // Disable box zoom
-            }).setView([-7.5, 112.5], 7);
+                zoomControl: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                touchZoom: false,
+                boxZoom: false,
+                center: [-8, 113.2], // Posisi awal
+                zoom: 8,
+            });
 
             mapRef.current = mapInstance;
 
-            // Add tile layer without attribution
+            // Add tile layer with gray transparent style
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: "" // Empty attribution
-            }).addTo(mapInstance);
-
-            // Add custom zoom control
-            L.control.zoom({
-                position: "topright"
+                attribution: "",
+                className: "gray-map-tiles",
+                opacity: 0.7,
             }).addTo(mapInstance);
         }
 
@@ -74,50 +144,73 @@ export default function Welcome() {
         const featuresToShow = showHighRiskOnly
             ? cityFeatures.filter(
                   (f) =>
-                      f.properties?.kategori === "Tinggi" ||
-                      f.properties?.kategori === "Sangat Tinggi"
+                      f.kategori === "Tinggi" || f.kategori === "Sangat Tinggi"
               )
             : cityFeatures;
 
         const geoJsonData = {
             type: "FeatureCollection",
-            features: featuresToShow.map(feature => ({
+            features: featuresToShow.map((feature) => ({
                 type: "Feature",
-                properties: feature || {},
-                geometry: feature.geometry || feature
-            }))
+                properties: feature,
+                geometry: feature.geometry,
+            })),
         };
 
         try {
             geoJsonLayerRef.current.addData(geoJsonData);
 
             geoJsonLayerRef.current.setStyle((feature) => {
-                const isKabupaten = feature.properties.kind === "City";
+                const color =
+                    colorScheme === "accepted"
+                        ? getColorByAccepted(feature.properties.total_accepted)
+                        : getColorByCategory(feature.properties.kategori);
 
                 return {
-                    fillColor: getColor(feature.properties?.kategori),
-                    color: isKabupaten ? "#006400" : "#00008B",
+                    fillColor: color,
+                    color: "#000000",
                     weight: 1.5,
                     fillOpacity: 0.8,
                 };
             });
 
+            // Setup interactivity
             geoJsonLayerRef.current.eachLayer((layer) => {
                 if (layer.feature) {
                     const feature = layer.feature;
-                    const jenis = feature.properties.kind === "City" ? "Kabupaten" : "Kota";
 
-                    // Hover popup
-                    layer.on('mouseover', function() {
-                        this.bindPopup(
-                            `<b className="capitalize">${feature.properties.name || 'N/A'}</b><br/>
-                            Provinsi: ${feature.properties.province || 'N/A'}<br/>
-                            Kode: ${feature.properties.code || "N/A"}`
-                        ).openPopup();
+                    const tooltipContent = `
+                        <div class="custom-tooltip-left">
+                            <b class="capitalize">${
+                                feature.properties.name || "N/A"
+                            }</b><br/>
+                            Provinsi: ${
+                                feature.properties.province || "N/A"
+                            }<br/>
+                            Kode: ${feature.properties.code || "N/A"}<br/>
+                        </div>
+                    `;
+
+                    layer.bindTooltip(tooltipContent, {
+                        className: "custom-tooltip-left",
+                        direction: "left",
+                        offset: [-15, 0],
+                        opacity: 1,
+                        permanent: false,
                     });
 
-                    // Click modal
-                    layer.on('click', function() {
+                    layer.on("mouseover", function (e) {
+                        this.bringToFront();
+                        this.setStyle(getStyle(feature, true));
+                        this.openTooltip(e.latlng);
+                    });
+
+                    layer.on("mouseout", function () {
+                        this.setStyle(getStyle(feature, false));
+                        this.closeTooltip();
+                    });
+
+                    layer.on("click", function () {
                         showModal(feature.properties);
                     });
                 }
@@ -125,40 +218,38 @@ export default function Welcome() {
         } catch (error) {
             console.error("Error adding GeoJSON data:", error);
         }
-    }, [showHighRiskOnly, cityFeatures]);
+    }, [showHighRiskOnly, cityFeatures, currentYear, colorScheme]);
 
     return (
         <>
-            <Head title="Peta Kota/Kabupaten Jawa Timur" />
+            <Head title="SIAPA PEKA" />
             <div className="min-h-screen bg-white relative">
                 <div id="map" className="w-full h-screen z-0"></div>
                 <div className="absolute top-0 left-0 w-full z-10">
                     <Navbar />
-                    <Statistik />
-                    <Avarrage />
+                    <Statistik
+                        year={currentYear}
+                        cityFeatures={cityFeatures}
+                        onToggle={handleStatsToggle}
+                    />
+                    <Legenda
+                        currentYear={currentYear}
+                        availableYears={availableYears}
+                        onYearChange={handleYearChange}
+                        colorScheme={colorScheme}
+                        onColorSchemeChange={handleColorSchemeChange}
+                        showHighRiskOnly={showHighRiskOnly}
+                        onHighRiskChange={handleHighRiskChange}
+                    />
                 </div>
 
-                {/* Modal */}
-                {selectedFeature && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-lg max-w-md w-full">
-                            <h3 className="text-xl font-bold capitalize">
-                                {selectedFeature.kind === "City" ? "Kabupaten" : "Kota"} {selectedFeature.name || 'N/A'}
-                            </h3>
-                            <div className="mt-4 space-y-2">
-                                <p><span className="font-semibold">Provinsi:</span> {selectedFeature.province || 'N/A'}</p>
-                                <p><span className="font-semibold">Kode:</span> {selectedFeature.code || "N/A"}</p>
-                                <p><span className="font-semibold">Kategori:</span> {selectedFeature.kategori || "N/A"}</p>
-                            </div>
-                            <button
-                                onClick={closeModal}
-                                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                            >
-                                Tutup
-                            </button>
-                        </div>
-                    </div>
-                )}
+                {/* Gunakan Modal Component */}
+                <ModalDetail
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    feature={selectedFeature}
+                    currentYear={currentYear}
+                />
             </div>
         </>
     );

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('forum_children', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('period_id')->constrained()->onDelete('cascade');
             $table->string("question")->nullable();
             $table->boolean("answer");
-            $table->integer('response_count')->default(0);
             $table->timestamps();
         });
     }
