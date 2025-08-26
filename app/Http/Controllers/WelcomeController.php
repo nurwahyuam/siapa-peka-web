@@ -10,6 +10,7 @@ use App\Models\EducationLevel;
 use App\Models\AgeClassification;
 use App\Models\Reason;
 use App\Models\ChildBride;
+use App\Models\ForumChild;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ class WelcomeController extends Controller
         $ageData = [];
         $reasonData = [];
         $childBrideData = [];
+        $forumChildrenData = [];
 
         // Dapatkan semua periode untuk tahun yang dipilih
         $periodsForYear = Period::where('year', $year)->get();
@@ -136,6 +138,18 @@ class WelcomeController extends Controller
                     'total' => (int) $bride->total_children
                 ];
             }
+
+            // Data Forum Child - TOTAL
+            $forumChildren = ForumChild::whereIn('period_id', $periodsForYear->pluck('id'))
+                ->select(
+                    'question',
+                    DB::raw('SUM(CASE WHEN answer = true THEN 1 ELSE 0 END) as yes_count'),
+                    DB::raw('SUM(CASE WHEN answer = false THEN 1 ELSE 0 END) as no_count')
+                )
+                ->groupBy('question')
+                ->get();
+
+            $forumChildrenData = $forumChildren;
         }
 
         // Data tahunan untuk grafik
@@ -190,7 +204,8 @@ class WelcomeController extends Controller
                 'count' => $periodsForYear->count(),
                 'types' => $periodsForYear->pluck('name')
             ],
-            'yearlyData' => $yearlyData
+            'yearlyData' => $yearlyData,
+            'forumChildren' => $forumChildrenData
         ]);
     }
 

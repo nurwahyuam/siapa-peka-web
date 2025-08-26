@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-    CircleX,
-    ChevronLeft,
-    Users,
-    User,
-    UserCheck,
-    BarChart3,
-} from "lucide-react";
+import { CircleX, ChevronLeft, Users, Frown } from "lucide-react";
 import {
     LineChart,
     Line,
@@ -23,112 +16,20 @@ import {
     Cell,
 } from "recharts";
 
-// Data dummy untuk statistik penduduk Indonesia
-const populationData = {
-    2020: [
-        { provinsi: "DKI Jakarta", laki: 4221, perempuan: 4215, total: 8436 },
-        { provinsi: "Jawa Barat", laki: 24731, perempuan: 24685, total: 49416 },
-        {
-            provinsi: "Jawa Tengah",
-            laki: 16997,
-            perempuan: 17042,
-            total: 34039,
-        },
-        {
-            provinsi: "Jawa Timur",
-            laki: 194436,
-            perempuan: 194932,
-            total: 389368,
-        },
-        { provinsi: "Banten", laki: 6213, perempuan: 6178, total: 12391 },
-    ],
-    2021: [
-        { provinsi: "DKI Jakarta", laki: 4250, perempuan: 4245, total: 8495 },
-        { provinsi: "Jawa Barat", laki: 24980, perempuan: 24930, total: 49910 },
-        {
-            provinsi: "Jawa Tengah",
-            laki: 17120,
-            perempuan: 17165,
-            total: 34285,
-        },
-        {
-            provinsi: "Jawa Timur",
-            laki: 195800,
-            perempuan: 196300,
-            total: 392100,
-        },
-        { provinsi: "Banten", laki: 6280, perempuan: 6245, total: 12525 },
-    ],
-    2022: [
-        { provinsi: "DKI Jakarta", laki: 4280, perempuan: 4275, total: 8555 },
-        { provinsi: "Jawa Barat", laki: 25230, perempuan: 25180, total: 50410 },
-        {
-            provinsi: "Jawa Tengah",
-            laki: 17245,
-            perempuan: 17290,
-            total: 34535,
-        },
-        {
-            provinsi: "Jawa Timur",
-            laki: 197200,
-            perempuan: 197700,
-            total: 394900,
-        },
-        { provinsi: "Banten", laki: 6350, perempuan: 6315, total: 12665 },
-    ],
-    2023: [
-        { provinsi: "DKI Jakarta", laki: 4310, perempuan: 4305, total: 8615 },
-        { provinsi: "Jawa Barat", laki: 25480, perempuan: 25430, total: 50910 },
-        {
-            provinsi: "Jawa Tengah",
-            laki: 17370,
-            perempuan: 17415,
-            total: 34785,
-        },
-        {
-            provinsi: "Jawa Timur",
-            laki: 198600,
-            perempuan: 199100,
-            total: 397700,
-        },
-        { provinsi: "Banten", laki: 6420, perempuan: 6385, total: 12805 },
-    ],
-};
-
-// Data untuk grafik perkembangan penduduk
-const growthData = [
-    { tahun: "2018", total: 264000, laki: 132500, perempuan: 131500 },
-    { tahun: "2019", total: 267500, laki: 134000, perempuan: 133500 },
-    { tahun: "2020", total: 270600, laki: 135500, perempuan: 135100 },
-    { tahun: "2021", total: 273800, laki: 137100, perempuan: 136700 },
-    { tahun: "2022", total: 275500, laki: 138000, perempuan: 137500 },
-    { tahun: "2023", total: 278000, laki: 139200, perempuan: 138800 },
-];
-
-// Data untuk distribusi jenis kelamin
-const genderDistribution = [
-    { name: "Laki-laki", value: 139200, color: "#3B82F6" },
-    { name: "Perempuan", value: 138800, color: "#EC4899" },
-];
-
-// Data untuk provinsi dengan penduduk terbanyak
-const topProvinces = [
-    { provinsi: "Jawa Barat", penduduk: 50910, persentase: 18.3 },
-    { provinsi: "Jawa Timur", penduduk: 39770, persentase: 14.3 },
-    { provinsi: "Jawa Tengah", penduduk: 34785, persentase: 12.5 },
-    { provinsi: "Sumatera Utara", penduduk: 14790, persentase: 5.3 },
-    { provinsi: "Banten", penduduk: 12805, persentase: 4.6 },
-];
-
-export default function Statistik({ year, cityFeatures, onToggle }) {
+export default function Statistik({
+    year,
+    cityFeatures,
+    forumChildren,
+    yearlyData,
+    onToggle,
+}) {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
-    const [selectedYear, setSelectedYear] = useState("2023");
 
     const handleToggle = (open) => {
         setIsOpen(open);
         if (onToggle) {
-            onToggle(open); // Panggil callback function
+            onToggle(open);
         }
     };
 
@@ -136,14 +37,25 @@ export default function Statistik({ year, cityFeatures, onToggle }) {
         return new Intl.NumberFormat("id-ID").format(value);
     };
 
-    const formatPopulation = (value) => {
-        if (value >= 1000000) {
-            return `${(value / 1000000).toFixed(1)}JT`;
-        } else if (value >= 1000) {
-            return `${(value / 1000).toFixed(1)}RB`;
+    // Format data untuk grafik tren dispensasi kawin
+    const formatDispensasiData = () => {
+        if (
+            !yearlyData ||
+            !yearlyData.years ||
+            !yearlyData.submitted ||
+            !yearlyData.accepted
+        ) {
+            return [];
         }
-        return value;
+
+        return yearlyData.years.map((year, index) => ({
+            tahun: year.toString(),
+            submitted: yearlyData.submitted[index],
+            accepted: yearlyData.accepted[index],
+        }));
     };
+
+    const dispensasiData = formatDispensasiData();
 
     return (
         <>
@@ -151,13 +63,13 @@ export default function Statistik({ year, cityFeatures, onToggle }) {
                 onClick={() => handleToggle(true)}
                 className={`${
                     isOpen ? "hidden" : ""
-                } fixed bottom-48 right-6 lg:top-40 lg:bottom-auto bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300 z-10`}
+                } fixed top-64 right-4 lg:bottom-auto bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300 z-10`}
             >
                 <ChevronLeft />
             </button>
 
             {isOpen && (
-                <div className="fixed top-28 right-4 w-[640px] h-[420px] bg-white shadow-2xl rounded-lg border border-gray-200 animate-slide-up overflow-hidden z-50">
+                <div className="fixed top-[106px] right-4 w-[640px] h-[440px] bg-white shadow-2xl rounded-lg border border-gray-200 animate-slide-up overflow-hidden z-50">
                     <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
                         <button
                             onClick={() => handleToggle(false)}
@@ -175,346 +87,526 @@ export default function Statistik({ year, cityFeatures, onToggle }) {
                     <div className="flex border-b border-gray-200 bg-gray-50">
                         <button
                             onClick={() => setActiveTab("overview")}
-                            className={`px-6 py-3 text-sm font-medium transition-colors ${
+                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
                                 activeTab === "overview"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
                             }`}
                         >
-                            Grafik Usia Pengantin Dibawah 19 Tahun
+                            Tren Dispensasi Kawin
                         </button>
                         <button
-                            onClick={() => setActiveTab("distribution")}
-                            className={`px-6 py-3 text-sm font-medium transition-colors ${
-                                activeTab === "distribution"
+                            onClick={() => setActiveTab("cities")}
+                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
+                                activeTab === "cities"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
                             }`}
                         >
-                            Tren Dispensasi Kawin 3 Tahun Terakhir
+                            Pengantin 19 Tahun
                         </button>
                         <button
-                            onClick={() => setActiveTab("provinces")}
-                            className={`px-6 py-3 text-sm font-medium transition-colors ${
-                                activeTab === "provinces"
+                            onClick={() => setActiveTab("survey")}
+                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
+                                activeTab === "survey"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
                             }`}
                         >
-                            Data Survey Forum Anak
+                            Survey Forum Anak
                         </button>
                     </div>
 
-                    <div className="p-4 h-full overflow-auto">
+                    <div className="p-4 overflow-auto">
+                        {/* Chart Tren Dispensasi Kawin */}
                         {activeTab === "overview" && (
                             <div>
                                 <div className="mb-4">
-                                    <h3 className="text-lg font-semibold mb-2">
-                                        Data Penduduk Indonesia ({selectedYear})
+                                    <h3 className="text-lg font-semibold">
+                                        Tren Dispensasi Kawin{" "}
+                                        {dispensasiData.length} Tahun Terakhir
                                     </h3>
-                                    <div className="grid grid-cols-3 gap-4 mb-4">
-                                        <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                                            <div className="font-semibold text-sm text-blue-700 flex items-center gap-1">
-                                                <User size={16} />
-                                                Laki-laki
-                                            </div>
-                                            <div className="text-lg font-bold text-blue-600">
-                                                {formatNumber(
-                                                    growthData.find(
-                                                        (d) =>
-                                                            d.tahun ===
-                                                            selectedYear
-                                                    )?.laki * 1000 || 0
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="bg-pink-50 p-3 rounded-lg border border-pink-100">
-                                            <div className="font-semibold text-sm text-pink-700 flex items-center gap-1">
-                                                <UserCheck size={16} />
-                                                Perempuan
-                                            </div>
-                                            <div className="text-lg font-bold text-pink-600">
-                                                {formatNumber(
-                                                    growthData.find(
-                                                        (d) =>
-                                                            d.tahun ===
-                                                            selectedYear
-                                                    )?.perempuan * 1000 || 0
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
-                                            <div className="font-semibold text-sm text-purple-700 flex items-center gap-1">
-                                                <Users size={16} />
-                                                Total
-                                            </div>
-                                            <div className="text-lg font-bold text-purple-600">
-                                                {formatNumber(
-                                                    growthData.find(
-                                                        (d) =>
-                                                            d.tahun ===
-                                                            selectedYear
-                                                    )?.total * 1000 || 0
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p className="text-sm text-gray-600">
+                                        Data Dispensasi Kawin di Jawa
+                                        Timur
+                                    </p>
                                 </div>
 
-                                <h4 className="font-semibold mb-2">
-                                    Perkembangan Jumlah Penduduk (2018-2023)
-                                </h4>
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <LineChart data={growthData}>
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="tahun" />
-                                        <YAxis
-                                            tickFormatter={formatPopulation}
+                                {dispensasiData.length > 0 ? (
+                                    <div className="flex items-center justify-center">
+                                        <ResponsiveContainer
+                                            width="100%"
+                                            height={240}
+                                        >
+                                            <LineChart data={dispensasiData}>
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="tahun" />
+                                                <YAxis />
+                                                <Tooltip
+                                                    formatter={(value) => [
+                                                        formatNumber(value),
+                                                        "",
+                                                    ]}
+                                                    labelFormatter={(label) =>
+                                                        `Tahun ${label}`
+                                                    }
+                                                />
+                                                <Legend />
+                                                <Line
+                                                    type="monotone"
+                                                    dataKey="submitted"
+                                                    name="Total Diajukan"
+                                                    stroke="#8B5CF6"
+                                                    strokeWidth={3}
+                                                    dot={{ r: 4 }}
+                                                />
+                                                <Line
+                                                    type="monotone"
+                                                    dataKey="accepted"
+                                                    name="Total Diterima"
+                                                    stroke="#10B981"
+                                                    strokeWidth={2}
+                                                    dot={{ r: 3 }}
+                                                />
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                        <Frown
+                                            size={48}
+                                            className="text-gray-500 mb-3"
                                         />
-                                        <Tooltip
-                                            formatter={(value) => [
-                                                `${formatNumber(value * 1000)}`,
-                                                "",
-                                            ]}
-                                            labelFormatter={(label) =>
-                                                `Tahun ${label}`
-                                            }
-                                        />
-                                        <Legend />
-                                        <Line
-                                            type="monotone"
-                                            dataKey="total"
-                                            name="Total Penduduk"
-                                            stroke="#8B5CF6"
-                                            strokeWidth={3}
-                                            dot={{ r: 4 }}
-                                        />
-                                        <Line
-                                            type="monotone"
-                                            dataKey="laki"
-                                            name="Laki-laki"
-                                            stroke="#3B82F6"
-                                            strokeWidth={2}
-                                            dot={{ r: 3 }}
-                                        />
-                                        <Line
-                                            type="monotone"
-                                            dataKey="perempuan"
-                                            name="Perempuan"
-                                            stroke="#EC4899"
-                                            strokeWidth={2}
-                                            dot={{ r: 3 }}
-                                        />
-                                    </LineChart>
-                                </ResponsiveContainer>
+                                        <p className="text-lg font-medium mb-1">
+                                            Data Data Dispensasi Kawin di Jawa Timur Tidak Tersedia
+                                        </p>
+                                        <p className="text-sm">
+                                            Untuk Periode {year}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         )}
 
-                        {activeTab === "distribution" && (
-                            <div className="flex flex-col items-center">
+                        {/* Chart Data Pengantin Dibawah 19 Tahun */}
+                        {activeTab === "cities" && (
+                            <div>
                                 <h3 className="text-lg font-semibold mb-4">
-                                    Distribusi Jenis Kelamin ({selectedYear})
+                                    5 Kota Kabupaten Dengan Pengantin Dibawah 19 Tahun
+                                    (Periode {year})
                                 </h3>
 
-                                <div className="flex w-full">
-                                    <div className="w-1/2">
+                                {/* Pengecekan yang benar untuk data yang tidak ada */}
+                                {cityFeatures &&
+                                cityFeatures.some(
+                                    (city) =>
+                                        city.child_bride_data &&
+                                        city.child_bride_data.total > 0
+                                ) ? (
+                                    <>
                                         <ResponsiveContainer
                                             width="100%"
                                             height={250}
                                         >
-                                            <PieChart>
-                                                <Pie
-                                                    data={genderDistribution}
-                                                    cx="50%"
-                                                    cy="50%"
-                                                    labelLine={false}
-                                                    outerRadius={80}
-                                                    fill="#8884d8"
-                                                    dataKey="value"
-                                                    label={({
-                                                        name,
-                                                        percent,
-                                                    }) =>
-                                                        `${name}: ${(
-                                                            percent * 100
-                                                        ).toFixed(1)}%`
-                                                    }
-                                                >
-                                                    {genderDistribution.map(
-                                                        (entry, index) => (
-                                                            <Cell
-                                                                key={`cell-${index}`}
-                                                                fill={
-                                                                    entry.color
-                                                                }
-                                                            />
-                                                        )
-                                                    )}
-                                                </Pie>
+                                            <BarChart
+                                                data={cityFeatures
+                                                    .filter(
+                                                        (city) =>
+                                                            city.child_bride_data &&
+                                                            city
+                                                                .child_bride_data
+                                                                .total > 0
+                                                    )
+                                                    .sort(
+                                                        (a, b) =>
+                                                            b.child_bride_data
+                                                                .total -
+                                                            a.child_bride_data
+                                                                .total
+                                                    )
+                                                    .slice(0, 5)
+                                                    .map((city) => ({
+                                                        name: city.name,
+                                                        laki:
+                                                            city
+                                                                .child_bride_data
+                                                                .men_under_19 ||
+                                                            0,
+                                                        perempuan:
+                                                            city
+                                                                .child_bride_data
+                                                                .women_under_19 ||
+                                                            0,
+                                                        total:
+                                                            city
+                                                                .child_bride_data
+                                                                .total || 0,
+                                                    }))}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="name" />
+                                                <YAxis />
                                                 <Tooltip
-                                                    formatter={(value) => [
-                                                        `${formatNumber(
-                                                            value * 1000
-                                                        )}`,
-                                                        "",
-                                                    ]}
+                                                    formatter={(
+                                                        value,
+                                                        name
+                                                    ) => {
+                                                        if (name === "Laki-laki")
+                                                            return [
+                                                                formatNumber(
+                                                                    value
+                                                                ),
+                                                                "Laki-laki < 19 tahun",
+                                                            ];
+                                                        if (
+                                                            name === "Perempuan"
+                                                        )
+                                                            return [
+                                                                formatNumber(
+                                                                    value
+                                                                ),
+                                                                "Perempuan < 19 tahun",
+                                                            ];
+                                                        return [
+                                                            formatNumber(value),
+                                                            "Total",
+                                                        ];
+                                                    }}
                                                 />
-                                            </PieChart>
+                                                <Legend />
+                                                <Bar
+                                                    dataKey="laki"
+                                                    name="Laki-laki"
+                                                    fill="#3B82F6"
+                                                    radius={[4, 4, 0, 0]}
+                                                />
+                                                <Bar
+                                                    dataKey="perempuan"
+                                                    name="Perempuan"
+                                                    fill="#EC4899"
+                                                    radius={[4, 4, 0, 0]}
+                                                />
+                                                <Bar
+                                                    dataKey="total"
+                                                    name="Total"
+                                                    fill="#8B5CF6"
+                                                    radius={[4, 4, 0, 0]}
+                                                />
+                                            </BarChart>
                                         </ResponsiveContainer>
-                                    </div>
 
-                                    <div className="w-1/2 pl-4">
-                                        <h4 className="font-semibold mb-3">
-                                            Proporsi Jenis Kelamin
-                                        </h4>
-                                        <div className="space-y-3">
-                                            {genderDistribution.map((item) => (
-                                                <div
-                                                    key={item.name}
-                                                    className="flex items-center"
-                                                >
-                                                    <div
-                                                        className="w-4 h-4 rounded-sm mr-2"
-                                                        style={{
-                                                            backgroundColor:
-                                                                item.color,
-                                                        }}
-                                                    ></div>
-                                                    <div className="flex-1">
-                                                        <div className="flex justify-between">
-                                                            <span className="text-sm">
-                                                                {item.name}
-                                                            </span>
-                                                            <span className="text-sm font-semibold">
-                                                                {(
-                                                                    (item.value /
-                                                                        (genderDistribution[0]
-                                                                            .value +
-                                                                            genderDistribution[1]
-                                                                                .value)) *
-                                                                    100
-                                                                ).toFixed(1)}
-                                                                %
-                                                            </span>
-                                                        </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                                                            <div
-                                                                className="h-2 rounded-full"
-                                                                style={{
-                                                                    width: `${
-                                                                        (item.value /
-                                                                            (genderDistribution[0]
-                                                                                .value +
-                                                                                genderDistribution[1]
-                                                                                    .value)) *
-                                                                        100
-                                                                    }%`,
-                                                                    backgroundColor:
-                                                                        item.color,
-                                                                }}
-                                                            ></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-                                            <div className="text-sm text-gray-600">
-                                                Rasio Jenis Kelamin:{" "}
-                                                <span className="font-semibold">
-                                                    {(
-                                                        (genderDistribution[0]
-                                                            .value /
-                                                            genderDistribution[1]
-                                                                .value) *
-                                                        100
-                                                    ).toFixed(1)}
-                                                </span>{" "}
-                                                (Laki-laki per 100 Perempuan)
+                                        {/* Tampilkan data dalam tabel juga */}
+                                        <div className="mt-6">
+                                            <h4 className="font-semibold mb-3">
+                                                Detail Data
+                                            </h4>
+                                            <div className="overflow-x-auto">
+                                                <table className="min-w-full bg-white border border-gray-200">
+                                                    <thead>
+                                                        <tr className="bg-gray-50">
+                                                            <th className="px-4 py-2 border-b text-left">
+                                                                Kota
+                                                            </th>
+                                                            <th className="px-4 py-2 border-b text-center">
+                                                                Laki-laki
+                                                            </th>
+                                                            <th className="px-4 py-2 border-b text-center">
+                                                                Perempuan
+                                                            </th>
+                                                            <th className="px-4 py-2 border-b text-center">
+                                                                Total
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {cityFeatures
+                                                            .filter(
+                                                                (city) =>
+                                                                    city.child_bride_data &&
+                                                                    city
+                                                                        .child_bride_data
+                                                                        .total >
+                                                                        0
+                                                            )
+                                                            .sort(
+                                                                (a, b) =>
+                                                                    b
+                                                                        .child_bride_data
+                                                                        .total -
+                                                                    a
+                                                                        .child_bride_data
+                                                                        .total
+                                                            )
+                                                            .slice(0, 5)
+                                                            .map(
+                                                                (
+                                                                    city,
+                                                                    index
+                                                                ) => (
+                                                                    <tr
+                                                                        key={
+                                                                            city.id
+                                                                        }
+                                                                        className={
+                                                                            index %
+                                                                                2 ===
+                                                                            0
+                                                                                ? "bg-gray-50"
+                                                                                : "bg-white"
+                                                                        }
+                                                                    >
+                                                                        <td className="px-4 py-2 border-b">
+                                                                            {
+                                                                                city.name
+                                                                            }
+                                                                        </td>
+                                                                        <td className="px-4 py-2 border-b text-center">
+                                                                            {formatNumber(
+                                                                                city
+                                                                                    .child_bride_data
+                                                                                    .men_under_19
+                                                                            )}
+                                                                        </td>
+                                                                        <td className="px-4 py-2 border-b text-center">
+                                                                            {formatNumber(
+                                                                                city
+                                                                                    .child_bride_data
+                                                                                    .women_under_19
+                                                                            )}
+                                                                        </td>
+                                                                        <td className="px-4 py-2 border-b text-center font-semibold">
+                                                                            {formatNumber(
+                                                                                city
+                                                                                    .child_bride_data
+                                                                                    .total
+                                                                            )}
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                        <Frown
+                                            size={48}
+                                            className="text-gray-500 mb-3"
+                                        />
+                                        <p className="text-lg font-medium mb-1">
+                                            Data pengantin dibawah 19 Tahun
+                                            Tidak Tersedia
+                                        </p>
+                                        <p className="text-sm">
+                                            Untuk Periode {year}
+                                        </p>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         )}
 
-                        {activeTab === "provinces" && (
+                        {/* Data Survey Form Anak */}
+                        {activeTab === "survey" && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">
-                                    Penduduk per Provinsi ({selectedYear})
+                                <h3 className="text-lg font-semibold mb-1">
+                                    Hasil Survey Forum Anak (Periode {year})
                                 </h3>
 
-                                <div className="mb-6">
-                                    <h4 className="font-semibold mb-2">
-                                        5 Provinsi dengan Penduduk Terbanyak
-                                    </h4>
-                                    <div className="space-y-3">
-                                        {topProvinces.map((prov, index) => (
-                                            <div
-                                                key={prov.provinsi}
-                                                className="flex items-center"
-                                            >
-                                                <div className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-800 rounded-full mr-3">
-                                                    {index + 1}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <div className="flex justify-between">
-                                                        <span className="font-medium">
-                                                            {prov.provinsi}
-                                                        </span>
-                                                        <span className="font-semibold">
-                                                            {formatNumber(
-                                                                prov.penduduk *
-                                                                    1000
-                                                            )}
-                                                        </span>
+                                {forumChildren && forumChildren.length > 0 ? (
+                                    <div className="flex justify-between gap-2">
+                                        {forumChildren.map((item, index) => {
+                                            // Pastikan data ada sebelum membuat chart
+                                            if (
+                                                !item ||
+                                                typeof item.yes_count ===
+                                                    "undefined" ||
+                                                typeof item.no_count ===
+                                                    "undefined"
+                                            ) {
+                                                return (
+                                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                                        <Frown
+                                                            size={48}
+                                                            className="text-gray-500 mb-3"
+                                                        />
+                                                        <p className="text-lg font-medium mb-1">
+                                                            Data Hasil Survey
+                                                            Forum Anak Tidak
+                                                            Tersedia
+                                                        </p>
+                                                        <p className="text-sm">
+                                                            Untuk Periode {year}
+                                                        </p>
                                                     </div>
-                                                    <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                                                        <div
-                                                            className="h-2 rounded-full bg-blue-500"
-                                                            style={{
-                                                                width: `${prov.persentase}%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                                );
+                                            }
 
-                                <h4 className="font-semibold mb-2">
-                                    Distribusi Penduduk per Provinsi (ribu jiwa)
-                                </h4>
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <BarChart
-                                        data={populationData[selectedYear]}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="provinsi" />
-                                        <YAxis />
-                                        <Tooltip
-                                            formatter={(value) => [
-                                                `${formatNumber(value)}`,
-                                                "",
-                                            ]}
+                                            const yesCount =
+                                                Number(item.yes_count) || 0;
+                                            const noCount =
+                                                Number(item.no_count) || 0;
+                                            const total = yesCount + noCount;
+
+                                            // Data untuk pie chart
+                                            const pieData = [
+                                                {
+                                                    name: "Ya",
+                                                    value: yesCount,
+                                                    color: "#10B981",
+                                                },
+                                                {
+                                                    name: "Tidak",
+                                                    value: noCount,
+                                                    color: "#EF4444",
+                                                },
+                                            ];
+
+                                            const yesPercentage =
+                                                total > 0
+                                                    ? Math.round(
+                                                          (yesCount / total) *
+                                                              100
+                                                      )
+                                                    : 0;
+                                            const noPercentage =
+                                                total > 0
+                                                    ? Math.round(
+                                                          (noCount / total) *
+                                                              100
+                                                      )
+                                                    : 0;
+
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="w-full md:w-[48%] bg-white"
+                                                >
+                                                    <h4 className="font-medium text-gray-700 mb-2 text-center text-sm">
+                                                        {item.question ||
+                                                            "Pertanyaan tidak tersedia"}
+                                                    </h4>
+
+                                                    <div className="flex flex-col items-center">
+                                                        {/* Pie Chart */}
+                                                        <div className="h-48 w-full">
+                                                            <ResponsiveContainer
+                                                                width="100%"
+                                                                height="100%"
+                                                            >
+                                                                <PieChart>
+                                                                    <Pie
+                                                                        data={
+                                                                            pieData
+                                                                        }
+                                                                        cx="50%"
+                                                                        cy="50%"
+                                                                        innerRadius={
+                                                                            40
+                                                                        }
+                                                                        outerRadius={
+                                                                            70
+                                                                        }
+                                                                        paddingAngle={
+                                                                            2
+                                                                        }
+                                                                        dataKey="value"
+                                                                        labelLine={
+                                                                            false
+                                                                        }
+                                                                    >
+                                                                        {pieData.map(
+                                                                            (
+                                                                                entry,
+                                                                                index
+                                                                            ) => (
+                                                                                <Cell
+                                                                                    key={`cell-${index}`}
+                                                                                    fill={
+                                                                                        entry.color
+                                                                                    }
+                                                                                    stroke="#fff"
+                                                                                    strokeWidth={
+                                                                                        2
+                                                                                    }
+                                                                                />
+                                                                            )
+                                                                        )}
+                                                                    </Pie>
+                                                                    <Tooltip
+                                                                        formatter={(
+                                                                            value,
+                                                                            name
+                                                                        ) => [
+                                                                            `${formatNumber(
+                                                                                value
+                                                                            )} (${
+                                                                                name ===
+                                                                                "Ya"
+                                                                                    ? yesPercentage
+                                                                                    : noPercentage
+                                                                            }%)`,
+                                                                            "Jumlah",
+                                                                        ]}
+                                                                    />
+                                                                    <Legend
+                                                                        verticalAlign="bottom"
+                                                                        height={
+                                                                            36
+                                                                        }
+                                                                        formatter={(
+                                                                            value,
+                                                                            entry,
+                                                                            index
+                                                                        ) => (
+                                                                            <span className="text-xs">
+                                                                                {
+                                                                                    value
+                                                                                }
+
+                                                                                :{" "}
+                                                                                {formatNumber(
+                                                                                    pieData[
+                                                                                        index
+                                                                                    ]
+                                                                                        .value
+                                                                                )}
+                                                                            </span>
+                                                                        )}
+                                                                    />
+                                                                </PieChart>
+                                                            </ResponsiveContainer>
+                                                        </div>
+
+                                                        <div className="text-sm text-gray-600 text-center">
+                                                            Total Responden:{" "}
+                                                            <span className="font-semibold">
+                                                                {formatNumber(
+                                                                    total
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                        <Frown
+                                            size={48}
+                                            className="text-gray-500 mb-3"
                                         />
-                                        <Legend />
-                                        <Bar
-                                            dataKey="laki"
-                                            name="Laki-laki"
-                                            fill="#3B82F6"
-                                            radius={[4, 4, 0, 0]}
-                                        />
-                                        <Bar
-                                            dataKey="perempuan"
-                                            name="Perempuan"
-                                            fill="#EC4899"
-                                            radius={[4, 4, 0, 0]}
-                                        />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                        <p className="text-lg font-medium mb-1">
+                                            Data Hasil Survey Forum Anak Tidak
+                                            Tersedia
+                                        </p>
+                                        <p className="text-sm">
+                                            Untuk Periode {year}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

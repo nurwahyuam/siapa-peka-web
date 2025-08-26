@@ -1,6 +1,3 @@
-import { useState } from "react";
-import { X, ChevronLeft, ChevronRight, Filter } from "lucide-react";
-
 export default function Legenda({
     currentYear,
     availableYears,

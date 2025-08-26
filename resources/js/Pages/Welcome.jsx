@@ -10,13 +10,23 @@ import ModalDetail from "@/Components/ModalDetail";
 export default function Welcome() {
     const mapRef = useRef(null);
     const geoJsonLayerRef = useRef(null);
-    const { cityFeatures, availableYears, selectedYear } = usePage().props;
+    const {
+        cityFeatures,
+        availableYears,
+        selectedYear,
+        yearlyData,
+        forumChildren,
+    } = usePage().props;
     const [selectedFeature, setSelectedFeature] = useState(null);
     const [currentYear, setCurrentYear] = useState(selectedYear);
     const [colorScheme, setColorScheme] = useState("accepted");
     const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
     const [isStatsOpen, setIsStatsOpen] = useState(false); // State untuk
     const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modalstatistik
+
+    console.log(cityFeatures);
+    console.log(yearlyData);
+    console.log(forumChildren);
 
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
@@ -226,10 +236,12 @@ export default function Welcome() {
             <div className="min-h-screen bg-white relative">
                 <div id="map" className="w-full h-screen z-0"></div>
                 <div className="absolute top-0 left-0 w-full z-10">
-                    <Navbar />
+                    <Navbar cityFeatures={cityFeatures} currentYear={currentYear} />
                     <Statistik
                         year={currentYear}
                         cityFeatures={cityFeatures}
+                        forumChildren={forumChildren}
+                        yearlyData={yearlyData}
                         onToggle={handleStatsToggle}
                     />
                     <Legenda
