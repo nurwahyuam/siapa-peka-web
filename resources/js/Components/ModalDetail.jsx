@@ -1,4 +1,4 @@
-import { CircleX } from "lucide-react";
+import { XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
     PieChart,
@@ -224,7 +224,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                             className="text-gray-500 hover:text-gray-700 transition-colors"
                             aria-label="Tutup modal"
                         >
-                            <CircleX className="w-7 h-7" />
+                            <XCircle className="w-7 h-7" />
                         </button>
                     </div>
 

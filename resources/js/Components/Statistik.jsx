@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { CircleX, ChevronLeft, Users, Frown } from "lucide-react";
+import {
+    CircleX,
+    ChevronLeft,
+    Users,
+    User,
+    UserCheck,
+    BarChart3,
+} from "lucide-react";
 import {
     LineChart,
     Line,
@@ -75,7 +82,7 @@ export default function Statistik({
                             onClick={() => handleToggle(false)}
                             className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
                         >
-                            <CircleX size={24} />
+                            <XCircle size={24} />
                         </button>
                         <h2 className="text-xl font-bold text-center flex items-center gap-2">
                             <Users className="hidden sm:block" size={24} />
