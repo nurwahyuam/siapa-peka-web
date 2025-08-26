@@ -13,7 +13,6 @@ import {
     LogOut,
     Menu,
     X,
-    SquareChartGantt,
 } from "lucide-react";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -83,7 +82,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current("manage.index")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
-                                    <SquareChartGantt className="h-5 w-5 mr-3" />
+                                    
                                     Manage
                                 </NavLink>
                             </nav>
@@ -151,7 +150,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </NavLink>
 
                         <NavLink className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-                            <SquareChartGantt className="h-5 w-5 mr-3" />
+                    
                             Manage
                         </NavLink>
                     </nav>

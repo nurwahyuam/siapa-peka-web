@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-    CircleX,
+    XCircle,
     ChevronLeft,
     Users,
     User,
@@ -163,7 +163,7 @@ export default function Statistik({ year, cityFeatures, onToggle }) {
                             onClick={() => handleToggle(false)}
                             className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
                         >
-                            <CircleX size={24} />
+                            <XCircle size={24} />
                         </button>
                         <h2 className="text-xl font-bold text-center flex items-center gap-2">
                             <Users className="hidden sm:block" size={24} />

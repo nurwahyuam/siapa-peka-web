@@ -16,31 +16,33 @@ export default function Welcome() {
     const [colorScheme, setColorScheme] = useState("accepted");
     const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
     const [isStatsOpen, setIsStatsOpen] = useState(false); // State untuk
-    const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modalstatistik
+    const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modalstatistik                                
 
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
-        if (accepted === 0) return "#CCCCCC";
-        if (accepted <= 10) return "#00FF00";
-        if (accepted <= 50) return "#FFFF00";
-        if (accepted <= 100) return "#FFA500";
-        if (accepted > 100) return "#FF0000";
-        return "#808080";
+        if (accepted === 0) return "#FFFFFF"; // putih (no data)
+        if (accepted <= 10) return "#FFF4E0"; // beige kuning pucat (lembut)
+        if (accepted <= 50) return "#D8A5A5"; // kuning caramel cerah
+        if (accepted <= 100) return "#FFDADA"; // coral orange cerah
+        if (accepted > 100) return "#924A4A"; // maroon terang cerah
+        return "#C94C4C"; // fallback maroon vivid
     };
+
+
 
     // Fungsi untuk mendapatkan warna berdasarkan kategori risiko
     const getColorByCategory = (category) => {
         switch (category) {
             case "Rendah":
-                return "#00FF00";
+                return "#FFF4E0";
             case "Cukup":
-                return "#FFFF00";
+                return "#D8A5A5";
             case "Tinggi":
-                return "#FFA500";
+                return "#FFDADA";
             case "Sangat Tinggi":
-                return "#FF0000";
+                return "#924A4A";
             default:
-                return "#808080";
+                return "#FFF4E0";
         }
     };
 

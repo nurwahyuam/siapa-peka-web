@@ -86,42 +86,42 @@ export default function Legenda({
                         {colorScheme === "accepted" ? (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#CCCCCC] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
                                     <span>0 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#00FF00] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#FFF4E0] mr-2"></div>
                                     <span>1-10 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFFF00] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#D8A5A5] mr-2"></div>
                                     <span>11-50 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFA500] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#FFDADA] mr-2"></div>
                                     <span>51-100 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FF0000] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#924A4A] mr-2"></div>
                                     <span>100+ Diterima</span>
                                 </div>
                             </div>
                         ) : (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#00FF00] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#FFF4E0] mr-2"></div>
                                     <span>Risiko Rendah</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFFF00] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#D8A5A5] mr-2"></div>
                                     <span>Risiko Cukup</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFA500] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#FFDADA] mr-2"></div>
                                     <span>Risiko Tinggi</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FF0000] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#924A4A] mr-2"></div>
                                     <span>Risiko Sangat Tinggi</span>
                                 </div>
                             </div>
