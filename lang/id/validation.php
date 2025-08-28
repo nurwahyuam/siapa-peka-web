@@ -154,4 +154,10 @@ return [
     'uppercase'              => ':Attribute harus berupa huruf kapital.',
     'url'                    => 'Format :attribute tidak valid.',
     'uuid'                   => ':Attribute harus merupakan UUID yang valid.',
+    'attributes'             => [
+        'current_password' => 'kata sandi saat ini',
+        'password'         => 'kata sandi',
+        'email'           => 'email',
+        'name' => 'nama',
+    ],
 ];

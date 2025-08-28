@@ -57,9 +57,7 @@ export default function Login({ status, canResetPassword }) {
                                     value="Username"
                                     className="block text-sm font-medium text-gray-700"
                                 />
-                                <InputError
-                                    message={errors.username}
-                                />
+                                
                             </div>
                             <TextInput
                                 id="username"
@@ -76,6 +74,9 @@ export default function Login({ status, canResetPassword }) {
                                     setData("username", e.target.value)
                                 }
                             />
+                            <InputError
+                                    message={errors.username}
+                                />
                         </div>
 
                         <div className="space-y-2">
@@ -85,9 +86,7 @@ export default function Login({ status, canResetPassword }) {
                                     value="Password"
                                     className="block text-sm font-medium text-gray-700"
                                 />
-                                <InputError
-                                    message={errors.password}
-                                />
+                                
                             </div>
                             <TextInput
                                 id="password"
@@ -103,6 +102,9 @@ export default function Login({ status, canResetPassword }) {
                                     setData("password", e.target.value)
                                 }
                             />
+                            <InputError
+                                    message={errors.password}
+                                />
                         </div>
 
                         <div className="pt-3">
@@ -119,20 +121,6 @@ export default function Login({ status, canResetPassword }) {
                             >
                                 {processing ? "Loading..." : "Login"}
                             </PrimaryButton>
-                        </div>
-
-                        <div className="text-center pt-2">
-                            <p className="text-sm text-gray-600">
-                                Don't have an account?{" "}
-                                <Link
-                                    href={route("register")}
-                                    className="font-medium text-indigo-600 hover:text-indigo-500
-                                            transition-colors duration-200 ease-in-out
-                                            focus:outline-none focus:underline"
-                                >
-                                    Register
-                                </Link>
-                            </p>
                         </div>
                     </form>
                 </div>
