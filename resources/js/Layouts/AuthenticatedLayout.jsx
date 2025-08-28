@@ -13,6 +13,7 @@ import {
     LogOut,
     Menu,
     X,
+    CalendarClock,
 } from "lucide-react";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -65,7 +66,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
                                     <LayoutDashboard className="h-5 w-5 mr-3" />
-                                    Dashboard
+                                    Beranda
                                 </NavLink>
 
                                 <NavLink
@@ -79,11 +80,11 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 <NavLink
                                     href={route("manage.index")}
-                                    active={route().current("manage.index")}
+                                    active={route().current("manage.index") || route().current("manage.show")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
-                                    
-                                    Manage
+                                    <CalendarClock className="h-5 w-5 mr-3"/>
+                                    Manajemen
                                 </NavLink>
                             </nav>
                             <div className="border-t border-gray-200 p-4">
@@ -150,7 +151,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </NavLink>
 
                         <NavLink className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-                    
+
                             Manage
                         </NavLink>
                     </nav>

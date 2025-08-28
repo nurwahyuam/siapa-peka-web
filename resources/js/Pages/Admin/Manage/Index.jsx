@@ -1,6 +1,7 @@
 import React from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { CalendarClock, CirclePlus, Download, Eye, FilePenLine, Import, Map, Trash, Trash2 } from "lucide-react";
 
 const Index = () => {
     const { cities } = usePage().props;
@@ -9,45 +10,46 @@ const Index = () => {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Dashboard Analytics
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 flex items-center gap-2">
+                        <CalendarClock/>
+                        Manajemen Data
                     </h2>
                 </div>
             }
         >
-            <Head title="Data Excel Import" />
+            <Head title="Manajemen Data - SIAPA PEKA" />
 
-            <div className="py-12">
+            <div className="py-6">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white border-b border-gray-200">
                             <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold">
+                                <h2 className="text-2xl font-bold flex items-center gap-2">
+                                    <Map/>
                                     Data Kabupaten/Kota
                                 </h2>
-                                <div className="space-x-2">
+                                <div className="flex items-center justify-center gap-2">
                                     <Link
                                         href={route("manage.create")}
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
-                                        Import Excel
+                                        <CirclePlus className="h-5 w-5"/>
+                                        Create
                                     </Link>
-                                    <button
-                                        onClick={() => {
-                                            if (
-                                                confirm(
-                                                    "Apakah Anda yakin ingin menghapus semua data?"
-                                                )
-                                            ) {
-                                                window.location.href = route(
-                                                    "excel-import.destroyAll"
-                                                );
-                                            }
-                                        }}
-                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                    <Link
+                                        href={route("manage.import")}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
-                                        Hapus Semua Data
-                                    </button>
+                                        <Import className="h-5 w-5" />
+                                        Import
+                                    </Link>
+                                    <a
+                                        href={route("manage.export")}
+                                        className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
+                                    >
+                                        <Download className="h-5 w-5"/>
+                                        Download
+                                    </a>
                                 </div>
                             </div>
 
@@ -72,9 +74,6 @@ const Index = () => {
                                                     Kabupaten/Kota
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Jenis
-                                                </th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Kode
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -92,9 +91,6 @@ const Index = () => {
                                                         {city.name}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
-                                                        {city.kind}
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
                                                         {city.code}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -104,34 +100,17 @@ const Index = () => {
                                                         }{" "}
                                                         periode
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center gap-2">
                                                         <Link
                                                             href={route(
                                                                 "manage.show",
-                                                                city.id
+                                                                city.slug
                                                             )}
-                                                            className="text-blue-600 hover:text-blue-900 mr-3"
+                                                            className="text-blue-600 hover:text-blue-900 mr-3 flex items-center gap-2"
                                                         >
+                                                            <Eye />
                                                             Detail
                                                         </Link>
-                                                        <button
-                                                            onClick={() => {
-                                                                if (
-                                                                    confirm(
-                                                                        "Apakah Anda yakin ingin menghapus data ini?"
-                                                                    )
-                                                                ) {
-                                                                    window.location.href =
-                                                                        route(
-                                                                            "excel-import.destroy",
-                                                                            city.id
-                                                                        );
-                                                                }
-                                                            }}
-                                                            className="text-red-600 hover:text-red-900"
-                                                        >
-                                                            Hapus
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))}

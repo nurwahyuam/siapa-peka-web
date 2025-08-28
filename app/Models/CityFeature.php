@@ -13,6 +13,7 @@ class CityFeature extends Model
     protected $fillable = [
         'code',
         'name',
+        'slug',
         'kind',
         'province',
         'country',

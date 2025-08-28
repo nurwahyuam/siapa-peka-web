@@ -7,6 +7,7 @@ import {
     Calendar,
     Award,
     Frown,
+    XCircle,
 } from "lucide-react";
 
 export default function Navbar({
@@ -257,14 +258,6 @@ export default function Navbar({
                                                         .total_accepted
                                                 ).toLocaleString()}
                                             </p>
-                                            <p className="text-sm text-gray-600 mt-2">
-                                                Total Diterima
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {computedData.highestCity.quarterly_average?.toLocaleString() ||
-                                                    "0"}{" "}
-                                                per triwulan
-                                            </p>
                                         </div>
                                     </div>
 
@@ -283,14 +276,6 @@ export default function Navbar({
                                                         .total_accepted
                                                 ).toLocaleString()}
                                             </p>
-                                            <p className="text-sm text-gray-600 mt-2">
-                                                Total Diterima
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {computedData.lowestCity.quarterly_average?.toLocaleString() ||
-                                                    "0"}{" "}
-                                                per triwulan
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +286,6 @@ export default function Navbar({
                                         {Math.round(
                                             computedData.averageAccepted
                                         ).toLocaleString()}{" "}
-                                        aplikasi
                                     </h4>
 
                                     <div className="space-y-3">
@@ -487,7 +471,7 @@ export default function Navbar({
                                 onClick={closeModal}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 group"
                             >
-                                <X className="w-5 h-5 text-gray-500 group-hover:text-gray-700" />
+                                <XCircle className="w-7 h-7 text-gray-500 group-hover:text-gray-700" />
                             </button>
                         </div>
 
