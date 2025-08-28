@@ -4,8 +4,9 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\ManageController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -21,9 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/manage/destroy/{id}', [ManageController::class, 'destroy'])->name('manage.destroy');
     Route::delete('/manage/destroy', [ManageController::class, 'destroyAll'])->name('manage.destroyAll');
 
-    Route::get('/statistic/read', function () {
-        return Inertia::render('Admin/Statistic/Read');
-    })->name('statistic');
+    Route::get('/statistic/read', [StatisticController::class, 'index'])->name('statistic');
 });
 
 

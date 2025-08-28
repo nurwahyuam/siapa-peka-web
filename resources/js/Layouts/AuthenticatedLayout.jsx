@@ -9,6 +9,7 @@ import {
     LayoutDashboard,
     BarChart3,
     Settings,
+    SquareKanban,
     User,
     LogOut,
     Menu,
@@ -41,23 +42,10 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Sidebar */}
                         <div
                             className={`fixed inset-y-0 left-0 z-50 h-full flex-col justify-between bg-white shadow transform
-                ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-                transition duration-300 ease-in-out
-                lg:translate-x-0 lg:static lg:inset-0`}
+                                        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+                                        transition duration-300 ease-in-out
+                                        lg:translate-x-0 lg:static lg:inset-0`}
                         >
-                            {/* Logo */}
-                            {/* <div className="flex items-center justify-center h-16 border-b border-gray-200">
-                                <Link href="/" className="flex items-center">
-                                    <img
-                                        src="favicon.png"
-                                        className="h-8 w-auto fill-current text-gray-800"
-                                    />
-                                    <span className="ml-2 text-xl font-semibold text-gray-800">
-                                        SIAPA PEKA
-                                    </span>
-                                </Link>
-                            </div> */}
-                            {/* Sidebar Navigation */}
                             <nav className="flex-1 px-4 py-6 space-y-4">
                                 <NavLink
                                     href={route("dashboard")}
@@ -82,7 +70,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current("manage.index")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
-                                    
+                                    <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
                                     Manage
                                 </NavLink>
                             </nav>
@@ -138,25 +126,47 @@ export default function AuthenticatedLayout({ header, children }) {
                         <NavLink
                             href={route("dashboard")}
                             active={route().current("dashboard")}
-                            className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                            className="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                         >
                             <LayoutDashboard className="h-5 w-5 mr-3" />
                             Dashboard
                         </NavLink>
 
-                        <NavLink className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                        <NavLink
+                            href={route("statistic")}
+                            active={route().current("statistic")}
+                            className="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                        >
                             <BarChart3 className="h-5 w-5 mr-3" />
                             Statistik
                         </NavLink>
 
-                        <NavLink className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-                    
+                        <NavLink
+                            href={route("manage.index")}
+                            active={route().current("manage.index")}
+                            className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                        >
+                            <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
                             Manage
                         </NavLink>
                     </nav>
 
                     {/* Mobile User Dropdown */}
                     <div className="border-t border-gray-200 p-4">
+                            <Link
+                                href={route("profile.edit")}
+                                className="flex items-center justify-end rounded-lg p-2 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+                            >
+                                <div className="mr-3 min-w-0 text-right">
+                                    <h1>admin</h1>
+                                    <p className="text-xs text-gray-500 truncate">
+                                        {user.email}
+                                    </p>
+                                </div>
+                                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <User className="h-5 w-5 text-blue-600" />
+                                </div>
+                            </Link>
                         <div className="flex items-center w-full p-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors duration-200">
                             <Link
                                 href={route("logout")}
@@ -185,7 +195,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </button>
                         <div className="flex items-center">
                             <img
-                                src="assets/dp3ak.png"
+                                src="/assets/dp3ak.png"
                                 className="h-6 w-auto mr-2"
                                 alt="Logo"
                             />
@@ -203,12 +213,11 @@ export default function AuthenticatedLayout({ header, children }) {
                     <header className="bg-white shadow flex-shrink-0">
                         <div className="px-4 py-3 sm:px-6 lg:px-8 bg-white border-b border-gray-200">
                             <div className="flex items-center justify-between">
-                                {/* Header Title */}
                                 <h1 className="text-xl font-semibold text-gray-900">
                                     {header}
                                 </h1>
-
-                                <Link
+                                <div className="hidden lg:block">
+                                    <Link
                                     href={route("profile.edit")}
                                     className="flex items-center rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-200"
                                 >
@@ -223,6 +232,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <User className="h-5 w-5 text-blue-600" />
                                     </div>
                                 </Link>
+                                </div>
                             </div>
                         </div>
                     </header>
