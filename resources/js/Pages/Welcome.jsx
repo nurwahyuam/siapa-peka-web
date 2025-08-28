@@ -21,12 +21,8 @@ export default function Welcome() {
     const [currentYear, setCurrentYear] = useState(selectedYear);
     const [colorScheme, setColorScheme] = useState("accepted");
     const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
-    const [isStatsOpen, setIsStatsOpen] = useState(false); // State untuk
-    const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modalstatistik                                
-
-    console.log(cityFeatures);
-    console.log(yearlyData);
-    console.log(forumChildren);
+    const [isStatsOpen, setIsStatsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {

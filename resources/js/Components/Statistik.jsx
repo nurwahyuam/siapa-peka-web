@@ -81,7 +81,7 @@ export default function Statistik({
                     <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
                         <button
                             onClick={() => handleToggle(false)}
-                            className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
+                            className="absolute left-4 p-2 transition-transform hover:text-gray-500 rounded-full"
                         >
                             <XCircle size={24} />
                         </button>

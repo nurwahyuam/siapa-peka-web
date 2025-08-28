@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Head, Link, usePage, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {
@@ -11,46 +11,55 @@ import {
     CircleArrowLeft,
     CalendarClock,
     AlertCircle,
+    Save,
 } from "lucide-react";
 
-const Create = () => {
-    const { cities, periods } = usePage().props;
+const Edit = () => {
+    const { cities, periods, application, education, age, childBride, reason } = usePage().props;
     const [showManualPeriod, setShowManualPeriod] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
     const [activeTab, setActiveTab] = useState("applications");
 
-    const { data, setData, post, processing, errors } = useForm({
-        city_feature_id: "",
-        selected_year: new Date().getFullYear(),
+    const { data, setData, put, processing, errors } = useForm({
+        city_feature_id: application?.city_feature_id || "",
+        selected_year: application?.period?.year || new Date().getFullYear(),
         manual_period_name: "",
-        period_id: "",
+        period_id: application?.period_id || "",
 
         // Applications
-        submitted: "",
-        accepted: "",
-        source: "",
+        submitted: application?.submitted || "",
+        accepted: application?.accepted || "",
+        source: application?.source || "",
 
         // Education Levels
-        no_school: "",
-        sd: "",
-        smp: "",
-        sma: "",
+        no_school: education?.no_school || "",
+        sd: education?.sd || "",
+        smp: education?.smp || "",
+        sma: education?.sma || "",
 
         // Age Classifications
-        less_than_15: "",
-        between_15_19: "",
+        less_than_15: age?.less_than_15 || "",
+        between_15_19: age?.between_15_19 || "",
 
         // Child Brides
-        number_of_men_under_19: "",
-        number_of_women_under_19: "",
+        number_of_men_under_19: childBride?.number_of_men_under_19 || "",
+        number_of_women_under_19: childBride?.number_of_women_under_19 || "",
 
         // Reasons
-        pregnant: "",
-        promiscuity: "",
-        economy: "",
-        traditional_culture: "",
-        avoiding_adultery: "",
+        pregnant: reason?.pregnant || "",
+        promiscuity: reason?.promiscuity || "",
+        economy: reason?.economy || "",
+        traditional_culture: reason?.traditional_culture || "",
+        avoiding_adultery: reason?.avoiding_adultery || "",
     });
+
+    // Effect untuk menangani periode manual
+    useEffect(() => {
+        if (application?.period && !application.period.is_standard) {
+            setShowManualPeriod(true);
+            setData("manual_period_name", application.period.name);
+        }
+    }, [application]);
 
     const handleInputChange = (name, value) => {
         setData(name, value);
@@ -160,7 +169,7 @@ const Create = () => {
             avoiding_adultery: data.avoiding_adultery || 0,
         };
 
-        post(route("manage.create.store"), formData);
+        put(route("manage.update", application.id), formData);
     };
 
     const availablePeriods = useMemo(() => {
@@ -625,7 +634,7 @@ const Create = () => {
                 </div>
             }
         >
-            <Head title="Tambah Data - SIAPA PEKA" />
+            <Head title="Edit Data - SIAPA PEKA" />
 
             <div className="py-6">
                 <div className="max-w-7xl mx-auto sm:px-4 lg:px-6">
@@ -641,7 +650,7 @@ const Create = () => {
                                         <CircleArrowLeft className="h-6 w-6 mr-2" />
                                     </Link>
                                     <h1 className="text-2xl font-bold text-gray-900">
-                                        Tambah Data Baru
+                                        Edit Data
                                     </h1>
                                 </div>
                             </div>
@@ -673,6 +682,7 @@ const Create = () => {
                                                         fieldErrors.city_feature_id ? "border-red-500" : "border-gray-300"
                                                     }`}
                                                     required
+                                                    disabled={processing}
                                                 >
                                                     <option value="">Pilih Kabupaten/Kota</option>
                                                     {cities.map((city) => (
@@ -703,6 +713,7 @@ const Create = () => {
                                                         fieldErrors.selected_year ? "border-red-500" : "border-gray-300"
                                                     }`}
                                                     required
+                                                    disabled={processing}
                                                 >
                                                     <option value="">Pilih Tahun</option>
                                                     {Array.from(
@@ -731,6 +742,7 @@ const Create = () => {
                                                             type="button"
                                                             className="mt-2 px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-sm"
                                                             onClick={() => setShowManualPeriod(true)}
+                                                            disabled={processing}
                                                         >
                                                             Buat Baru
                                                         </button>
@@ -740,7 +752,7 @@ const Create = () => {
                                                             className="mt-2 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm"
                                                             onClick={() => {
                                                                 setShowManualPeriod(false);
-                                                                setData("period_id", "");
+                                                                setData("period_id", application.period_id);
                                                                 setData("manual_period_name", "");
                                                                 setFieldErrors((prev) => ({
                                                                     ...prev,
@@ -748,6 +760,7 @@ const Create = () => {
                                                                     period_id: "",
                                                                 }));
                                                             }}
+                                                            disabled={processing}
                                                         >
                                                             Batal Buat
                                                         </button>
@@ -766,6 +779,7 @@ const Create = () => {
                                                                         fieldErrors.period_id ? "border-red-500" : "border-gray-300"
                                                                     }`}
                                                                     required={!showManualPeriod}
+                                                                    disabled={processing}
                                                                 >
                                                                     <option value="">Pilih Periode</option>
                                                                     {availablePeriods.map((period) => (
@@ -798,6 +812,7 @@ const Create = () => {
                                                                 fieldErrors.manual_period_name ? "border-red-500" : "border-gray-300"
                                                             }`}
                                                             required={showManualPeriod}
+                                                            disabled={processing}
                                                         >
                                                             <option value="">Pilih Nama Periode</option>
                                                             <option value="Triwulan I">Triwulan I</option>
@@ -857,6 +872,7 @@ const Create = () => {
                                                             ? "border-blue-500 text-blue-600"
                                                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                                                     }`}
+                                                    disabled={processing}
                                                 >
                                                     <tab.icon className="h-4 w-4 mr-2" />
                                                     {tab.label}
@@ -874,6 +890,7 @@ const Create = () => {
                                             <Link
                                                 href={route("manage.index")}
                                                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                                disabled={processing}
                                             >
                                                 Batal
                                             </Link>
@@ -882,8 +899,8 @@ const Create = () => {
                                                 disabled={processing}
                                                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                                             >
-                                                <Plus className="h-4 w-4 mr-2" />
-                                                {processing ? "Menyimpan..." : "Simpan Data"}
+                                                <Save className="h-4 w-4 mr-2" />
+                                                {processing ? "Menyimpan..." : "Simpan Perubahan"}
                                             </button>
                                         </div>
                                     </div>
@@ -897,4 +914,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Edit;

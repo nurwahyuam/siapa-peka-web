@@ -53,7 +53,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
                                     <LayoutDashboard className="h-5 w-5 mr-3" />
-                                    Dashboard
+                                    Beranda
                                 </NavLink>
 
                                 <NavLink
@@ -67,11 +67,11 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 <NavLink
                                     href={route("manage.index")}
-                                    active={route().current("manage.index")}
+                                    active={route().current("manage.index") || route().current("manage.show")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
                                     <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
-                                    Manage
+                                    Manajemen
                                 </NavLink>
                             </nav>
                             <div className="border-t border-gray-200 p-4">
@@ -140,14 +140,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             <BarChart3 className="h-5 w-5 mr-3" />
                             Statistik
                         </NavLink>
-
                         <NavLink
                             href={route("manage.index")}
                             active={route().current("manage.index")}
                             className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                         >
                             <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
-                            Manage
+                            Manajemen
                         </NavLink>
                     </nav>
 
