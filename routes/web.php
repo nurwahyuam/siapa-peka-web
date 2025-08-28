@@ -4,8 +4,9 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\ManageController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
