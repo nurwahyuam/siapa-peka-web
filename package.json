@@ -23,8 +23,9 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
+        "framer-motion": "^12.23.12",
         "leaflet": "^1.9.4",
-        "lucide-react": "^0.539.0",
+        "lucide-react": "^0.294.0",
         "recharts": "^3.1.2"
     }
 }
