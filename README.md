@@ -32,7 +32,8 @@
 
 ##  Fitur Utama
 
-<table style="width:100%; border:1px solid #555; border-collapse:collapse;">
+<div align="center">
+    <table style="width:100%; border:1px solid #555; border-collapse:collapse;">
 <tr>
   <td style="width:50%; vertical-align:top; padding:15px; border-right:1px solid #555;">
 
@@ -70,6 +71,7 @@
   </td>
 </tr>
 </table>
+</div>
 
 
 ##  Langkah Instalasi
@@ -77,6 +79,27 @@
 Ikuti langkah berikut untuk menjalankan projek:
 
 ---
+
+
+```bash
+# 1. Install Dependencies
+composer install
+npm install
+# 2. Setup Environment
+cp .env.example .env
+# 3. Migrasi Database + Seeder
+php artisan migrate --seed
+php artisan db:seed --class=ForumChildrenSeeder
+# 4. Optimisasi & Import Data
+php artisan optimize:clear
+php artisan import:city-features
+php artisan import:api-prov-jatim
+# 5. Jalankan Server
+php artisan serve
+npm run dev
+```
+---
+
 
 ```bash
 # 1. Install Dependencies
@@ -102,7 +125,8 @@ npm run dev
 <div align="center">
 
 ###  Beranda Peta 
-![Dashboard Peta](nas/siapapeka.png)
+
+![Dashboard Peta](public/assets/siapapeka.png)
 
 </div>
 
