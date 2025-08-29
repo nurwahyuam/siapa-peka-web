@@ -32,7 +32,8 @@
 
 ##  Fitur Utama
 
-<table style="width:100%; border:1px solid #555; border-collapse:collapse;">
+<div style="display: flex; justify-content: center;">
+    <table style="width:100%; border:1px solid #555; border-collapse:collapse;">
 <tr>
   <td style="width:50%; vertical-align:top; padding:15px; border-right:1px solid #555;">
 
@@ -70,6 +71,7 @@
   </td>
 </tr>
 </table>
+</div>
 
 
 ##  Langkah Instalasi
