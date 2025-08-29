@@ -82,38 +82,38 @@ export default function Legenda({
                                     <span>0 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFF4E0] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#9EA1D0] mr-2"></div>
                                     <span>1-10 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#D8A5A5] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#625FBC] mr-2"></div>
                                     <span>11-50 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFDADA] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#32259B] mr-2"></div>
                                     <span>51-100 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#924A4A] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#15095F] mr-2"></div>
                                     <span>100+ Diterima</span>
                                 </div>
                             </div>
                         ) : (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFF4E0] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#9EA1D0] mr-2"></div>
                                     <span>Risiko Rendah</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#D8A5A5] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#625FBC] mr-2"></div>
                                     <span>Risiko Cukup</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FFDADA] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#32259B] mr-2"></div>
                                     <span>Risiko Tinggi</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#924A4A] mr-2"></div>
+                                    <div className="w-4 h-4 bg-[#15095F] mr-2"></div>
                                     <span>Risiko Sangat Tinggi</span>
                                 </div>
                             </div>
