@@ -14,15 +14,16 @@ import { BarChart3, Search } from "lucide-react";
 
 const COLORS = {
     application: {
-        accepted: "#800000", // Maroon tua
-        submitted: "#CD5C5C", // Indian Red
+        accepted: "#4B0082", // Dark Indigo
+        submitted: "#5C3D99", // Medium Indigo
     },
     childBride: {
-        men: "#B22222", // Firebrick
-        women: "#F08080", // Light Coral
-        total: "#F5DEB3", // Krem
+        men: "#7B68EE", // Soft Indigo
+        women: "#9FA8DA", // Light Indigo
+        total: "#C5CAE9", // Creamy Indigo Accent
     },
 };
+
 
 // Custom Tooltip untuk Application
 const ApplicationTooltip = ({ active, payload }) => {
@@ -214,7 +215,7 @@ export default function Read() {
                                     className="bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col"
                                 >
                                     {/* Header dengan gradien */}
-                                    <div className="bg-gradient-to-r from-[#800000] to-[#B22222] text-white p-4">
+                                    <div className="bg-gradient-to-r from-[#5C3D99] to-[#9FA8DA] text-white p-4">
                                         <div className="flex items-start justify-between">
                                             <div>
                                                 <h3 className="text-lg font-bold">
@@ -255,7 +256,7 @@ export default function Read() {
                                             <div className="flex items-center justify-between mb-2">
                                                 <h4 className="font-semibold text-sm text-gray-700 flex items-center gap-1">
                                                     <svg
-                                                        className="w-4 h-4 text-[#800000]"
+                                                        className="w-4 h-4 text-[#5C3D99]"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -304,7 +305,7 @@ export default function Read() {
                                                             textAnchor="middle"
                                                             dominantBaseline="middle"
                                                             className="text-xl font-bold"
-                                                            fill="#800000"
+                                                            fill="#5C3D99"
                                                         >
                                                             {
                                                                 applicationData[1]
@@ -344,7 +345,7 @@ export default function Read() {
                                             <div className="flex items-center justify-between mb-2">
                                                 <h4 className="font-semibold text-sm text-gray-700 flex items-center gap-1">
                                                     <svg
-                                                        className="w-4 h-4 text-[#B22222]"
+                                                        className="w-4 h-4 text-[#9FA8DA]"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -410,7 +411,7 @@ export default function Read() {
                                                             textAnchor="middle"
                                                             dominantBaseline="middle"
                                                             className="text-lg font-bold"
-                                                            fill="#B22222"
+                                                            fill="#9FA8DA"
                                                         >
                                                             {
                                                                 childBrideData[2]
