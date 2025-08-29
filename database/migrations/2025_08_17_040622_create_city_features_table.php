@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('city_features', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('code')->unique();
-            $table->string('name');
             $table->string('kind');
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->string('province');
             $table->string('country');
             $table->json('geometry');

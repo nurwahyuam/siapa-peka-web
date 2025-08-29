@@ -2,46 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.bg-primary {
-    background-color: #EBEFFF;
-}
-
-.bg-secondary {
-    background-color: #AFB3FF;
-}
-
-/* Style untuk tooltip
-.custom-tooltip-left {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    font-size: 14px;
-    line-height: 1.5;
-    color: #2d3748;
-    max-width: 250px;
-} */
-
-/* .custom-tooltip-left:before {
-    content: '';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 8px solid #fff;
-    filter: drop-shadow(1px 0 2px rgba(0, 0, 0, 0.1));
-} */
-
-/* Transition smooth untuk hover effect */
-/* .leaflet-interactive {
-    transition: stroke-width 0.2s ease, filter 0.2s ease;
-} */
-
 /* Style untuk tile layer abu-abu transparan */
 .gray-map-tiles {
     filter: grayscale(70%) brightness(110%) opacity(0.7);
@@ -82,23 +42,8 @@
 /* Style untuk tooltip */
 .custom-tooltip-left {
     border-radius: 8px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px;
     font-size: 14px;
     line-height: 1.5;
     max-width: 250px;
-}
-
-.custom-tooltip-left:before {
-    content: '';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 8px solid #fff;
-    filter: drop-shadow(1px 0 2px rgba(0, 0, 0, 0.1));
 }

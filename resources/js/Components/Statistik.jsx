@@ -81,7 +81,7 @@ export default function Statistik({
                     <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
                         <button
                             onClick={() => handleToggle(false)}
-                            className="absolute left-4 p-2 hover:rotate-90 transition-transform hover:bg-gray-100 rounded-full"
+                            className="absolute left-4 p-2 transition-transform hover:text-gray-500 rounded-full"
                         >
                             <XCircle size={24} />
                         </button>
@@ -135,8 +135,7 @@ export default function Statistik({
                                         {dispensasiData.length} Tahun Terakhir
                                     </h3>
                                     <p className="text-sm text-gray-600">
-                                        Data Dispensasi Kawin di Jawa
-                                        Timur
+                                        Data Dispensasi Kawin di Jawa Timur
                                     </p>
                                 </div>
 
@@ -151,10 +150,25 @@ export default function Statistik({
                                                 <XAxis dataKey="tahun" />
                                                 <YAxis />
                                                 <Tooltip
-                                                    formatter={(value) => [
-                                                        formatNumber(value),
-                                                        "",
-                                                    ]}
+                                                    formatter={(
+                                                        value,
+                                                        name
+                                                    ) => {
+                                                        if (
+                                                            name ===
+                                                            "Total Diajukan"
+                                                        )
+                                                            return [
+                                                                formatNumber(
+                                                                    value
+                                                                ),
+                                                                "Diajukan",
+                                                            ];
+                                                        return [
+                                                            formatNumber(value),
+                                                            "Diterima",
+                                                        ];
+                                                    }}
                                                     labelFormatter={(label) =>
                                                         `Tahun ${label}`
                                                     }
@@ -186,7 +200,8 @@ export default function Statistik({
                                             className="text-gray-500 mb-3"
                                         />
                                         <p className="text-lg font-medium mb-1">
-                                            Data Data Dispensasi Kawin di Jawa Timur Tidak Tersedia
+                                            Data Data Dispensasi Kawin di Jawa
+                                            Timur Tidak Tersedia
                                         </p>
                                         <p className="text-sm">
                                             Untuk Periode {year}
@@ -200,8 +215,8 @@ export default function Statistik({
                         {activeTab === "cities" && (
                             <div>
                                 <h3 className="text-lg font-semibold mb-4">
-                                    5 Kota Kabupaten Dengan Pengantin Dibawah 19 Tahun
-                                    (Periode {year})
+                                    5 Kota Kabupaten Dengan Pengantin Dibawah 19
+                                    Tahun (Periode {year})
                                 </h3>
 
                                 {/* Pengecekan yang benar untuk data yang tidak ada */}
@@ -259,7 +274,9 @@ export default function Statistik({
                                                         value,
                                                         name
                                                     ) => {
-                                                        if (name === "Laki-laki")
+                                                        if (
+                                                            name === "Laki-laki"
+                                                        )
                                                             return [
                                                                 formatNumber(
                                                                     value

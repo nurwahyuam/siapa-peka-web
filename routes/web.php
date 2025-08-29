@@ -4,26 +4,35 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\ManageController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/manage', [ManageController::class, 'index'])->name('manage.index');
-    Route::get('/manage/create', [ManageController::class, 'create'])->name('manage.create');
-    Route::post('/manage/import', [ManageController::class, 'store'])->name('manage.store');
-    Route::get('/manage/show/{id}', [ManageController::class, 'show'])->name('manage.show');
-    Route::delete('/manage/destroy/{id}', [ManageController::class, 'destroy'])->name('manage.destroy');
-    Route::delete('/manage/destroy', [ManageController::class, 'destroyAll'])->name('manage.destroyAll');
+    Route::get('/admin/beranda', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin/profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/admin/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/admin/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/statistic/read', function () {
-        return Inertia::render('Admin/Statistic/Read');
-    })->name('statistic');
+    Route::get('/admin/manajemen', [ManageController::class, 'index'])->name('manage.index');
+    Route::get('/admin/manajemen/tambah', [ManageController::class, 'create'])->name('manage.create');
+    Route::post('/admin/manajemen/tambah/simpan', [ManageController::class, 'storeCreate'])->name('manage.create.store');
+    Route::get('/manage/{city}/{year?}/edit', [ManageController::class, 'edit'])->name('manage.edit');
+    Route::post('/manage/{city}/{year}/store', [ManageController::class, 'store'])->name('manage.store');
+    Route::get('/admin/manajemen/import', [ManageController::class, 'import'])->name('manage.import');
+    Route::post('/admin/manajemen/import/simpan', [ManageController::class, 'storeImport'])->name('manage.import.store');
+    Route::get('/admin/manajemen/export', [ManageController::class, 'export'])->name('manage.export');
+    Route::get('/admin/manajemen/detail/{id}', [ManageController::class, 'show'])->name('manage.show');
+    Route::delete('/manage/{city}/{year}', [ManageController::class, 'destroy'])
+    ->name('manage.destroy');
+
+    Route::get('/admin/statistik', [StatisticController::class, 'index'])->name('statistic');
+});
+
+Route::fallback(function () {
+    return Inertia::render('NotFound')->toResponse(request())->setStatusCode(404);
 });
 
 

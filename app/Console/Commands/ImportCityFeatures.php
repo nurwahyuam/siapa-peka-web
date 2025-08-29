@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\CityFeature;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -53,9 +54,14 @@ class ImportCityFeatures extends Command
                                     'name'     => ((int)$properties['Code'] >= 3501 && (int)$properties['Code'] <= 3529)
                                         ? 'Kabupaten ' . ucwords(strtolower($properties['Name']))
                                         : 'Kota ' . ucwords(strtolower($properties['Name'])),
+                                    'slug'     => Str::slug(
+                                        ((int)$properties['Code'] >= 3501 && (int)$properties['Code'] <= 3529)
+                                            ? 'Kabupaten ' . ucwords(strtolower($properties['Name']))
+                                            : 'Kota ' . ucwords(strtolower($properties['Name']))
+                                    ),
                                     'kind'     => ((int)$properties['Code'] >= 3501 && (int)$properties['Code'] <= 3529)
-                                        ? 'City'
-                                        : 'Regency',
+                                        ? 'Regency'
+                                        : 'City',
                                     'province' => ucwords(strtolower($properties['Province'])),
                                     'country'  => ucwords(strtolower($properties['Country'] ?? 'Indonesia')),
                                     'geometry' => $geometry,

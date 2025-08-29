@@ -12,22 +12,17 @@ export default function Legenda({
             {/* Panel Filter */}
             <div className={`fixed bottom-4 w-full flex justify-center`}>
                 <div className="w-100 sm:w-1/2 lg:w-1/3 h-50 bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 animate-slide-up block md:flex justify-between items-center gap-6">
-                    {/* Header
-                    <div className="flex items-center justify-between mb-4 pb-2 border-b">
-                        <h3 className="text-lg font-semibold text-gray-800">Filter Peta</h3>
-                    </div> */}
-
                     {/* Konten Filter */}
                     <div className="space-y-4 w-full">
                         {/* Filter Tahun */}
                         <div>
                             <label className="text-sm font-medium text-gray-700 mb-2">
-                                Tahun
+                                Periode Tahun :
                             </label>
                             <select
                                 value={currentYear}
                                 onChange={(e) => onYearChange(e.target.value)}
-                                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 {availableYears.map((year) => (
                                     <option key={year} value={year}>
@@ -40,20 +35,20 @@ export default function Legenda({
                         {/* Filter Warna Peta */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Warna Peta
+                                Warna Peta Berdasarkan :
                             </label>
                             <select
                                 value={colorScheme}
                                 onChange={(e) =>
                                     onColorSchemeChange(e.target.value)
                                 }
-                                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full border border-gray-300 rounded-md px-3 py-1    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="accepted">
-                                    Berdasarkan Jumlah Diterima
+                                    Jumlah Diterima
                                 </option>
                                 <option value="category">
-                                    Berdasarkan Kategori Risiko
+                                    Kategori Risiko
                                 </option>
                             </select>
                         </div>
@@ -71,9 +66,9 @@ export default function Legenda({
                             />
                             <label
                                 htmlFor="highRiskOnly"
-                                className="ml-2 block text-sm text-gray-900"
+                                className="ml-2 text-[12px] block text-gray-900"
                             >
-                                Tampilkan daerah berisiko tinggi saja
+                                Tampilkan daerah berisiko tinggi
                             </label>
                         </div>
                     </div>

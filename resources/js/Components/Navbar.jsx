@@ -7,6 +7,11 @@ import {
     Calendar,
     Award,
     Frown,
+    XCircle,
+    BadgeCheck,
+    BadgeAlert,
+    ArrowUpToLine,
+    ArrowDownToLine,
 } from "lucide-react";
 
 export default function Navbar({
@@ -29,352 +34,243 @@ export default function Navbar({
         setActiveModal(null);
     };
 
-        // Precompute data dengan useMemo untuk performa
-        const computedData = useMemo(() => {
-            const totalData = cityFeatures.reduce(
-                (sum, city) => sum + (parseInt(city.total_accepted) || 0),
+    // Precompute data dengan useMemo untuk performa
+    const computedData = useMemo(() => {
+        const totalData = cityFeatures.reduce(
+            (sum, city) => sum + (parseInt(city.total_accepted) || 0),
+            0
+        );
+
+        const totalDiterima = cityFeatures.reduce(
+            (sum, city) => sum + (parseInt(city.total_accepted) || 0),
+            0
+        );
+
+        const pendidikanData = {
+            sd: cityFeatures.reduce(
+                (sum, city) => sum + (parseInt(city.education_data?.sd) || 0),
                 0
-            );
-
-            const totalDiterima = cityFeatures.reduce(
-                (sum, city) => sum + (parseInt(city.total_accepted) || 0),
+            ),
+            smp: cityFeatures.reduce(
+                (sum, city) => sum + (parseInt(city.education_data?.smp) || 0),
                 0
-            );
-
-            const pendidikanData = {
-                sd: cityFeatures.reduce(
-                    (sum, city) => sum + (parseInt(city.education_data?.sd) || 0),
-                    0
-                ),
-                smp: cityFeatures.reduce(
-                    (sum, city) => sum + (parseInt(city.education_data?.smp) || 0),
-                    0
-                ),
-                sma: cityFeatures.reduce(
-                    (sum, city) => sum + (parseInt(city.education_data?.sma) || 0),
-                    0
-                ),
-                smk: cityFeatures.reduce(
-                    (sum, city) => sum + (parseInt(city.education_data?.smk) || 0),
-                    0
-                ),
-                no_school: cityFeatures.reduce(
-                    (sum, city) =>
-                        sum + (parseInt(city.education_data?.no_school) || 0),
-                    0
-                ),
-            };
-
-            // Filter kota dengan data
-            const citiesWithData = cityFeatures.filter(
-                (city) => parseInt(city.total_accepted) > 0
-            );
-
-            // Temukan kabupaten tertinggi dan terendah
-            const sortedCities =
-                citiesWithData.length > 0
-                    ? [...citiesWithData].sort(
-                        (a, b) =>
-                            parseInt(b.total_accepted) -
-                            parseInt(a.total_accepted)
-                    )
-                    : [];
-
-            const highestCity = sortedCities.length > 0 ? sortedCities[0] : null;
-            const lowestCity =
-                sortedCities.length > 0
-                    ? sortedCities[sortedCities.length - 1]
-                    : null;
-
-            // Hitung rata-rata
-            const totalAccepted = citiesWithData.reduce(
-                (sum, city) => sum + parseInt(city.total_accepted),
+            ),
+            sma: cityFeatures.reduce(
+                (sum, city) => sum + (parseInt(city.education_data?.sma) || 0),
                 0
-            );
-            const totalSubmitted = citiesWithData.reduce(
-                (sum, city) => sum + parseInt(city.total_submitted),
+            ),
+            smk: cityFeatures.reduce(
+                (sum, city) => sum + (parseInt(city.education_data?.smk) || 0),
                 0
-            );
-            const averageAccepted =
-                citiesWithData.length > 0
-                    ? totalAccepted / citiesWithData.length
-                    : 0;
-            const averageSubmitted =
-                citiesWithData.length > 0
-                    ? totalSubmitted / citiesWithData.length
-                    : 0;
-
-            return {
-                totalData,
-                totalDiterima,
-                pendidikanData,
-                citiesWithData,
-                sortedCities,
-                highestCity,
-                lowestCity,
-                totalAccepted,
-                totalSubmitted,
-                averageAccepted,
-                averageSubmitted
-            };
-        }, [cityFeatures]);
-
-        const modalContent = {
-            ringkasan: {
-                title: "Laporan Ringkasan",
-                icon: <BarChart3 className="w-6 h-6" />,
-                content: (
-                    <div className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
-                                <div className="flex items-center space-x-3">
-                                    <Users className="w-8 h-8 text-blue-600" />
-                                    <div>
-                                        <p className="text-sm text-blue-600 font-medium">
-                                            Total Data Masuk
-                                        </p>
-                                        <p className="text-2xl font-bold text-blue-800">
-                                            {computedData.totalData.toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
-                                <div className="flex items-center space-x-3">
-                                    <Award className="w-8 h-8 text-green-600" />
-                                    <div>
-                                        <p className="text-sm text-green-600 font-medium">
-                                            Total Diterima
-                                        </p>
-                                        <p className="text-2xl font-bold text-green-800">
-                                            {computedData.totalDiterima.toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
-                                <div className="flex items-center space-x-3">
-                                    <Calendar className="w-8 h-8 text-purple-600" />
-                                    <div>
-                                        <p className="text-sm text-purple-600 font-medium">
-                                            Rata-rata per Triwulan
-                                        </p>
-                                        <p className="text-2xl font-bold text-purple-800">
-                                            {Math.round(
-                                                computedData.totalDiterima / 4
-                                            ).toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-gray-50 p-4 rounded-xl">
-                            <h4 className="font-semibold text-gray-800 mb-3">
-                                Pendidikan Terakhir Pelamar Dispensasi
-                            </h4>
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                    <span className="text-gray-700">
-                                        Sekolah Dasar
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {computedData.pendidikanData.sd.toLocaleString()}{" "}
-                                        Orang
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                    <span className="text-gray-700">
-                                        Sekolah Menengah Pertama
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {computedData.pendidikanData.smp.toLocaleString()}{" "}
-                                        Orang
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                    <span className="text-gray-700">
-                                        Sekolah Menengah Atas
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {computedData.pendidikanData.sma.toLocaleString()}{" "}
-                                        Orang
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                    <span className="text-gray-700">
-                                        Sekolah Menengah Kejuruan
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {computedData.pendidikanData.smk.toLocaleString()}{" "}
-                                        Orang
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center py-2 px-3 bg-white rounded-lg">
-                                    <span className="text-gray-700">
-                                        Tidak Sekolah
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {computedData.pendidikanData.no_school.toLocaleString()}{" "}
-                                        Orang
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ),
-            },
-            rerata: {
-                title: "Analisis Rerata",
-                icon: <TrendingUp className="w-6 h-6" />,
-                content: (
-                    <div className="space-y-6">
-                        {computedData.citiesWithData.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                                <Frown size={48} className="text-gray-500 mb-3" />
-                                <p className="text-lg font-medium mb-1">
-                                    Data Tidak Tersedia
-                                </p>
-                                <p className="text-sm">
-                                    Untuk Periode {currentYear}
-                                </p>
-                            </div>
-                        ) : (
-                            <>
-                                <div className="flex flex-col md:flex-row gap-4">
-                                    {/* Kabupaten Tertinggi */}
-                                    <div className="flex-1 bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
-                                        <h4 className="font-semibold text-gray-800 mb-4">
-                                            Kabupaten Tertinggi
-                                        </h4>
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold text-orange-600 mb-2">
-                                                {computedData.highestCity.name}
-                                            </p>
-                                            <p className="text-3xl font-bold text-orange-800">
-                                                {parseInt(
-                                                    computedData.highestCity
-                                                        .total_accepted
-                                                ).toLocaleString()}
-                                            </p>
-                                            <p className="text-sm text-gray-600 mt-2">
-                                                Total Diterima
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {computedData.highestCity.quarterly_average?.toLocaleString() ||
-                                                    "0"}{" "}
-                                                per triwulan
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Kabupaten Terendah */}
-                                    <div className="flex-1 bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
-                                        <h4 className="font-semibold text-gray-800 mb-4">
-                                            Kabupaten Terendah
-                                        </h4>
-                                        <div className="text-center">
-                                            <p className="text-2xl font-bold text-blue-600 mb-2">
-                                                {computedData.lowestCity.name}
-                                            </p>
-                                            <p className="text-3xl font-bold text-blue-800">
-                                                {parseInt(
-                                                    computedData.lowestCity
-                                                        .total_accepted
-                                                ).toLocaleString()}
-                                            </p>
-                                            <p className="text-sm text-gray-600 mt-2">
-                                                Total Diterima
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {computedData.lowestCity.quarterly_average?.toLocaleString() ||
-                                                    "0"}{" "}
-                                                per triwulan
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <h4 className="font-semibold text-gray-800">
-                                        Rerata Keseluruhan:{" "}
-                                        {Math.round(
-                                            computedData.averageAccepted
-                                        ).toLocaleString()}{" "}
-                                        aplikasi
-                                    </h4>
-
-                                    <div className="space-y-3">
-                                        {computedData.sortedCities.map(
-                                            (city, index) => {
-                                                const percentage =
-                                                    (parseInt(city.total_accepted) /
-                                                        computedData.totalAccepted) *
-                                                    100;
-                                                const progressWidth = Math.min(
-                                                    percentage,
-                                                    100
-                                                );
-
-                                                // Tentukan warna berdasarkan ranking
-                                                let progressColor = "bg-green-500";
-                                                if (index < 3)
-                                                    progressColor = "bg-purple-500";
-                                                if (index === 0)
-                                                    progressColor = "bg-orange-500";
-                                                if (
-                                                    index >
-                                                    computedData.sortedCities
-                                                        .length -
-                                                        4
-                                                )
-                                                    progressColor = "bg-blue-500";
-
-                                                return (
-                                                    <div
-                                                        key={city.code}
-                                                        className="flex items-center justify-between p-3 bg-white rounded-lg border"
-                                                    >
-                                                        <span className="text-gray-700 text-sm flex-1">
-                                                            {city.name}
-                                                        </span>
-                                                        <div className="flex items-center space-x-3">
-                                                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                                                <div
-                                                                    className={`h-full ${progressColor} transition-all duration-300`}
-                                                                    style={{
-                                                                        width: `${progressWidth}%`,
-                                                                    }}
-                                                                ></div>
-                                                            </div>
-                                                            <span className="text-sm font-medium text-gray-600 w-12 text-right">
-                                                                {Math.round(
-                                                                    percentage
-                                                                )}
-                                                                %
-                                                            </span>
-                                                            <span className="text-sm font-bold text-gray-800 w-16 text-right">
-                                                                {parseInt(
-                                                                    city.total_accepted
-                                                                ).toLocaleString()}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            }
-                                        )}
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                ),
-            },
+            ),
+            no_school: cityFeatures.reduce(
+                (sum, city) =>
+                    sum + (parseInt(city.education_data?.no_school) || 0),
+                0
+            ),
         };
+
+        // Filter kota dengan data
+        const citiesWithData = cityFeatures.filter(
+            (city) => parseInt(city.total_accepted) > 0
+        );
+
+        // Temukan kabupaten tertinggi dan terendah
+        const sortedCities =
+            citiesWithData.length > 0
+                ? [...citiesWithData].sort(
+                      (a, b) =>
+                          parseInt(b.total_accepted) -
+                          parseInt(a.total_accepted)
+                  )
+                : [];
+
+        const highestCity = sortedCities.length > 0 ? sortedCities[0] : null;
+        const lowestCity =
+            sortedCities.length > 0
+                ? sortedCities[sortedCities.length - 1]
+                : null;
+
+        // Hitung rata-rata
+        const totalAccepted = citiesWithData.reduce(
+            (sum, city) => sum + parseInt(city.total_accepted),
+            0
+        );
+        const averageAccepted =
+            citiesWithData.length > 0
+                ? totalAccepted / citiesWithData.length
+                : 0;
+
+        return {
+            totalData,
+            totalDiterima,
+            pendidikanData,
+            citiesWithData,
+            sortedCities,
+            highestCity,
+            lowestCity,
+            totalAccepted,
+            averageAccepted,
+        };
+    }, [cityFeatures]);
+
+    const modalContent = {
+        ringkasan: {
+            title: "Laporan Ringkasan",
+            icon: <BarChart3 className="w-6 h-6" />,
+            content: (
+                <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                            <div className="flex items-center space-x-3">
+                                <Users className="w-8 h-8 text-blue-600" />
+                                <div>
+                                    <p className="text-sm text-blue-600 font-medium">
+                                        Total Data Diajukan
+                                    </p>
+                                    <p className="text-2xl font-bold text-blue-800">
+                                        {computedData.totalData.toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                            <div className="flex items-center space-x-3">
+                                <Award className="w-8 h-8 text-green-600" />
+                                <div>
+                                    <p className="text-sm text-green-600 font-medium">
+                                        Total Data Diterima
+                                    </p>
+                                    <p className="text-2xl font-bold text-green-800">
+                                        {computedData.totalDiterima.toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                            <div className="flex items-center space-x-3">
+                                <BadgeAlert className="w-8 h-8 text-purple-600" />
+                                <div>
+                                    <p className="text-sm text-purple-600 font-medium">
+                                        Rata-rata Diajukan
+                                    </p>
+                                    <p className="text-2xl font-bold text-purple-800">
+                                        {(computedData.totalData / 38).toFixed(
+                                            2
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-4 rounded-xl border border-sky-200">
+                            <div className="flex items-center space-x-3">
+                                <BadgeCheck className="w-8 h-8 text-sky-600" />
+                                <div>
+                                    <p className="text-sm text-sky-600 font-medium">
+                                        Rata-rata Diterima
+                                    </p>
+                                    <p className="text-2xl font-bold text-sky-800">
+                                        {(
+                                            computedData.totalDiterima / 38
+                                        ).toFixed(2)}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                            <div className="flex items-center space-x-3">
+                                <ArrowUpToLine className="w-8 h-8 text-orange-600" />
+                                <div>
+                                    <p className="text-sm text-orange-600 font-medium">
+                                        Kabupaten Tertinggi :{" "}
+                                        {computedData.highestCity.name}
+                                    </p>
+                                    <p className="text-2xl font-bold text-orange-800">
+                                        {parseInt(
+                                            computedData.highestCity
+                                                .total_accepted
+                                        ).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                            <div className="flex items-center space-x-3">
+                                <ArrowDownToLine className="w-8 h-8 text-orange-600" />
+                                <div>
+                                    <p className="text-sm text-orange-600 font-medium">
+                                        Kabupaten Terendah :{" "}
+                                        {computedData.lowestCity.name}
+                                    </p>
+                                    <p className="text-2xl font-bold text-orange-800">
+                                        {parseInt(
+                                            computedData.lowestCity
+                                                .total_accepted
+                                        ).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="space-y-6">
+                        <div className="space-y-3">
+                            {computedData.sortedCities.map((city, index) => {
+                                const percentage =
+                                    (parseInt(city.total_accepted) /
+                                        computedData.totalAccepted) *
+                                    100;
+                                const progressWidth = Math.min(percentage, 100);
+
+                                // Tentukan warna berdasarkan ranking
+                                let progressColor = "bg-green-500";
+                                if (index < 3) progressColor = "bg-purple-500";
+                                if (index === 0)
+                                    progressColor = "bg-orange-500";
+                                if (
+                                    index >
+                                    computedData.sortedCities.length - 4
+                                )
+                                    progressColor = "bg-blue-500";
+
+                                return (
+                                    <div
+                                        key={city.code}
+                                        className="flex items-center justify-between p-3 bg-white rounded-lg border"
+                                    >
+                                        <span className="text-gray-700 text-sm flex-1">
+                                            {city.name}
+                                        </span>
+                                        <div className="flex items-center space-x-3">
+                                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full ${progressColor} transition-all duration-300`}
+                                                    style={{
+                                                        width: `${progressWidth}%`,
+                                                    }}
+                                                ></div>
+                                            </div>
+                                            <span className="text-sm font-medium text-gray-600 w-12 text-right">
+                                                {Math.round(percentage)}%
+                                            </span>
+                                            <span className="text-sm font-bold text-gray-800 w-16 text-right">
+                                                {parseInt(
+                                                    city.total_accepted
+                                                ).toLocaleString()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            ),
+        },
+    };
 
     return (
         <>
-            <nav className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-16 md:px-24 lg:px-32 xl:px-48">
+            <nav className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-12 md:px-18 lg:px-24 xl:px-24">
                 <div
                     className="bg-white/90 backdrop-blur-md shadow-lg rounded-full px-4 sm:px-6 py-3 border border-gray-200/20"
                     style={{ height: "70px" }}
@@ -395,15 +291,9 @@ export default function Navbar({
                         <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
                             <button
                                 onClick={() => openModal("ringkasan")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-lg font-medium capitalize hover:scale-105 transform"
+                                className="text-white hover:opacity-90 transition-colors duration-200 text-md font-medium capitalize transform bg-indigo-500 py-2 px-3 rounded-full"
                             >
-                                ringkasan
-                            </button>
-                            <button
-                                onClick={() => openModal("rerata")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-lg font-medium capitalize hover:scale-105 transform"
-                            >
-                                rerata
+                                Ringkasan
                             </button>
                         </div>
 
@@ -450,13 +340,7 @@ export default function Navbar({
                                 onClick={() => openModal("ringkasan")}
                                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
                             >
-                                ringkasan
-                            </button>
-                            <button
-                                onClick={() => openModal("rerata")}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-base font-medium capitalize py-2 px-3 rounded-lg hover:bg-gray-100/50 text-left"
-                            >
-                                rerata
+                                Ringkasan
                             </button>
                         </div>
                     </div>
@@ -487,7 +371,7 @@ export default function Navbar({
                                 onClick={closeModal}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 group"
                             >
-                                <X className="w-5 h-5 text-gray-500 group-hover:text-gray-700" />
+                                <XCircle className="w-7 h-7 text-gray-500 group-hover:text-gray-700" />
                             </button>
                         </div>
 
