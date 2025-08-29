@@ -102,7 +102,7 @@ npm run dev
 <div align="center">
 
 ###  Beranda Peta 
-![Dashboard Peta](nas/siapapeka.png)
+![Dashboard Peta](public/assets/siapapeka.png)
 
 </div>
 
