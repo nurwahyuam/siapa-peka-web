@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Head, useForm, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { SquareKanban } from "lucide-react";
 
 const Import = () => {
     const [file, setFile] = useState(null);
@@ -25,13 +26,14 @@ const Import = () => {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Dashboard Analytics
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 flex items-center gap-2">
+                        <SquareKanban className="-rotate-90" />
+                        Manajemen Data
                     </h2>
                 </div>
             }
         >
-            <Head title="Import Data Excel" />
+            <Head title="Import Data - SIAPA PEKA" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
