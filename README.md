@@ -1,61 +1,412 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  SIAPA PEKA
+### **Sistem Informasi Digital Pencegahan Perkawinan Anak**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<div align="center">
+
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-b#  SIAPA PEKA
+### **Sistem Informasi Digital Pencegahan Perkawinan Anak**
+
+<div align="center">
+
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
+
+**Pencegahan Perkawinan Anak • Pemantauan Data • Komunikasi Informasi Edukasi**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![React Version](https://img.shields.io/badge/React-19.x-red.svg)](https://react.com)
+[![PHP Version](https://img.shields.io/badge/PHP-8.3+-777BB4.svg)](https://php.net)
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-777BB4.svg)](https://php.net)
+[![Status](https://img.shields.io/badge/Status-Active%20Development-green.svg)](https://github.com/pemprovinsi-jatim/siapa-peka)
+
+</div>
+
+---
+
+##  Tentang Siapa Peka
+
+<p align="justify">
+<b>SIAPA PEKA</b> adalah sistem informasi digital terpadu yang dikembangkan khusus untuk <b>pencegahan perkawinan anak</b> di Provinsi Jawa Timur. Aplikasi ini berfungsi sebagai platform monitoring, analisis data, dan media Komunikasi Informasi Edukasi (KIE) yang komprehensif untuk mendukung program pencegahan perkawinan anak secara berkelanjutan.
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<table style="width:100%; border:1px solid #555; border-collapse:collapse;">
+<tr>
+  <td style="width:50%; vertical-align:top; padding:15px; border-right:1px solid #555;">
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  <h3>🗺️ Peta Interaktif Jawa Timur</h3>
+  <ul>
+    <li>Visualisasi data kabupaten/kota</li>
+    <li>Pewarnaan tingkat kasus</li>
+    <li>Perbesar dan geser interaktif</li>
+  </ul>
 
-## Learning Laravel
+  <h3>📊 Analisis Beranda</h3>
+  <ul>
+    <li>Pencegahan perkawinan anak</li>
+    <li>Tren dispensasi kawin</li>
+    <li>Progress berkelanjutan</li>
+  </ul>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+  </td>
+  <td style="width:50%; vertical-align:top; padding:15px;">
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+  <h3>📈 Sistem Pelaporan Terpadu</h3>
+  <ul>
+    <li>Laporan Ringkasan</li>
+    <li>Klasifikasi pendidikan</li>
+    <li>Ekspor data berbagai format</li>
+  </ul>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  <h3>👥 Survei & Forum Anak</h3>
+  <ul>
+    <li>Forum diskusi</li>
+    <li>Umpan balik dari masyarakat</li>
+    <li>Analisis hasil survei </li>
+  </ul>
 
-## Laravel Sponsors
+  </td>
+</tr>
+</table>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+##  Langkah Instalasi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Ikuti langkah berikut untuk menjalankan projek:
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# 1. Install Dependencies
+composer install
+npm install
+# 2. Setup Environment
+cp .env.example .env
+# 3. Migrasi Database + Seeder
+php artisan migrate --seed
+php artisan db:seed --class=ForumChildrenSeeder
+# 4. Optimisasi & Import Data
+php artisan optimize:clear
+php artisan import:city-features
+php artisan import:api-prov-jatim
+# 5. Jalankan Server
+php artisan serve
+npm run dev
+```
+---
 
-## Code of Conduct
+##  Dokumentasi
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<div align="center">
 
-## Security Vulnerabilities
+###  Beranda Peta 
+![Dashboard Peta](public/assets/siapapeka.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+</div>
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##  Pencipta
+
+-  **Haafiz Ghifari Rarian** - *UI/UX Designer*
+-  **Farah Bianca** - *Front-end Developer*
+-  **Natasya Hayudyo Murthiningtyas** - *Front-end Developer*
+-  **Moch. Azriel Maulana R.** - *Fullstack Developer*
+-  **Nurwahyu Akbar Maulidy** - *Fullstack Developer*
+
+
+---
+
+<div align="center">
+
+###  **"SIAPA PEKA - Sistem Informasi Digital Pencegahan Perkawinan Anak"**
+
+**Dikembangkan dengan hati untuk Pencegahan Perkawinan Anak**
+
+[![Made in East Java](https://img.shields.io/badge/Made_with_love_in-East_Java-red.svg)](https://jatimprov.go.id)
+[![Government Project](https://img.shields.io/badge/🏛️_Official-Government_Project-blue.svg)](https://siapa-peka.jatimprov.go.id)
+[![Child Protection](https://img.shields.io/badge/_Child-Protection_Program-pink.svg)](https://www.unicef.org/indonesia/)
+
+---
+
+*© 2025 SIAPA PEKA - Pemerintah Provinsi Jawa Timur. Untuk masa depan anak yang lebih baik.*
+
+**"Setiap anak berhak mendapatkan masa kecil yang bahagia dan pendidikan yang layak"**
+
+</div>adge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![Leaflet](https://img.shields.io/badge/#  SIAPA PEKA
+### **Sistem Informasi Digital Pencegahan Perkawinan Anak**
+
+<div align="center">
+
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
+
+**Pencegahan Perkawinan Anak • Pemantauan Data • Komunikasi Informasi Edukasi**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![React Version](https://img.shields.io/badge/React-19.x-red.svg)](https://react.com)
+[![PHP Version](https://img.shields.io/badge/PHP-8.3+-777BB4.svg)](https://php.net)
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-777BB4.svg)](https://php.net)
+[![Status](https://img.shields.io/badge/Status-Active%20Development-green.svg)](https://github.com/pemprovinsi-jatim/siapa-peka)
+
+</div>
+
+---
+
+##  Tentang Siapa Peka
+
+<p align="justify">
+<b>SIAPA PEKA</b> adalah sistem informasi digital terpadu yang dikembangkan khusus untuk <b>pencegahan perkawinan anak</b> di Provinsi Jawa Timur. Aplikasi ini berfungsi sebagai platform monitoring, analisis data, dan media Komunikasi Informasi Edukasi (KIE) yang komprehensif untuk mendukung program pencegahan perkawinan anak secara berkelanjutan.
+</p>
+
+---
+
+##  Fitur Utama
+
+<table style="width:100%; border:1px solid #555; border-collapse:collapse;">
+<tr>
+  <td style="width:50%; vertical-align:top; padding:15px; border-right:1px solid #555;">
+
+  <h3>🗺️ Peta Interaktif Jawa Timur</h3>
+  <ul>
+    <li>Visualisasi data kabupaten/kota</li>
+    <li>Pewarnaan tingkat kasus</li>
+    <li>Perbesar dan geser interaktif</li>
+  </ul>
+
+  <h3>📊 Analisis Beranda</h3>
+  <ul>
+    <li>Pencegahan perkawinan anak</li>
+    <li>Tren dispensasi kawin</li>
+    <li>Progress berkelanjutan</li>
+  </ul>
+
+  </td>
+  <td style="width:50%; vertical-align:top; padding:15px;">
+
+  <h3>📈 Sistem Pelaporan Terpadu</h3>
+  <ul>
+    <li>Laporan Ringkasan</li>
+    <li>Klasifikasi pendidikan</li>
+    <li>Ekspor data berbagai format</li>
+  </ul>
+
+  <h3>👥 Survei & Forum Anak</h3>
+  <ul>
+    <li>Forum diskusi</li>
+    <li>Umpan balik dari masyarakat</li>
+    <li>Analisis hasil survei </li>
+  </ul>
+
+  </td>
+</tr>
+</table>
+
+
+##  Langkah Instalasi
+
+Ikuti langkah berikut untuk menjalankan projek:
+
+---
+
+```bash
+# 1. Install Dependencies
+composer install
+npm install
+# 2. Setup Environment
+cp .env.example .env
+# 3. Migrasi Database + Seeder
+php artisan migrate --seed
+php artisan db:seed --class=ForumChildrenSeeder
+# 4. Optimisasi & Import Data
+php artisan optimize:clear
+php artisan import:city-features
+php artisan import:api-prov-jatim
+# 5. Jalankan Server
+php artisan serve
+npm run dev
+```
+---
+
+##  Dokumentasi
+
+<div align="center">
+
+###  Beranda Peta 
+![Dashboard Peta](nas/siapapeka.png)
+
+</div>
+
+---
+
+##  Pencipta
+
+-  **Haafiz Ghifari Rarian** - *UI/UX Designer*
+-  **Farah Bianca** - *Front-end Developer*
+-  **Natasya Hayudyo Murthiningtyas** - *Front-end Developer*
+-  **Moch. Azriel Maulana R.** - *Fullstack Developer*
+-  **Nurwahyu Akbar Maulidy** - *Fullstack Developer*
+
+
+---
+
+<div align="center">
+
+###  **"SIAPA PEKA - Sistem Informasi Digital Pencegahan Perkawinan Anak"**
+
+**Dikembangkan dengan hati untuk Pencegahan Perkawinan Anak**
+
+[![Made in East Java](https://img.shields.io/badge/Made_with_love_in-East_Java-red.svg)](https://jatimprov.go.id)
+[![Government Project](https://img.shields.io/badge/🏛️_Official-Government_Project-blue.svg)](https://siapa-peka.jatimprov.go.id)
+[![Child Protection](https://img.shields.io/badge/_Child-Protection_Program-pink.svg)](https://www.unicef.org/indonesia/)
+
+---
+
+*© 2025 SIAPA PEKA - Pemerintah Provinsi Jawa Timur. Untuk masa depan anak yang lebih baik.*
+
+**"Setiap anak berhak mendapatkan masa kecil yang bahagia dan pendidikan yang layak"**
+
+</div>Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
+
+**Pencegahan Perkawinan Anak • Pemantauan Data • Komunikasi Informasi Edukasi**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![React Version](https://img.shields.io/badge/React-19.x-red.svg)](https://react.com)
+[![PHP Version](https://img.shields.io/badge/PHP-8.3+-777BB4.svg)](https://php.net)
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-777BB4.svg)](https://php.net)
+[![Status](https://img.shields.io/badge/Status-Active%20Development-green.svg)](https://github.com/pemprovinsi-jatim/siapa-peka)
+
+</div>
+
+---
+
+##  Tentang Siapa Peka
+
+<p align="justify">
+<b>SIAPA PEKA</b> adalah sistem informasi digital terpadu yang dikembangkan khusus untuk <b>pencegahan perkawinan anak</b> di Provinsi Jawa Timur. Aplikasi ini berfungsi sebagai platform monitoring, analisis data, dan media Komunikasi Informasi Edukasi (KIE) yang komprehensif untuk mendukung program pencegahan perkawinan anak secara berkelanjutan.
+</p>
+
+---
+
+##  Fitur Utama
+
+<table style="width:100%; border:1px solid #555; border-collapse:collapse;">
+<tr>
+  <td style="width:50%; vertical-align:top; padding:15px; border-right:1px solid #555;">
+
+  <h3>🗺️ Peta Interaktif Jawa Timur</h3>
+  <ul>
+    <li>Visualisasi data kabupaten/kota</li>
+    <li>Pewarnaan tingkat kasus</li>
+    <li>Perbesar dan geser interaktif</li>
+  </ul>
+
+  <h3>📊 Analisis Beranda</h3>
+  <ul>
+    <li>Pencegahan perkawinan anak</li>
+    <li>Tren dispensasi kawin</li>
+    <li>Progress berkelanjutan</li>
+  </ul>
+
+  </td>
+  <td style="width:50%; vertical-align:top; padding:15px;">
+
+  <h3>📈 Sistem Pelaporan Terpadu</h3>
+  <ul>
+    <li>Laporan Ringkasan</li>
+    <li>Klasifikasi pendidikan</li>
+    <li>Ekspor data berbagai format</li>
+  </ul>
+
+  <h3>👥 Survei & Forum Anak</h3>
+  <ul>
+    <li>Forum diskusi</li>
+    <li>Umpan balik dari masyarakat</li>
+    <li>Analisis hasil survei </li>
+  </ul>
+
+  </td>
+</tr>
+</table>
+
+
+##  Langkah Instalasi
+
+Ikuti langkah berikut untuk menjalankan projek:
+
+---
+
+```bash
+# 1. Install Dependencies
+composer install
+npm install
+# 2. Setup Environment
+cp .env.example .env
+# 3. Migrasi Database + Seeder
+php artisan migrate --seed
+php artisan db:seed --class=ForumChildrenSeeder
+# 4. Optimisasi & Import Data
+php artisan optimize:clear
+php artisan import:city-features
+php artisan import:api-prov-jatim
+# 5. Jalankan Server
+php artisan serve
+npm run dev
+```
+---
+
+##  Dokumentasi
+
+<div align="center">
+
+###  Beranda Peta 
+![Dashboard Peta](nas/siapapeka.png)
+
+</div>
+
+---
+
+##  Pencipta
+
+-  **Haafiz Ghifari Rarian** - *UI/UX Designer*
+-  **Farah Bianca** - *Front-end Developer*
+-  **Natasya Hayudyo Murthiningtyas** - *Front-end Developer*
+-  **Moch. Azriel Maulana R.** - *Fullstack Developer*
+-  **Nurwahyu Akbar Maulidy** - *Fullstack Developer*
+
+
+---
+
+<div align="center">
+
+###  **"SIAPA PEKA - Sistem Informasi Digital Pencegahan Perkawinan Anak"**
+
+**Dikembangkan dengan hati untuk Pencegahan Perkawinan Anak**
+
+[![Made in East Java](https://img.shields.io/badge/Made_with_love_in-East_Java-red.svg)](https://jatimprov.go.id)
+[![Government Project](https://img.shields.io/badge/🏛️_Official-Government_Project-blue.svg)](https://siapa-peka.jatimprov.go.id)
+[![Child Protection](https://img.shields.io/badge/_Child-Protection_Program-pink.svg)](https://www.unicef.org/indonesia/)
+
+---
+
+*© 2025 SIAPA PEKA - Pemerintah Provinsi Jawa Timur. Untuk masa depan anak yang lebih baik.*
+
+**"Setiap anak berhak mendapatkan masa kecil yang bahagia dan pendidikan yang layak"**
+
+</div>
