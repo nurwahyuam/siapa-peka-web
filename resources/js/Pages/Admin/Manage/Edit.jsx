@@ -8,7 +8,7 @@ import {
     GraduationCap,
     Users,
     BarChart3,
-    CircleArrowLeft,
+    ArrowLeftCircle,
     CalendarClock,
     AlertCircle,
     Eye,
@@ -181,14 +181,19 @@ const Edit = ({
             avoiding_adultery: data.avoiding_adultery || 0,
         };
 
-        // Kirim permintaan update
-        post(
-            route("manage.store", {
-                city: city.slug,
-                year: data.selected_year,
-            }),
-            formData
-        );
+        // Gunakan put untuk update, post untuk create
+        const method = existingData ? put : post;
+        const url = existingData 
+            ? route("manage.update", { 
+                city: city.slug, 
+                year: data.selected_year 
+            })
+            : route("manage.store", { 
+                city: city.slug, 
+                year: data.selected_year 
+            });
+
+        method(url, formData);
     };
 
     const availablePeriods = useMemo(() => {
@@ -212,7 +217,7 @@ const Edit = ({
         switch (activeTab) {
             case "applications":
                 return (
-                    <div className="p-6">
+                    <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Pengajuan Dispensasi
                         </h3>
@@ -335,7 +340,7 @@ const Edit = ({
 
             case "education":
                 return (
-                    <div className="p-6">
+                    <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Tingkat Pendidikan
                         </h3>
@@ -474,7 +479,7 @@ const Edit = ({
 
             case "age":
                 return (
-                    <div className="p-6">
+                    <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Klasifikasi Usia
                         </h3>
@@ -556,7 +561,7 @@ const Edit = ({
 
             case "child_brides":
                 return (
-                    <div className="p-6">
+                    <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Pengantin Anak
                         </h3>
@@ -638,7 +643,7 @@ const Edit = ({
 
             case "reasons":
                 return (
-                    <div className="p-6">
+                    <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Alasan Dispensasi
                         </h3>
@@ -893,7 +898,7 @@ const Edit = ({
                                         href={route("manage.index")}
                                         className="flex hover:text-indigo-500 items-center transition-colors duration-200"
                                     >
-                                        <CircleArrowLeft className="h-6 w-6 mr-2" />
+                                        <ArrowLeftCircle className="h-6 w-6 mr-2" />
                                     </Link>
                                     <h1 className="text-2xl font-bold text-gray-900">
                                         Edit Data {city?.name}
@@ -901,10 +906,10 @@ const Edit = ({
                                 </div>
 
                                 {/* Tambahkan navigasi tahun di header */}
-                                <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                                <div className="bg-blue-50 p-4 rounded-lg">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="flex items-center">
-                                            <MapPin className="h-5 w-5 text-blue-600 mr-2" />
+                                        <div className="flex items-center gap-1 w-full">
+                                            <MapPin className="h-8 w-8 text-blue-600 mr-2" />
                                             <div>
                                                 <p className="text-sm text-gray-600">
                                                     Kabupaten/Kota
@@ -914,13 +919,13 @@ const Edit = ({
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center">
-                                            <CalendarClock className="h-5 w-5 text-blue-600 mr-2" />
-                                            <div>
+                                        <div className="flex items-center gap-1 w-full">
+                                            <CalendarClock className="h-8 w-8 text-blue-600 mr-2" />
+                                            <div className="w-1/2">
                                                 <p className="text-sm text-gray-600">
                                                     Tahun Data
                                                 </p>
-                                                <div className="flex items-center space-x-2">
+                                                <div className="flex items-center gap-2 w-full">
                                                     <select
                                                         value={
                                                             data.selected_year
@@ -930,7 +935,7 @@ const Edit = ({
                                                                 e.target.value
                                                             )
                                                         }
-                                                        className="font-medium border rounded px-2 py-1"
+                                                        className="font-medium border rounded px-2 py-1 w-full"
                                                     >
                                                         {years.map((year) => (
                                                             <option
@@ -941,10 +946,6 @@ const Edit = ({
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <span className="text-sm text-gray-500">
-                                                        ({years.length} tahun
-                                                        tersedia)
-                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -960,13 +961,12 @@ const Edit = ({
                                     {/* Basic Information */}
                                     <div>
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                            <MapPin className="h-5 w-5 mr-2 text-blue-500" />
                                             Informasi Periode
                                         </h3>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="flex items-center justify-between gap-3">
                                             {/* Tahun Data */}
-                                            <div>
+                                            <div className="w-full">
                                                 <label
                                                     htmlFor="selected_year"
                                                     className="block text-sm font-medium text-gray-700 mb-2"
@@ -1022,16 +1022,13 @@ const Edit = ({
                                             </div>
 
                                             {/* Periode */}
-                                            <div>
-                                                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center justify-between">
-                                                    Periode{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
+                                            <div className="w-full">
+                                                <label className="text-sm font-medium text-gray-700 flex items-center justify-between">
+                                                   <div className="">Periode{" "}<span className="text-red-500">*</span></div> 
                                                     {!showManualPeriod ? (
                                                         <button
                                                             type="button"
-                                                            className="mt-2 px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-sm"
+                                                            className="px-3 py-1 mb-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-xs"
                                                             onClick={() =>
                                                                 setShowManualPeriod(
                                                                     true
@@ -1043,7 +1040,7 @@ const Edit = ({
                                                     ) : (
                                                         <button
                                                             type="button"
-                                                            className="mt-2 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm"
+                                                            className="mb-1 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs"
                                                             onClick={() => {
                                                                 setShowManualPeriod(
                                                                     false
@@ -1262,7 +1259,18 @@ const Edit = ({
                                     {/* Submit Button */}
                                     <div className="pt-6 border-t border-gray-200">
                                         <div className="flex justify-end space-x-3">
-                                            <div>
+                                            <div className="flex justify-end space-x-3">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                                                >
+                                                    <Save className="h-5 w-5 mr-2" />
+                                                    {processing
+                                                        ? "Menyimpan..."
+                                                        : "Simpan Perubahan"}
+                                                </button>
+                                                <div>
                                                 {existingData && (
                                                     <button
                                                         type="button"
@@ -1271,30 +1279,13 @@ const Edit = ({
                                                                 true
                                                             )
                                                         }
-                                                        className="flex items-center px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                                                        className="flex items-center px-4 py-2.5 text-sm text-white bg-red-700 rounded-md hover:opacity-90 transition-colors"
                                                     >
                                                         <Trash2 className="h-5 w-5 mr-2" />
                                                         Hapus Data
                                                     </button>
                                                 )}
                                             </div>
-                                            <div className="flex justify-end space-x-3">
-                                                <Link
-                                                    href={route("manage.index")}
-                                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                                >
-                                                    Batal
-                                                </Link>
-                                                <button
-                                                    type="submit"
-                                                    disabled={processing}
-                                                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-                                                >
-                                                    <Save className="h-4 w-4 mr-2" />
-                                                    {processing
-                                                        ? "Menyimpan..."
-                                                        : "Simpan Perubahan"}
-                                                </button>
                                             </div>
                                         </div>
                                     </div>

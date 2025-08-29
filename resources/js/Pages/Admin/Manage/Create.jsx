@@ -8,7 +8,7 @@ import {
     FileText,
     GraduationCap,
     BarChart3,
-    CircleArrowLeft,
+    ArrowLeftCircle,
     CalendarClock,
     AlertCircle,
 } from "lucide-react";
@@ -638,7 +638,7 @@ const Create = () => {
                                         href={route("manage.index")}
                                         className="flex hover:text-indigo-500 items-center transition-colors duration-200"
                                     >
-                                        <CircleArrowLeft className="h-6 w-6 mr-2" />
+                                        <ArrowLeftCircle className="h-6 w-6 mr-2" />
                                     </Link>
                                     <h1 className="text-2xl font-bold text-gray-900">
                                         Tambah Data Baru
