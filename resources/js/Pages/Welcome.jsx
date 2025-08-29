@@ -26,12 +26,12 @@ export default function Welcome() {
 
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
-        if (accepted === 0) return "#FFFFFF"; // putih (no data)
-        if (accepted <= 10) return "#FFF4E0"; // beige kuning pucat (lembut)
-        if (accepted <= 50) return "#D8A5A5"; // kuning caramel cerah
-        if (accepted <= 100) return "#FFDADA"; // coral orange cerah
-        if (accepted > 100) return "#924A4A"; // maroon terang cerah
-        return "#C94C4C"; // fallback maroon vivid
+        if (accepted === 0) return "#E2E2E2";
+        if (accepted <= 10) return "#9EA1D0"; 
+        if (accepted <= 50) return "#625FBC"; 
+        if (accepted <= 100) return "#32259B"; 
+        if (accepted > 100) return "#15095F"; 
+        return "#E2E2E2"; 
     };
 
 
@@ -40,15 +40,15 @@ export default function Welcome() {
     const getColorByCategory = (category) => {
         switch (category) {
             case "Rendah":
-                return "#FFF4E0";
+                return "#9EA1D0";
             case "Cukup":
-                return "#D8A5A5";
+                return "#625FBC";
             case "Tinggi":
-                return "#FFDADA";
+                return "#32259B";
             case "Sangat Tinggi":
-                return "#924A4A";
+                return "#15095F";
             default:
-                return "#FFF4E0";
+                return "#E2E2E2";
         }
     };
 
