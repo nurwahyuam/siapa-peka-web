@@ -195,7 +195,7 @@ class StatisticController extends Controller
             $city->period_types = $periodsForYear->pluck('name')->toArray();
         }
 
-        return Inertia::render('Admin/Statistic/Read', [
+        return Inertia::render('Admin/Statistic/Index', [
             'canLogin'    => Route::has('login'),
             'canRegister' => Route::has('register'),
             'cityFeatures' => $cityFeatures,

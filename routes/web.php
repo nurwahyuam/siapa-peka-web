@@ -29,9 +29,11 @@ Route::middleware('auth')->group(function () {
     [ManageController::class, 'destroy'])->name('manage.destroy');
     Route::delete('/admin/manajemen/hapus-semua', [ManageController::class, 'destroyAll'])->name('manage.destroyAll');
 
-    Route::get('/admin/statistic/read', function () {
-        return Inertia::render('Admin/Statistic/Read');
-    })->name('statistic');
+    Route::get('/admin/statistik', [StatisticController::class, 'index'])->name('statistic');
+});
+
+Route::fallback(function () {
+    return Inertia::render("NotFound");
 });
 
 

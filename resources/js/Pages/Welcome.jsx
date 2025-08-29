@@ -200,7 +200,6 @@ export default function Welcome() {
                     `;
 
                     layer.bindTooltip(tooltipContent, {
-                        className: "custom-tooltip-left",
                         direction: "left",
                         offset: [-15, 0],
                         opacity: 1,

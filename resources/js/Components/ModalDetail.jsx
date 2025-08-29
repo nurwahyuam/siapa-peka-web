@@ -42,8 +42,6 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
     // Prepare education data for chart
     useEffect(() => {
         if (feature?.application) {
-            const tolak =
-                feature.application.submitted - feature.application.accepted;
             const data = [
                 {
                     name: "Diajukan",
@@ -55,7 +53,6 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                     value: feature.application.submitted || 0,
                     color: "#33A02C",
                 },
-                { name: "Diproses", value: tolak || 0, color: "#FFC157" },
             ].filter((item) => item.value > 0);
 
             setapplicationData(data);
@@ -206,6 +203,8 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
             <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />
         );
     };
+
+    console.log(feature);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -372,7 +371,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                     )}
 
                     {/* Reason Section with Bar Chart */}
-                    {feature.reason_data && applicationData.length > 0 && (
+                    {feature.reason_data && reasonData.length > 0 && (
                         <div className="mt-6 border-b">
                             <h4 className="font-semibold text-gray-800 mb-4 text-lg">
                                 Alasan Dispensasi Kawin
@@ -456,7 +455,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                     )}
 
                     {/* Education Data Section with Pie Chart */}
-                    {feature.education_data && (
+                    {feature.education_data && educationData.length > 0 && (
                         <div className="mt-6 border-b">
                             <h4 className="font-semibold text-gray-800 mb-4 text-lg">
                                 Data Pendidikan
