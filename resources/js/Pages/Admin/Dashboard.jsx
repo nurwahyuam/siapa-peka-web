@@ -1,7 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { Users, ShoppingCart, DollarSign, Activity, Calendar, FileText, TrendingUp, TrendingDown } from 'lucide-react';
 
 export default function Dashboard() {
     // Dummy data

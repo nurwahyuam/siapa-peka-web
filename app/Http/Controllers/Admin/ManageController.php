@@ -237,11 +237,46 @@ class ManageController extends Controller
         return Excel::download(new ApplicationsExport, 'export-siapapeka-data.xlsx');
     }
 
-    public function edit($id)
+    public function edit($citySlug, $year = null)
     {
-        $application = Application::with(['period', 'cityFeature'])
-            ->findOrFail($id);
+        // Cari kota berdasarkan slug
+        $city = CityFeature::where('slug', $citySlug)->firstOrFail();
 
+        // Jika tahun tidak disediakan, gunakan tahun saat ini
+        $selectedYear = $year ?? date('Y');
+
+        // Ambil semua periode yang tersedia
+        $periods = Period::all();
+
+        // Cari periode berdasarkan tahun yang dipilih
+        $period = Period::where('year', $selectedYear)->first();
+
+        // Jika periode ditemukan, cari data aplikasi
+        $application = null;
+        if ($period) {
+            $application = Application::with(['period', 'cityFeature'])
+                ->where('city_feature_id', $city->id)
+                ->where('period_id', $period->id)
+                ->first();
+        }
+
+        // Jika tidak ada data, buat instance kosong
+        if (!$application) {
+            return Inertia::render('Admin/Manage/Edit', [
+                'city' => $city,
+                'periods' => $periods,
+                'selectedYear' => $selectedYear,
+                'existingData' => null,
+                'availableYears' => Period::whereHas('applications', function ($query) use ($city) {
+                    $query->where('city_feature_id', $city->id);
+                })
+                    ->distinct()
+                    ->pluck('year')
+                    ->toArray(),
+            ]);
+        }
+
+        // Ambil data terkait lainnya
         $education = EducationLevel::where('city_feature_id', $application->city_feature_id)
             ->where('period_id', $application->period_id)
             ->first();
@@ -258,15 +293,154 @@ class ManageController extends Controller
             ->where('period_id', $application->period_id)
             ->first();
 
+        // Gabungkan semua data menjadi satu array
+        $existingData = array_merge(
+            $application->toArray(),
+            $education ? $education->toArray() : [],
+            $age ? $age->toArray() : [],
+            $childBride ? $childBride->toArray() : [],
+            $reason ? $reason->toArray() : []
+        );
+
+        // Tambahkan tahun dan nama periode ke existingData
+        $existingData['year'] = $period->year;
+        $existingData['period_name'] = $period->name;
+
         return Inertia::render('Admin/Manage/Edit', [
-            'cities' => CityFeature::all(),
-            'periods' => Period::all(),
-            'application' => $application,
-            'education' => $education,
-            'age' => $age,
-            'childBride' => $childBride,
-            'reason' => $reason,
+            'city' => $city,
+            'periods' => $periods,
+            'selectedYear' => $selectedYear,
+            'existingData' => $existingData,
+            'availableYears' => Period::whereHas('applications', function ($query) use ($city) {
+                $query->where('city_feature_id', $city->id);
+            })
+                ->distinct()
+                ->pluck('year')
+                ->toArray(),
         ]);
+    }
+
+    public function store(Request $request, $citySlug, $year)
+    {
+        // Validasi data
+        $validated = $request->validate([
+            'city_feature_id' => 'required|exists:city_features,id',
+            'selected_year' => 'required|integer',
+            'period_id' => 'nullable|exists:periods,id',
+            'manual_period_name' => 'nullable|string|max:255',
+
+            // Applications
+            'submitted' => 'nullable|integer|min:0',
+            'accepted' => 'nullable|integer|min:0',
+            'source' => 'nullable|string|max:255',
+
+            // Education Levels
+            'no_school' => 'nullable|integer|min:0',
+            'sd' => 'nullable|integer|min:0',
+            'smp' => 'nullable|integer|min:0',
+            'sma' => 'nullable|integer|min:0',
+
+            // Age Classifications
+            'less_than_15' => 'nullable|integer|min:0',
+            'between_15_19' => 'nullable|integer|min:0',
+
+            // Child Brides
+            'number_of_men_under_19' => 'nullable|integer|min:0',
+            'number_of_women_under_19' => 'nullable|integer|min:0',
+
+            // Reasons
+            'pregnant' => 'nullable|integer|min:0',
+            'promiscuity' => 'nullable|integer|min:0',
+            'economy' => 'nullable|integer|min:0',
+            'traditional_culture' => 'nullable|integer|min:0',
+            'avoiding_adultery' => 'nullable|integer|min:0',
+        ]);
+
+        // Cari atau buat periode
+        $periodId = $validated['period_id'];
+        if (!$periodId && !empty($validated['manual_period_name'])) {
+            $period = Period::firstOrCreate([
+                'name' => $validated['manual_period_name'],
+                'year' => $validated['selected_year']
+            ]);
+            $periodId = $period->id;
+        }
+
+        // Pastikan periodId ada sebelum melanjutkan
+        if (!$periodId) {
+            return back()->withErrors(['period_id' => 'Periode harus dipilih atau dibuat']);
+        }
+
+        // Cari atau buat data aplikasi
+        $application = Application::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'submitted' => $validated['submitted'] ?? 0,
+                'accepted' => $validated['accepted'] ?? 0,
+                'source' => $validated['source'] ?? '',
+            ]
+        );
+
+        // Cari atau buat data pendidikan
+        EducationLevel::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'no_school' => $validated['no_school'] ?? 0,
+                'sd' => $validated['sd'] ?? 0,
+                'smp' => $validated['smp'] ?? 0,
+                'sma' => $validated['sma'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data usia
+        AgeClassification::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'less_than_15' => $validated['less_than_15'] ?? 0,
+                'between_15_19' => $validated['between_15_19'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data pengantin anak
+        ChildBride::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'number_of_men_under_19' => $validated['number_of_men_under_19'] ?? 0,
+                'number_of_women_under_19' => $validated['number_of_women_under_19'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data alasan
+        Reason::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'pregnant' => $validated['pregnant'] ?? 0,
+                'promiscuity' => $validated['promiscuity'] ?? 0,
+                'economy' => $validated['economy'] ?? 0,
+                'traditional_culture' => $validated['traditional_culture'] ?? 0,
+                'avoiding_adultery' => $validated['avoiding_adultery'] ?? 0,
+            ]
+        );
+
+        return redirect()->route('manage.edit', [
+            'city' => $citySlug,
+            'year' => $validated['selected_year']
+        ])->with('success', 'Data berhasil disimpan!');
     }
 
     public function show($slug)
@@ -289,28 +463,40 @@ class ManageController extends Controller
         ]);
     }
 
-    public function destroy(CityFeature $cityFeature)
+    public function destroy($citySlug, $year)
     {
+        // Cari kota berdasarkan slug
+        $city = CityFeature::where('slug', $citySlug)->firstOrFail();
+
+        // Cari periode berdasarkan tahun
+        $period = Period::where('year', $year)->first();
+
+        if (!$period) {
+            return redirect()->back()->with('error', 'Periode tidak ditemukan.');
+        }
+
         // Hapus semua data terkait
-        $cityFeature->applications()->delete();
-        $cityFeature->educationLevels()->delete();
-        $cityFeature->ageClassifications()->delete();
-        $cityFeature->reasons()->delete();
-        $cityFeature->delete();
+        Application::where('city_feature_id', $city->id)
+            ->where('period_id', $period->id)
+            ->delete();
 
-        return redirect()->route('Manage.index')
-            ->with('success', 'Data berhasil dihapus!');
-    }
+        EducationLevel::where('city_feature_id', $city->id)
+            ->where('period_id', $period->id)
+            ->delete();
 
-    public function destroyAll()
-    {
-        // Hapus semua data dari semua tabel
-        Application::truncate();
-        EducationLevel::truncate();
-        AgeClassification::truncate();
-        Reason::truncate();
+        AgeClassification::where('city_feature_id', $city->id)
+            ->where('period_id', $period->id)
+            ->delete();
+
+        ChildBride::where('city_feature_id', $city->id)
+            ->where('period_id', $period->id)
+            ->delete();
+
+        Reason::where('city_feature_id', $city->id)
+            ->where('period_id', $period->id)
+            ->delete();
 
         return redirect()->route('manage.index')
-            ->with('success', 'Semua data berhasil dihapus!');
+            ->with('success', 'Data berhasil dihapus.');
     }
 }

@@ -19,21 +19,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/manajemen', [ManageController::class, 'index'])->name('manage.index');
     Route::get('/admin/manajemen/tambah', [ManageController::class, 'create'])->name('manage.create');
     Route::post('/admin/manajemen/tambah/simpan', [ManageController::class, 'storeCreate'])->name('manage.create.store');
-    Route::get('/admin/manajemen/sunting/{id}', [ManageController::class, 'edit'])->name('manage.edit');
+    Route::get('/manage/{city}/{year?}/edit', [ManageController::class, 'edit'])->name('manage.edit');
+    Route::post('/manage/{city}/{year}/store', [ManageController::class, 'store'])->name('manage.store');
     Route::get('/admin/manajemen/import', [ManageController::class, 'import'])->name('manage.import');
     Route::post('/admin/manajemen/import/simpan', [ManageController::class, 'storeImport'])->name('manage.import.store');
     Route::get('/admin/manajemen/export', [ManageController::class, 'export'])->name('manage.export');
     Route::get('/admin/manajemen/detail/{id}', [ManageController::class, 'show'])->name('manage.show');
-
-    Route::delete('/admin/manajemen/hapus/{name}',
-    [ManageController::class, 'destroy'])->name('manage.destroy');
-    Route::delete('/admin/manajemen/hapus-semua', [ManageController::class, 'destroyAll'])->name('manage.destroyAll');
+    Route::delete('/manage/{city}/{year}', [ManageController::class, 'destroy'])
+    ->name('manage.destroy');
 
     Route::get('/admin/statistik', [StatisticController::class, 'index'])->name('statistic');
 });
 
 Route::fallback(function () {
-    return Inertia::render("NotFound");
+    return Inertia::render('NotFound')->toResponse(request())->setStatusCode(404);
 });
 
 

@@ -1,7 +1,19 @@
 import React from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { CalendarClock, CirclePlus, Download, Eye, FilePenLine, Import, Map, Trash, Trash2 } from "lucide-react";
+import {
+    CalendarClock,
+    CirclePlus,
+    Download,
+    Eye,
+    FilePenLine,
+    Import,
+    Map,
+    Pen,
+    SquareKanban,
+    Trash,
+    Trash2,
+} from "lucide-react";
 
 const Index = () => {
     const { cities } = usePage().props;
@@ -11,7 +23,7 @@ const Index = () => {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 flex items-center gap-2">
-                        <CalendarClock/>
+                        <SquareKanban className="-rotate-90" />
                         Manajemen Data
                     </h2>
                 </div>
@@ -25,7 +37,7 @@ const Index = () => {
                         <div className="p-6 bg-white border-b border-gray-200">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                                    <Map/>
+                                    <Map />
                                     Data Kabupaten/Kota
                                 </h2>
                                 <div className="flex items-center justify-center gap-2">
@@ -33,22 +45,22 @@ const Index = () => {
                                         href={route("manage.create")}
                                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
-                                        <CirclePlus className="h-5 w-5"/>
-                                        Create
+                                        <CirclePlus className="h-5 w-5" />
+                                        Baru
                                     </Link>
                                     <Link
                                         href={route("manage.import")}
                                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
                                         <Import className="h-5 w-5" />
-                                        Import
+                                        Impor
                                     </Link>
                                     <a
                                         href={route("manage.export")}
                                         className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
-                                        <Download className="h-5 w-5"/>
-                                        Download
+                                        <Download className="h-5 w-5" />
+                                        Unduh
                                     </a>
                                 </div>
                             </div>
@@ -109,7 +121,20 @@ const Index = () => {
                                                             className="text-blue-600 hover:text-blue-900 mr-3 flex items-center gap-2"
                                                         >
                                                             <Eye />
-                                                            Detail
+                                                            Lihat
+                                                        </Link>
+                                                        <Link
+                                                            href={route(
+                                                                "manage.edit",
+                                                                {
+                                                                    city: city.slug,
+                                                                    year: new Date().getFullYear(), // Tahun default, bisa disesuaikan
+                                                                }
+                                                            )}
+                                                            className="text-yellow-600 hover:text-yellow-900 mr-3 flex items-center gap-2"
+                                                        >
+                                                            <Pen className="w-5 h-5" />
+                                                            Ubah
                                                         </Link>
                                                     </td>
                                                 </tr>

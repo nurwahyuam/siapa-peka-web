@@ -41,7 +41,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                         {/* Sidebar */}
                         <div
-                            className={`fixed inset-y-0 left-0 z-50 h-full flex-col justify-between bg-white shadow transform
+                            className={`fixed inset-y-0 left-0 z-50 h-full flex flex-col justify-between bg-white shadow transform
                                         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
                                         transition duration-300 ease-in-out
                                         lg:translate-x-0 lg:static lg:inset-0`}
@@ -67,7 +67,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                 <NavLink
                                     href={route("manage.index")}
-                                    active={route().current("manage.index") || route().current("manage.show")}
+                                    active={route().current("manage.index") || route().current("manage.show") || route().current("manage.create") || route().current("manage.import")}
                                     className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                                 >
                                     <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
@@ -82,7 +82,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className="flex w-full items-center justify-center px-4 py-2 text-sm font-medium text-red-600 hover:text-white hover:bg-red-600 rounded-lg transition-colors duration-200"
                                 >
                                     <LogOut className="h-4 w-4 mr-2" />
-                                    Log Out
+                                    Keluar
                                 </Link>
                             </div>
                         </div>
@@ -142,7 +142,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </NavLink>
                         <NavLink
                             href={route("manage.index")}
-                            active={route().current("manage.index")}
+                            active={route().current("manage.index") || route().current("manage.show") || route().current("manage.create") || route().current("manage.import")}
                             className="flex items-center px-4 py-3 w-full text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                         >
                             <SquareKanban className="h-5 w-5 mr-3 -rotate-90"/>
@@ -174,7 +174,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 className="flex w-full items-center justify-center px-4 py-2 text-sm font-medium text-red-600 hover:text-white hover:bg-red-600 rounded-lg transition-colors duration-200"
                             >
                                 <LogOut className="h-4 w-4 mr-2" />
-                                Log Out
+                                Keluar
                             </Link>
                         </div>
                     </div>
