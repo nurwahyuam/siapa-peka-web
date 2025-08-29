@@ -437,10 +437,132 @@ class ManageController extends Controller
             ]
         );
 
-        return redirect()->route('manage.edit', [
+        return redirect()->route('manage.index', [
             'city' => $citySlug,
             'year' => $validated['selected_year']
         ])->with('success', 'Data berhasil disimpan!');
+    }
+
+    public function update(Request $request, $citySlug, $year){
+        // Validasi data
+        $validated = $request->validate([
+            'city_feature_id' => 'required|exists:city_features,id',
+            'selected_year' => 'required|integer',
+            'period_id' => 'nullable|exists:periods,id',
+            'manual_period_name' => 'nullable|string|max:255',
+
+            // Applications
+            'submitted' => 'nullable|integer|min:0',
+            'accepted' => 'nullable|integer|min:0',
+            'source' => 'nullable|string|max:255',
+
+            // Education Levels
+            'no_school' => 'nullable|integer|min:0',
+            'sd' => 'nullable|integer|min:0',
+            'smp' => 'nullable|integer|min:0',
+            'sma' => 'nullable|integer|min:0',
+
+            // Age Classifications
+            'less_than_15' => 'nullable|integer|min:0',
+            'between_15_19' => 'nullable|integer|min:0',
+
+            // Child Brides
+            'number_of_men_under_19' => 'nullable|integer|min:0',
+            'number_of_women_under_19' => 'nullable|integer|min:0',
+
+            // Reasons
+            'pregnant' => 'nullable|integer|min:0',
+            'promiscuity' => 'nullable|integer|min:0',
+            'economy' => 'nullable|integer|min:0',
+            'traditional_culture' => 'nullable|integer|min:0',
+            'avoiding_adultery' => 'nullable|integer|min:0',
+        ]);
+
+        // Cari atau buat periode
+        $periodId = $validated['period_id'];
+        if (!$periodId && !empty($validated['manual_period_name'])) {
+            $period = Period::firstOrCreate([
+                'name' => $validated['manual_period_name'],
+                'year' => $validated['selected_year']
+            ]);
+            $periodId = $period->id;
+        }
+
+        // Pastikan periodId ada sebelum melanjutkan
+        if (!$periodId) {
+            return back()->withErrors(['period_id' => 'Periode harus dipilih atau dibuat']);
+        }
+
+        // Cari atau buat data aplikasi
+        $application = Application::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'submitted' => $validated['submitted'] ?? 0,
+                'accepted' => $validated['accepted'] ?? 0,
+                'source' => $validated['source'] ?? '',
+            ]
+        );
+
+        // Cari atau buat data pendidikan
+        EducationLevel::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'no_school' => $validated['no_school'] ?? 0,
+                'sd' => $validated['sd'] ?? 0,
+                'smp' => $validated['smp'] ?? 0,
+                'sma' => $validated['sma'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data usia
+        AgeClassification::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'less_than_15' => $validated['less_than_15'] ?? 0,
+                'between_15_19' => $validated['between_15_19'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data pengantin anak
+        ChildBride::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'number_of_men_under_19' => $validated['number_of_men_under_19'] ?? 0,
+                'number_of_women_under_19' => $validated['number_of_women_under_19'] ?? 0,
+            ]
+        );
+
+        // Cari atau buat data alasan
+        Reason::updateOrCreate(
+            [
+                'city_feature_id' => $validated['city_feature_id'],
+                'period_id' => $periodId
+            ],
+            [
+                'pregnant' => $validated['pregnant'] ?? 0,
+                'promiscuity' => $validated['promiscuity'] ?? 0,
+                'economy' => $validated['economy'] ?? 0,
+                'traditional_culture' => $validated['traditional_culture'] ?? 0,
+                'avoiding_adultery' => $validated['avoiding_adultery'] ?? 0,
+            ]
+        );
+
+        return redirect()->route('manage.index', [
+            'city' => $citySlug,
+            'year' => $validated['selected_year']
+        ])->with('success', 'Data berhasil diperbarui!');
     }
 
     public function show($slug)

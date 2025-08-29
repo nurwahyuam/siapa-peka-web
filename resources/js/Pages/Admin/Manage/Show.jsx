@@ -10,7 +10,7 @@ import {
     MapPin,
     Calendar,
     CreditCard,
-    CircleArrowLeft,
+    ArrowLeftCircle,
     CalendarClock,
 } from "lucide-react";
 
@@ -148,7 +148,7 @@ const Show = () => {
                                             href={route("manage.index")}
                                             className="flex hover:text-indigo-500 items-center transition-colors duration-200"
                                         >
-                                            <CircleArrowLeft className="h-6 w-6" />
+                                            <ArrowLeftCircle className="h-6 w-6" />
                                         </Link>
                                         <h1 className="text-2xl font-bold text-gray-900">
                                             Detail {city?.name || "N/A"}

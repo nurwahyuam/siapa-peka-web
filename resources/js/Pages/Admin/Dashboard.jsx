@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head,usePage } from '@inertiajs/react';
+import { LayoutDashboard } from 'lucide-react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
@@ -17,19 +18,30 @@ export default function Dashboard() {
 console.log(yearlyData);
     return (
         <AuthenticatedLayout
-            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Dashboard</h2>}
-        >
-            <Head title="Dashboard" />
-            <div className="m-4 space-y-6">
-                {/* Header Section */}
-                <div className="relative bg-[url('/assets/gunung.jpg')] bg-center p-8 rounded-2xl shadow-lg flex items-center justify-between">
-                    <div>
-                        <p className="text-5xl font-bold text-white">WELCOME</p>
-                        <p className="text-indigo-100 mt-2 text-xl">Selamat datang di Dashboard Siapa Peka</p>
-                    </div>
-                    <div className="w-40 h-40">
-                    </div>
+            header={
+                <>
+                <div className='flex items-center gap-2'>
+                    <LayoutDashboard />
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">Beranda</h2>
                 </div>
+                </>
+            }
+        >
+            <Head title="Beranda - SIAPA PEKA" />
+            <div className="m-4 space-y-6 rounded-lg">
+                {/* Header Section */}
+                <div className="relative bg-[url('/assets/Header.jpg')] bg-center bg-cover w-full h-60   flex items-center justify-between p-8 shadow-lg rounded-xl">
+                    <div>
+                        <p className="text-5xl font-extrabold text-white">Selamat Datang</p>
+                        <p className="text-white font-semibold mt-2 text-xl">
+                            Sistem Informasi Digital Pencegahan Perkawinan Sejak Dini
+                        </p>
+                    </div>
+                <div className="w-40 h-40">
+                {/* Bisa taruh logo atau ilustrasi */}
+                </div>
+            </div>
+
 
                 
                 {/* Stats Cards */}

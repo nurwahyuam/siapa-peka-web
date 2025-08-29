@@ -3,13 +3,12 @@ import { Head, Link, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {
     CalendarClock,
-    CirclePlus,
     Download,
     Eye,
-    FilePenLine,
     Import,
     Map,
     Pen,
+    Plus,
     SquareKanban,
     Trash,
     Trash2,
@@ -45,7 +44,7 @@ const Index = () => {
                                         href={route("manage.create")}
                                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
                                     >
-                                        <CirclePlus className="h-5 w-5" />
+                                        <Plus className="h-5 w-5"/>
                                         Baru
                                     </Link>
                                     <Link
