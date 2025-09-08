@@ -27,11 +27,11 @@ export default function Welcome() {
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
         if (accepted === 0) return "#E2E2E2";
-        if (accepted <= 10) return "#9EA1D0"; 
-        if (accepted <= 50) return "#625FBC"; 
-        if (accepted <= 100) return "#32259B"; 
-        if (accepted > 100) return "#15095F"; 
-        return "#E2E2E2"; 
+        if (accepted <= 100) return "#FDDBC7";
+        if (accepted <= 250) return "#F4A582";
+        if (accepted <= 500) return "#B2182B";
+        if (accepted > 500) return "#67001F";
+        return "#E2E2E2";
     };
 
 
@@ -40,13 +40,13 @@ export default function Welcome() {
     const getColorByCategory = (category) => {
         switch (category) {
             case "Rendah":
-                return "#9EA1D0";
+                return "#FDDBC7";
             case "Cukup":
-                return "#625FBC";
+                return "#F4A582";
             case "Tinggi":
-                return "#32259B";
+                return "#B2182B";
             case "Sangat Tinggi":
-                return "#15095F";
+                return "#67001F";
             default:
                 return "#E2E2E2";
         }
@@ -56,7 +56,7 @@ export default function Welcome() {
     const getStyle = (feature, isHovered = false) => {
         const isKabupaten = feature.properties.kind === "City";
         const color =
-            colorScheme === "accepted"
+            colorScheme === "category"
                 ? getColorByAccepted(feature.properties.total_accepted)
                 : getColorByCategory(feature.properties.kategori);
 
@@ -170,7 +170,7 @@ export default function Welcome() {
 
             geoJsonLayerRef.current.setStyle((feature) => {
                 const color =
-                    colorScheme === "accepted"
+                    colorScheme === "category"
                         ? getColorByAccepted(feature.properties.total_accepted)
                         : getColorByCategory(feature.properties.kategori);
 

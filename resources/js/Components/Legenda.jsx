@@ -45,10 +45,10 @@ export default function Legenda({
                                 className="w-full border border-gray-300 rounded-md px-3 py-1    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="accepted">
-                                    Jumlah Diterima
+                                    Kategori Risiko
                                 </option>
                                 <option value="category">
-                                    Kategori Risiko
+                                    Jumlah Diterima
                                 </option>
                             </select>
                         </div>
@@ -78,43 +78,43 @@ export default function Legenda({
                         {colorScheme === "accepted" ? (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
-                                    <span>0 Diterima</span>
+                                    <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
+                                    <span>Risiko Rendah</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#9EA1D0] mr-2"></div>
-                                    <span>1-10 Diterima</span>
+                                    <div className="w-4 h-4 bg-[#F4A582] mr-2"></div>
+                                    <span>Risiko Cukup</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#625FBC] mr-2"></div>
-                                    <span>11-50 Diterima</span>
+                                    <div className="w-4 h-4 bg-[#B2182B] mr-2"></div>
+                                    <span>Risiko Tinggi</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#32259B] mr-2"></div>
-                                    <span>51-100 Diterima</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#15095F] mr-2"></div>
-                                    <span>100+ Diterima</span>
+                                    <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
+                                    <span>Risiko Sangat Tinggi</span>
                                 </div>
                             </div>
                         ) : (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#9EA1D0] mr-2"></div>
-                                    <span>Risiko Rendah</span>
+                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
+                                    <span>0 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#625FBC] mr-2"></div>
-                                    <span>Risiko Cukup</span>
+                                    <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
+                                    <span>1-10 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#32259B] mr-2"></div>
-                                    <span>Risiko Tinggi</span>
+                                    <div className="w-4 h-4 bg-[#F4A582] mr-2"></div>
+                                    <span>11-50 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#15095F] mr-2"></div>
-                                    <span>Risiko Sangat Tinggi</span>
+                                    <div className="w-4 h-4 bg-[#B2182B] mr-2"></div>
+                                    <span>51-100 Diterima</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
+                                    <span>100+ Diterima</span>
                                 </div>
                             </div>
                         )}

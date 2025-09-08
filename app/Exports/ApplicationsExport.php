@@ -28,7 +28,7 @@ class ApplicationsExport implements FromCollection, WithHeadings, WithMapping, W
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 // Format kolom numeric (kolom H sampai U) untuk menampilkan 0
                 $worksheet = $event->sheet->getDelegate();
 

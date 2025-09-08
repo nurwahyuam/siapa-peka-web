@@ -15,7 +15,7 @@ class ImportApiProvJatim extends Command
 
     public function handle()
     {
-        $this->info("Fetching data...");
+        $this->info("🗃️  Fetching data...");
         $response = Http::timeout(30)->get(
             "https://api.satudatadev.jatimprov.go.id/api/bigdata/dinas_pemberdayaan_perempuan_perlindungan_anak_dan_kependuduk/jumlah_anak_yang_menikah_di_bawah_19_tahun_berdasarkan_jk_di_ja"
         );
@@ -79,7 +79,7 @@ class ImportApiProvJatim extends Command
             );
         }
 
-        $this->info("✅ Import selesai!");
+        $this->info("✅ Import selesai pada " . now());
     }
 
     private function normalizeCityName($name)
