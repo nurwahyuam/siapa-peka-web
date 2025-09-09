@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Head, useForm, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { SquareKanban } from "lucide-react";
+import { CircleArrowLeft, SquareKanban } from "lucide-react";
 
 const Import = () => {
     const [file, setFile] = useState(null);
@@ -33,15 +33,23 @@ const Import = () => {
                 </div>
             }
         >
-            <Head title="Import Data - SIAPA PEKA" />
+            <Head title="Impor Data - SIAPA PEKA" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="py-6">
+                <div className="max-w-7xl mx-auto sm:px-4 lg:px-6">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white border-b border-gray-200">
-                            <h2 className="text-2xl font-bold mb-6">
-                                Import Data Excel
-                            </h2>
+                            <div className="flex items-center mb-6">
+                                <Link
+                                    href={route("manage.index")}
+                                    className="flex hover:text-indigo-500 items-center transition-colors duration-200"
+                                >
+                                    <CircleArrowLeft className="h-6 w-6 mr-2" />
+                                </Link>
+                                <h1 className="text-2xl font-bold text-gray-900">
+                                    Impor Data Baru
+                                </h1>
+                            </div>
 
                             <form
                                 onSubmit={handleSubmit}
@@ -74,13 +82,7 @@ const Import = () => {
                                     )}
                                 </div>
 
-                                <div className="flex items-center justify-between mt-6">
-                                    <Link
-                                        href={route("manage.index")}
-                                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    >
-                                        Kembali
-                                    </Link>
+                                <div className="flex items-center justify-end mt-6">
                                     <button
                                         type="submit"
                                         disabled={processing || !file}
@@ -92,7 +94,7 @@ const Import = () => {
                                     >
                                         {processing
                                             ? "Mengimpor..."
-                                            : "Import Data"}
+                                            : "Impor Data"}
                                     </button>
                                 </div>
                             </form>

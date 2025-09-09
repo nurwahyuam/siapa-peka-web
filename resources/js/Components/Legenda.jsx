@@ -78,6 +78,10 @@ export default function Legenda({
                         {colorScheme === "accepted" ? (
                             <div className="space-y-2">
                                 <div className="flex items-center">
+                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
+                                    <span>Risiko Sangat Rendah</span>
+                                </div>
+                                <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
                                     <span>Risiko Rendah</span>
                                 </div>
@@ -102,19 +106,19 @@ export default function Legenda({
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
-                                    <span>1-10 Diterima</span>
+                                    <span>1-100 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#F4A582] mr-2"></div>
-                                    <span>11-50 Diterima</span>
+                                    <span>100-250 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#B2182B] mr-2"></div>
-                                    <span>51-100 Diterima</span>
+                                    <span>251-500 Diterima</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
-                                    <span>100+ Diterima</span>
+                                    <span>500+ Diterima</span>
                                 </div>
                             </div>
                         )}

@@ -23,9 +23,6 @@ const Index = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // Debug: Lihat struktur data yang diterima
-    console.log('Cities data:', cities);
-
     // Akses data yang benar - cities adalah array langsung
     const allCities = useMemo(() => {
         if (Array.isArray(cities)) {

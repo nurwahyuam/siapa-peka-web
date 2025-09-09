@@ -34,6 +34,8 @@ export default function Dashboard() {
                 </>
             }
         >
+            <Head title="Beranda - SIAPA PEKA" />
+
             <div className="m-4 space-y-6 rounded-lg">
                 {/* Header Section */}
                 <div className="relative bg-[url('/assets/Header.jpg')] bg-center bg-cover w-full h-60   flex items-center justify-between p-8 shadow-lg rounded-xl">

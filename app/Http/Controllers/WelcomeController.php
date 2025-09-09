@@ -216,11 +216,11 @@ class WelcomeController extends Controller
     {
         if ($totalAccepted === 0) {
             return "Tidak Ada";
-        } elseif ($totalAccepted <= 10) {
-            return "Rendah";
-        } elseif ($totalAccepted <= 50) {
-            return "Cukup";
         } elseif ($totalAccepted <= 100) {
+            return "Rendah";
+        } elseif ($totalAccepted <= 250) {
+            return "Cukup";
+        } elseif ($totalAccepted <= 500) {
             return "Tinggi";
         } else {
             return "Sangat Tinggi";

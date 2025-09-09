@@ -178,7 +178,7 @@ export default function Read() {
                 </div>
             }
         >
-            <Head title="Statistik" />
+            <Head title="Statistik - SIAPA PEKA" />
             <div className="p-6">
                 {filteredCities.length === 0 ? (
                     <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl shadow-sm border border-gray-100">
