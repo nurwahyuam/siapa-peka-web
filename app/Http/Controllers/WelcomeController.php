@@ -56,6 +56,8 @@ class WelcomeController extends Controller
                 $applicationsChildBrideData[$app->city_feature_id] = [
                     'accepted' => (int) $app->accepted,
                     'submitted' => (int) $app->submitted,
+                    'rejected' => $app->submitted > $app->accepted ? $app->submitted - $app->accepted : 0,
+                    'total' => (int) $app->submitted + (int) $app->accepted,
                 ];
             }
 
