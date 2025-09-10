@@ -77,11 +77,11 @@ export default function Statistik({
             </button>
 
             {isOpen && (
-                <div className="fixed top-[106px] right-4 w-[640px] h-[440px] bg-white shadow-2xl rounded-lg border border-gray-200 animate-slide-up overflow-hidden z-50">
-                    <div className="relative flex items-center justify-center p-4 pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+                <div className="fixed inset-0 w-full h-full bg-white shadow-2xl z-50 flex flex-col md:inset-auto md:bottom-4 md:right-4 md:w-[640px] md:h-[440px] md:rounded-lg md:border md:border-gray-200 animate-slide-up">
+                    <div className="relative flex items-center justify-center p-4 pl-8 md:pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
                         <button
                             onClick={() => handleToggle(false)}
-                            className="absolute left-4 p-2 transition-transform hover:text-gray-500 rounded-full"
+                            className="absolute right-4 p-2 transition-transform hover:text-gray-500 rounded-full"
                         >
                             <XCircle size={24} />
                         </button>
@@ -125,7 +125,7 @@ export default function Statistik({
                         </button>
                     </div>
 
-                    <div className="p-4 overflow-auto">
+                    <div className="flex-1 p-3 md:p-4 overflow-y-auto">
                         {/* Chart Tren Dispensasi Kawin */}
                         {activeTab === "overview" && (
                             <div>
