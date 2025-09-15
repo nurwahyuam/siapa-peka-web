@@ -214,9 +214,7 @@ class WelcomeController extends Controller
      */
     private function getKategori($totalAccepted)
     {
-        if ($totalAccepted === 0) {
-            return "Tidak Ada";
-        } elseif ($totalAccepted <= 100) {
+        if ($totalAccepted <= 100) {
             return "Rendah";
         } elseif ($totalAccepted <= 250) {
             return "Cukup";

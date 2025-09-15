@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Application;
 use App\Models\Period;
 use App\Models\ChildBride;
 use App\Models\CityFeature;
@@ -75,6 +76,18 @@ class ImportApiProvJatim extends Command
                     'number_of_men_under_19'   => $item['jumlah_pengantin_laki_laki_di_bawah_19_tahun'],
                     'number_of_women_under_19' => $item['jumlah_pengantin_perempuan_di_bawah_19_tahun'],
                     'total'                    => $item['total_jumlah_pengantin_di_bawah_19_tahun'],
+                ]
+            );
+
+            Application::updateOrCreate(
+                [
+                    'city_feature_id' => $city->id,
+                    'period_id'       => $period->id,
+                ],
+                [
+                    'sources' => ([
+                        'name' => 'Provinsi Jawa Timur',
+                    ]),
                 ]
             );
         }

@@ -74,7 +74,7 @@ export default function Dashboard() {
                     {/* Pengajuan Cuti Card */}
                     <div className="bg-white p-6 rounded-lg shadow-sm">
                         <p className="text-lg font-bold text-gray-700">
-                            Diterima
+                            Disetujui
                         </p>
                         <div className="flex items-center gap-4 mt-2">
                             <h2 className="text-5xl font-bold ">
@@ -114,7 +114,7 @@ export default function Dashboard() {
                                 dataKey="submitted"
                                 stroke="#8884d8"
                                 strokeWidth={3}
-                                name="Diterima"
+                                name="Disetujui"
                             />
                             <Line
                                 type="monotone"
@@ -138,7 +138,7 @@ export default function Dashboard() {
                                 Tahun {item.year}
                             </p>
                             <div className="mt-2">
-                                <p className="text-gray-500">Total Diterima</p>
+                                <p className="text-gray-500">Total Disetujui</p>
                                 <h2 className="text-3xl font-bold">
                                     {item.submitted.toLocaleString()}
                                 </h2>

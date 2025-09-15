@@ -26,15 +26,12 @@ export default function Welcome() {
 
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
-        if (accepted === 0) return "#E2E2E2";
         if (accepted <= 100) return "#FDDBC7";
         if (accepted <= 250) return "#F4A582";
         if (accepted <= 500) return "#B2182B";
         if (accepted > 500) return "#67001F";
         return "#E2E2E2";
     };
-
-
 
     // Fungsi untuk mendapatkan warna berdasarkan kategori risiko
     const getColorByCategory = (category) => {
@@ -233,7 +230,10 @@ export default function Welcome() {
             <div className="min-h-screen bg-white relative">
                 <div id="map" className="w-full h-screen z-0"></div>
                 <div className="absolute top-0 left-0 w-full z-10">
-                    <Navbar cityFeatures={cityFeatures} currentYear={currentYear} />
+                    <Navbar
+                        cityFeatures={cityFeatures}
+                        currentYear={currentYear}
+                    />
                     <Statistik
                         year={currentYear}
                         cityFeatures={cityFeatures}

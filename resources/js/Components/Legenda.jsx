@@ -78,10 +78,6 @@ export default function Legenda({
                         {colorScheme === "accepted" ? (
                             <div className="space-y-2">
                                 <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
-                                    <span>Risiko Sangat Rendah</span>
-                                </div>
-                                <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
                                     <span>Risiko Rendah</span>
                                 </div>
@@ -100,10 +96,6 @@ export default function Legenda({
                             </div>
                         ) : (
                             <div className="space-y-2">
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
-                                    <span>0 Diterima</span>
-                                </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
                                     <span>1-100 Diterima</span>

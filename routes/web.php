@@ -19,14 +19,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/manajemen', [ManageController::class, 'index'])->name('manage.index');
     Route::get('/admin/manajemen/tambah', [ManageController::class, 'create'])->name('manage.create');
     Route::post('/admin/manajemen/tambah/simpan', [ManageController::class, 'storeCreate'])->name('manage.create.store');
-    Route::get('/admin/manajemen/{city}/{year?}/edit', [ManageController::class, 'edit'])->name('manage.edit');
-    Route::post('/admin/manajemen/{city}/{year}/store', [ManageController::class, 'store'])->name('manage.store');
-    Route::put('/admin/manajemen/{city}/{year}', [ManageController::class, 'update'])->name('manage.update');
-    Route::get('/admin/manajemen/import', [ManageController::class, 'import'])->name('manage.import');
-    Route::post('/admin/manajemen/import/simpan', [ManageController::class, 'storeImport'])->name('manage.import.store');
-    Route::get('/admin/manajemen/export', [ManageController::class, 'export'])->name('manage.export');
+    Route::get('/admin/manajemen/impor', [ManageController::class, 'import'])->name('manage.import');
+    Route::post('/admin/manajemen/impor/simpan', [ManageController::class, 'storeImport'])->name('manage.import.store');
+    Route::get('/admin/manajemen/unduh', [ManageController::class, 'export'])->name('manage.export');
     Route::get('/admin/manajemen/detail/{slug}', [ManageController::class, 'show'])->name('manage.show');
-    Route::delete('/admin/manajemen/{city}/{year}', [ManageController::class, 'destroy'])
+    Route::get('/admin/manajemen/{city}/{year?}/{period?}', [ManageController::class, 'edit'])
+        ->name('manage.edit');
+    Route::put('/admin/manajemen/{city}/{year}/{period?}', [ManageController::class, 'update'])
+        ->name('manage.update');
+    Route::delete('/admin/manajemen/{city}/{period?}/destroy', [ManageController::class, 'destroy'])
         ->name('manage.destroy');
 
     Route::get('/admin/statistik', [StatisticController::class, 'index'])->name('statistic');

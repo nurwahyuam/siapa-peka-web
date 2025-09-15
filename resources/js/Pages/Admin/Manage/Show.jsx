@@ -14,6 +14,17 @@ import {
     CalendarClock,
 } from "lucide-react";
 
+function sumPeriodData(items, fields) {
+    const result = {};
+    fields.forEach((field) => {
+        result[field] = items.reduce(
+            (sum, item) => sum + (parseInt(item[field]) || 0),
+            0
+        );
+    });
+    return result;
+}
+
 const Show = () => {
     const { city } = usePage().props;
     const [selectedYear, setSelectedYear] = useState(2025); // Default tahun 2024
@@ -43,60 +54,87 @@ const Show = () => {
         return Array.from(years).sort((a, b) => b - a);
     }, [city]);
 
-    // Find data for the selected year
     const yearData = useMemo(() => {
-        const result = {
-            applications: { submitted: 0, accepted: 0, source: "" },
-            education_levels: { no_school: 0, sd: 0, smp: 0, sma: 0 },
-            age_classifications: { less_than_15: 0, between_15_19: 0 },
-            child_brides: {
-                number_of_men_under_19: 0,
-                number_of_women_under_19: 0,
-                total: 0,
-            },
-            reasons: {
-                pregnant: 0,
-                promiscuity: 0,
-                economy: 0,
-                traditional_culture: 0,
-                avoiding_adultery: 0,
-            },
-        };
-
-        // Helper function to find data by year
-        const findDataByYear = (dataArray) => {
-            return dataArray?.find(
-                (item) => item.period?.year === selectedYear
+        // Helper untuk filter data per tahun & periode
+        const filterByYear = (arr) =>
+            arr?.filter((item) => item.period?.year === selectedYear) || [];
+        const findSetahun = (arr) =>
+            filterByYear(arr).find(
+                (item) => item.period?.name?.toLowerCase() === "setahun"
             );
+        const filterTriwulan = (arr) =>
+            filterByYear(arr).filter((item) =>
+                item.period?.name?.toLowerCase().includes("triwulan")
+            );
+
+        // Applications
+        let applications = findSetahun(city?.applications);
+        if (!applications) {
+            // Gabung data triwulan
+            const triwulan = filterTriwulan(city?.applications);
+            applications = sumPeriodData(triwulan, ["submitted", "accepted"]);
+            // Gabungkan sumber
+            applications.source = triwulan
+                .map((t) => t.source)
+                .filter(Boolean)
+                .join(", ");
+        }
+
+        // Education Levels
+        let education_levels = findSetahun(city?.education_levels);
+        if (!education_levels) {
+            const triwulan = filterTriwulan(city?.education_levels);
+            education_levels = sumPeriodData(triwulan, [
+                "no_school",
+                "sd",
+                "smp",
+                "sma",
+            ]);
+        }
+
+        // Age Classifications
+        let age_classifications = findSetahun(city?.age_classifications);
+        if (!age_classifications) {
+            const triwulan = filterTriwulan(city?.age_classifications);
+            age_classifications = sumPeriodData(triwulan, [
+                "less_than_15",
+                "between_15_19",
+            ]);
+        }
+
+        // Child Brides
+        let child_brides = findSetahun(city?.child_brides);
+        if (!child_brides) {
+            const triwulan = filterTriwulan(city?.child_brides);
+            child_brides = sumPeriodData(triwulan, [
+                "number_of_men_under_19",
+                "number_of_women_under_19",
+            ]);
+        }
+        child_brides.total =
+            (child_brides.number_of_men_under_19 || 0) +
+            (child_brides.number_of_women_under_19 || 0);
+
+        // Reasons
+        let reasons = findSetahun(city?.reasons);
+        if (!reasons) {
+            const triwulan = filterTriwulan(city?.reasons);
+            reasons = sumPeriodData(triwulan, [
+                "pregnant",
+                "promiscuity",
+                "economy",
+                "traditional_culture",
+                "avoiding_adultery",
+            ]);
+        }
+
+        return {
+            applications,
+            education_levels,
+            age_classifications,
+            child_brides,
+            reasons,
         };
-
-        // Find data for each category
-        const applicationData = findDataByYear(city?.applications);
-        if (applicationData) {
-            result.applications = applicationData;
-        }
-
-        const educationData = findDataByYear(city?.education_levels);
-        if (educationData) {
-            result.education_levels = educationData;
-        }
-
-        const ageData = findDataByYear(city?.age_classifications);
-        if (ageData) {
-            result.age_classifications = ageData;
-        }
-
-        const childBridesData = findDataByYear(city?.child_brides);
-        if (childBridesData) {
-            result.child_brides = childBridesData;
-        }
-
-        const reasonsData = findDataByYear(city?.reasons);
-        if (reasonsData) {
-            result.reasons = reasonsData;
-        }
-
-        return result;
     }, [selectedYear, city]);
 
     // Calculate percentages and totals
@@ -143,20 +181,20 @@ const Show = () => {
                             {/* Header Section */}
                             <div className="mb-8">
                                 <div className="flex justify-between items-center mb-6">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center">
                                         <Link
                                             href={route("manage.index")}
                                             className="flex hover:text-indigo-500 items-center transition-colors duration-200"
                                         >
-                                            <CircleArrowLeft className="h-6 w-6" />
+                                            <CircleArrowLeft className="h-7 w-7 mr-2" />
                                         </Link>
                                         <h1 className="text-2xl font-bold text-gray-900">
-                                            Detail {city?.name || "N/A"}
+                                            Detail Data - {city?.name || "City"}
                                         </h1>
                                     </div>
                                     {availableYears.length > 0 && (
                                         <div className="flex items-center">
-                                            <label className="mr-3 text-sm font-medium text-gray-700">
+                                            <label className="mr-3 text-md font-medium text-gray-700">
                                                 Pilih Tahun:
                                             </label>
                                             <select
@@ -182,150 +220,80 @@ const Show = () => {
                                 </div>
 
                                 {/* Info Cards */}
-                                {/* <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-                            <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow duration-200">
-                                <div className="flex items-center">
-                                    <FileText className="h-8 w-8 text-blue-500 mr-3" />
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-600">
-                                            Pengajuan
-                                        </p>
-                                        <p className="text-2xl font-bold text-gray-900">
-                                            {yearData.applications.submitted ||
-                                                0}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow duration-200">
-                                <div className="flex items-center">
-                                    <BarChart3 className="h-8 w-8 text-green-500 mr-3" />
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-600">
-                                            Dikabulkan
-                                        </p>
-                                        <p className="text-2xl font-bold text-gray-900">
-                                            {yearData.applications.accepted ||
-                                                0}
-                                        </p>
-                                        <p className="text-xs text-green-600">
-                                            {acceptanceRate.toFixed(1)}%
-                                            berhasil
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow duration-200">
-                                <div className="flex items-center">
-                                    <GraduationCap className="h-8 w-8 text-purple-500 mr-3" />
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-600">
-                                            Pendidikan
-                                        </p>
-                                        <p className="text-2xl font-bold text-gray-900">
-                                            {totalEducation}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow duration-200">
-                                <div className="flex items-center">
-                                    <Users className="h-8 w-8 text-orange-500 mr-3" />
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-600">
-                                            Usia 15-19
-                                        </p>
-                                        <p className="text-2xl font-bold text-gray-900">
-                                            {yearData.age_classifications
-                                                .between_15_19 || 0}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow duration-200">
-                                <div className="flex items-center">
-                                    <Users className="h-8 w-8 text-red-500 mr-3" />
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-600">
-                                            Pengantin Anak
-                                        </p>
-                                        <p className="text-2xl font-bold text-gray-900">
-                                            {totalChildBrides}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-                            </div>
-
-                            {/* General Information */}
-                            <div className="mb-6 bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-200">
-                                <div className="bg-gradient-to-r from-gray-500 to-gray-600 px-6 py-4">
-                                    <h3 className="text-lg font-semibold text-white flex items-center">
-                                        <CreditCard className="h-5 w-5 mr-2" />
-                                        Informasi Umum
-                                    </h3>
-                                </div>
-                                <div className="p-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="flex items-center py-2">
-                                            <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                                    <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow duration-200">
+                                        <div className="flex items-center">
+                                            <FileText className="h-8 w-8 text-blue-500 mr-3" />
                                             <div>
-                                                <p className="text-sm text-gray-600">
-                                                    Kabupaten/Kota
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Pengajuan
                                                 </p>
-                                                <p className="font-medium text-gray-900">
-                                                    {city?.name || "N/A"}
+                                                <p className="text-2xl font-bold text-gray-900">
+                                                    {yearData.applications
+                                                        .submitted || 0}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center py-2">
-                                            <CreditCard className="h-5 w-5 text-gray-400 mr-3" />
+                                    </div>
+
+                                    <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow duration-200">
+                                        <div className="flex items-center">
+                                            <BarChart3 className="h-8 w-8 text-green-500 mr-3" />
                                             <div>
-                                                <p className="text-sm text-gray-600">
-                                                    Kode Kemendagri
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Dikabulkan
                                                 </p>
-                                                <p className="font-medium text-gray-900">
-                                                    {city?.code || "N/A"}
+                                                <p className="text-2xl font-bold text-gray-900">
+                                                    {yearData.applications
+                                                        .accepted || 0}
+                                                </p>
+                                                <p className="text-xs text-green-600">
+                                                    {acceptanceRate.toFixed(1)}%
+                                                    berhasil
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center py-2">
-                                            <CreditCard className="h-5 w-5 text-gray-400 mr-3" />
+                                    </div>
+
+                                    <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow duration-200">
+                                        <div className="flex items-center">
+                                            <GraduationCap className="h-8 w-8 text-purple-500 mr-3" />
                                             <div>
-                                                <p className="text-sm text-gray-600">
-                                                    Jenis
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Pendidikan
                                                 </p>
-                                                <p className="font-medium text-gray-900">
-                                                    {city?.kind === "Regency"
-                                                        ? "Kabupaten"
-                                                        : "Kota" || "N/A"}
+                                                <p className="text-2xl font-bold text-gray-900">
+                                                    {totalEducation}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center py-2">
-                                            <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                                    </div>
+
+                                    <div className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow duration-200">
+                                        <div className="flex items-center">
+                                            <Users className="h-8 w-8 text-orange-500 mr-3" />
                                             <div>
-                                                <p className="text-sm text-gray-600">
-                                                    Tahun Data
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Usia 15-19
                                                 </p>
-                                                <p className="font-medium text-gray-900">
-                                                    {selectedYear}
+                                                <p className="text-2xl font-bold text-gray-900">
+                                                    {yearData
+                                                        .age_classifications
+                                                        .between_15_19 || 0}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center py-2 md:col-span-2">
-                                            <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                                    </div>
+
+                                    <div className="bg-white rounded-lg shadow p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow duration-200">
+                                        <div className="flex items-center">
+                                            <Users className="h-8 w-8 text-red-500 mr-3" />
                                             <div>
-                                                <p className="text-sm text-gray-600">
-                                                    Provinsi
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Pengantin Anak
                                                 </p>
-                                                <p className="font-medium text-gray-900">
-                                                    {city?.province || "N/A"}
+                                                <p className="text-2xl font-bold text-gray-900">
+                                                    {totalChildBrides}
                                                 </p>
                                             </div>
                                         </div>
@@ -334,7 +302,53 @@ const Show = () => {
                             </div>
 
                             {/* Main Content Grid */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                {/* General Information */}
+                                <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-200">
+                                    <div className="bg-gradient-to-r from-gray-500 to-gray-600 px-6 py-4">
+                                        <h3 className="text-lg font-semibold text-white flex items-center">
+                                            <CreditCard className="h-5 w-5 mr-2" />
+                                            Informasi Dasar
+                                        </h3>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="flex items-center py-2">
+                                                <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Kabupaten/Kota
+                                                    </p>
+                                                    <p className="font-medium text-gray-900">
+                                                        {city?.name || "N/A"}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center py-2">
+                                                <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Tahun Data
+                                                    </p>
+                                                    <p className="font-medium text-gray-900">
+                                                        {selectedYear}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center py-2">
+                                                <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Code
+                                                    </p>
+                                                    <p className="font-medium text-gray-900">
+                                                        {city?.code || "N/A"}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {/* Application Statistics */}
                                 <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-200">
                                     <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
@@ -356,7 +370,7 @@ const Show = () => {
                                             </div>
                                             <div className="flex justify-between items-center">
                                                 <span className="font-medium text-gray-700">
-                                                    Dikabulkan:
+                                                    Disetujui:
                                                 </span>
                                                 <span className="text-lg font-semibold text-green-600">
                                                     {yearData.applications
@@ -366,7 +380,7 @@ const Show = () => {
                                             <div className="pt-2">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <span className="font-medium text-gray-700">
-                                                        Persentase Dikabulkan:
+                                                        Persentase Disetujui:
                                                     </span>
                                                     <span className="text-lg font-semibold">
                                                         {acceptanceRate.toFixed(
@@ -639,6 +653,16 @@ const Show = () => {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div className="pt-6 border-t border-gray-200">
+                                <div className="flex justify-end space-x-3">
+                                    <Link
+                                        href={route("manage.index")}
+                                        className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    >
+                                        Kembali
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -2,9 +2,12 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status }) {
+    const [eyePassword, setEyePassword] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
         password: "",
@@ -22,7 +25,7 @@ export default function Login({ status, canResetPassword }) {
         <>
             <Head title="Login" />
             <div className="h-screen bg-white w-full block sm:flex items-center justify-center">
-                <Head title="Log in" />
+                <Head title="Login - SIAPA PEKA" />
 
                 {status && (
                     <div className="mb-4 text-sm font-medium text-green-600">
@@ -57,7 +60,6 @@ export default function Login({ status, canResetPassword }) {
                                     value="Username"
                                     className="block text-sm font-medium text-gray-700"
                                 />
-                                
                             </div>
                             <TextInput
                                 id="username"
@@ -74,9 +76,7 @@ export default function Login({ status, canResetPassword }) {
                                     setData("username", e.target.value)
                                 }
                             />
-                            <InputError
-                                    message={errors.username}
-                                />
+                            <InputError message={errors.username} />
                         </div>
 
                         <div className="space-y-2">
@@ -86,25 +86,38 @@ export default function Login({ status, canResetPassword }) {
                                     value="Password"
                                     className="block text-sm font-medium text-gray-700"
                                 />
-                                
                             </div>
-                            <TextInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
-                                        transition-all duration-200 ease-in-out
-                                        focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
-                                        hover:border-indigo-400"
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
-                            <InputError
-                                    message={errors.password}
+                            <div className="relative">
+                                <TextInput
+                                    id="password"
+                                    type={eyePassword ? "text" : "password"}
+                                    name="password"
+                                    value={data.password}
+                                    className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
+                                            transition-all duration-200 ease-in-out
+                                            focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
+                                            hover:border-indigo-400 pr-12"
+                                    autoComplete="current-password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setEyePassword((prev) => !prev)
+                                    }
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600 focus:outline-none"
+                                    tabIndex={-1}
+                                >
+                                    {eyePassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+                            <InputError message={errors.password} />
                         </div>
 
                         <div className="pt-3">
@@ -119,7 +132,7 @@ export default function Login({ status, canResetPassword }) {
                                         disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={processing}
                             >
-                                {processing ? "Loading..." : "Login"}
+                                {processing ? "Memuat..." : "Masuk"}
                             </PrimaryButton>
                         </div>
                     </form>

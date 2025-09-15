@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import { Head, useForm, Link } from "@inertiajs/react";
+import React, { useState, useEffect, useRef } from "react";
+import { Head, useForm, Link, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { CircleArrowLeft, SquareKanban } from "lucide-react";
+import {
+    CalendarClock,
+    CircleArrowLeft,
+    ImportIcon,
+    SquareKanban,
+    TriangleAlert,
+} from "lucide-react";
+import { Toaster, toast } from "react-hot-toast";
 
 const Import = () => {
     const [file, setFile] = useState(null);
+    const fileInputRef = useRef(null); // 🔹 tambahkan ref
     const { data, setData, errors, post, processing } = useForm({
         file: null,
     });
+
+    const { flash } = usePage().props;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,18 +32,74 @@ const Import = () => {
         setData("file", selectedFile);
     };
 
+    // 🔹 fungsi reset file input
+    const resetFile = () => {
+        setFile(null);
+        setData("file", null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // reset input file
+        }
+    };
+
+    useEffect(() => {
+        if (errors.file) {
+            toast.error(errors.file, { duration: 5000 });
+            resetFile();
+        }
+    }, [errors]);
+
+    useEffect(() => {
+        if (flash?.error && flash.import_errors?.length === 0) {
+            toast.error(flash.error, { duration: 6000 });
+            resetFile();
+        }
+
+        if (flash?.error && flash.import_errors?.length > 0) {
+            toast.error(
+                <div>
+                    <p className="font-semibold">{flash.error}</p>
+                    <ul className="list-disc pl-5 mt-1 text-sm max-h-32 overflow-y-auto">
+                        {flash.import_errors.map((err, i) => (
+                            <li key={i}>{err}</li>
+                        ))}
+                    </ul>
+                </div>,
+                { duration: 8000 }
+            );
+            resetFile();
+        }
+    }, [flash]);
+
     return (
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 flex items-center gap-2">
-                        <SquareKanban className="-rotate-90" />
+                        <CalendarClock />
                         Manajemen Data
                     </h2>
                 </div>
             }
         >
             <Head title="Impor Data - SIAPA PEKA" />
+
+            {/* Toast Container */}
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 5000,
+                    style: {
+                        background: "#363636",
+                        color: "#fff",
+                    },
+                    error: {
+                        iconTheme: {
+                            primary: "#EF4444",
+                            secondary: "#fff",
+                        },
+                    },
+                }}
+            />
 
             <div className="py-6">
                 <div className="max-w-7xl mx-auto sm:px-4 lg:px-6">
@@ -44,85 +110,201 @@ const Import = () => {
                                     href={route("manage.index")}
                                     className="flex hover:text-indigo-500 items-center transition-colors duration-200"
                                 >
-                                    <CircleArrowLeft className="h-6 w-6 mr-2" />
+                                    <CircleArrowLeft className="h-7 w-7 mr-2" />
                                 </Link>
                                 <h1 className="text-2xl font-bold text-gray-900">
                                     Impor Data Baru
                                 </h1>
                             </div>
 
+                            <div className="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+                                <div className="flex">
+                                    <div className="ml-3">
+                                        <div className="text-sm text-yellow-700">
+                                            <strong>
+                                                Aturan Upload File Excel:
+                                            </strong>
+                                            <ul className="list-disc pl-5 mt-2 space-y-1">
+                                                <li>
+                                                    File harus berformat{" "}
+                                                    <strong>.xlsx</strong>{" "}
+                                                    dengan ukuran maksimal{" "}
+                                                    <strong>10 MB</strong>.
+                                                </li>
+                                                <li>
+                                                    Struktur file wajib sesuai
+                                                    dengan{" "}
+                                                    <a
+                                                        href="/storage/templates/template.xlsx"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:underline"
+                                                    >
+                                                        template
+                                                    </a>{" "}
+                                                    yang sudah disediakan:
+                                                    <ul className="list-decimal pl-5 mt-1 space-y-1">
+                                                        <li>
+                                                            Nama kolom (header)
+                                                            tidak boleh diubah.
+                                                        </li>
+                                                        <li>
+                                                            Kolom{" "}
+                                                            <strong>
+                                                                Kode Kota
+                                                            </strong>
+                                                            ,{" "}
+                                                            <strong>
+                                                                Nama Kota
+                                                            </strong>
+                                                            ,{" "}
+                                                            <strong>
+                                                                Tahun
+                                                            </strong>
+                                                            , dan{" "}
+                                                            <strong>
+                                                                Periode
+                                                            </strong>{" "}
+                                                            wajib diisi.
+                                                        </li>
+                                                        <li>
+                                                            Kolom{" "}
+                                                            <strong>
+                                                                Tahun
+                                                            </strong>{" "}
+                                                            harus berupa angka
+                                                            (contoh: 2025).
+                                                        </li>
+                                                        <li>
+                                                            Kolom{" "}
+                                                            <strong>
+                                                                Sumber Data
+                                                            </strong>{" "}
+                                                            Jika diisi lebih
+                                                            dari 1, dipisah
+                                                            menggunakan koma ("
+                                                            , "). Contoh:
+                                                            Provinsi Jawa Timur,
+                                                            Kementerian Agama
+                                                        </li>
+                                                        <li>
+                                                            Semua kolom angka
+                                                            lain (Diajukan,
+                                                            Dikabulkan,
+                                                            Pendidikan,
+                                                            Klasifikasi Usia,
+                                                            Pernikahan Anak,
+                                                            Alasan) wajib diisi
+                                                            dengan nilai numeric{" "}
+                                                            <em>(≥ 0)</em>.
+                                                        </li>
+                                                        <li>
+                                                            Kolom{" "}
+                                                            <strong>
+                                                                Periode
+                                                            </strong>{" "}
+                                                            hanya boleh berisi{" "}
+                                                            <code>Setahun</code>{" "}
+                                                            atau{" "}
+                                                            <code>
+                                                                Triwulan I–IV
+                                                            </code>
+                                                            .
+                                                        </li>
+                                                        <li>
+                                                            Jika sudah ada data{" "}
+                                                            <strong>
+                                                                Setahun
+                                                            </strong>{" "}
+                                                            pada tahun tertentu,
+                                                            maka tidak boleh ada
+                                                            data Triwulan di
+                                                            tahun yang sama (dan
+                                                            sebaliknya).
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    Jika ada data yang tidak
+                                                    valid, baris terkait akan{" "}
+                                                    <strong>ditolak</strong> dan
+                                                    tidak masuk ke database.
+                                                    Notifikasi error akan
+                                                    menampilkan <em>baris</em>{" "}
+                                                    dan <em>kolom</em> yang
+                                                    bermasalah.
+                                                </li>
+                                            </ul>
+                                            <div className="flex items-center gap-2 text-red-600 font-semibold mt-1">
+                                                <TriangleAlert className="w-4 h-4" />{" "}
+                                                <p>
+                                                    Hati-hati: Jika data dengan
+                                                    kombinasi{" "}
+                                                    <strong>
+                                                        Kota + Tahun + Periode
+                                                    </strong>{" "}
+                                                    sudah ada, maka data lama
+                                                    akan <u>diganti (update)</u>{" "}
+                                                    oleh data baru, bukan dibuat
+                                                    duplikat.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Form Upload */}
                             <form
                                 onSubmit={handleSubmit}
                                 encType="multipart/form-data"
                             >
                                 <div className="mb-4">
-                                    <label
-                                        htmlFor="file"
-                                        className="block text-gray-700 text-sm font-bold mb-2"
-                                    >
-                                        Pilih File Excel
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                                        Pilih File Excel Sesuai Template
                                     </label>
+                                    <div className="flex items-center justify-between w-full border-2 border-dashed border-gray-300 rounded-md p-2">
+                                        <label
+                                            htmlFor="file"
+                                            className="cursor-pointer flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md shadow hover:bg-green-700 focus:outline-none"
+                                        >
+                                            {file ? "Ganti File" : "Pilih File"}
+                                        </label>
+                                        {file && (
+                                            <span className="ml-3 text-sm text-green-600">
+                                                {file.name}
+                                            </span>
+                                        )}
+                                    </div>
                                     <input
                                         type="file"
                                         id="file"
                                         name="file"
-                                        accept=".xlsx,.xls,.csv"
+                                        accept=".xlsx"
+                                        ref={fileInputRef} // 🔹 pakai ref
                                         onChange={handleFileChange}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        className="hidden"
                                     />
-                                    {errors.file && (
-                                        <p className="text-red-500 text-xs italic mt-1">
-                                            {errors.file}
-                                        </p>
-                                    )}
-                                    {file && (
-                                        <p className="text-green-500 text-sm mt-2">
-                                            File terpilih: {file.name}
-                                        </p>
-                                    )}
                                 </div>
-
-                                <div className="flex items-center justify-end mt-6">
+                                <div className="flex justify-end space-x-3">
+                                    <Link
+                                        href={route("manage.index")}
+                                        className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    >
+                                        Kembali
+                                    </Link>
                                     <button
                                         type="submit"
                                         disabled={processing || !file}
-                                        className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
-                                            processing || !file
-                                                ? "opacity-50 cursor-not-allowed"
-                                                : ""
-                                        }`}
+                                        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50`}
                                     >
+                                        <ImportIcon className="h-4 w-4 mr-2" />
                                         {processing
                                             ? "Mengimpor..."
                                             : "Impor Data"}
                                     </button>
                                 </div>
                             </form>
-
-                            <div className="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                                <div className="flex">
-                                    <div className="ml-3">
-                                        <p className="text-sm text-yellow-700">
-                                            <strong>
-                                                Format file Excel yang didukung:
-                                            </strong>
-                                            <ul className="list-disc pl-5 mt-2">
-                                                <li>
-                                                    File harus berformat .xlsx
-                                                </li>
-                                                <li>
-                                                    Struktur kolom harus sesuai
-                                                    dengan template yang
-                                                    ditentukan
-                                                </li>
-                                                <li>
-                                                    Ukuran file maksimal 2MB
-                                                </li>
-                                            </ul>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -123,7 +123,7 @@ export default function Read() {
                 total: total,
             },
             {
-                name: "Diterima",
+                name: "Disetujui",
                 value: accepted,
                 fill: COLORS.application.accepted,
                 total: total,
@@ -320,7 +320,7 @@ export default function Read() {
                                                             className="text-[10px]"
                                                             fill="#666"
                                                         >
-                                                            Diterima
+                                                            Disetujui
                                                         </text>
                                                         <Tooltip
                                                             content={

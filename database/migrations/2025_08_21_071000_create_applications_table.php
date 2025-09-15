@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('period_id')->constrained()->onDelete('cascade');
             $table->integer('submitted')->default(0);
             $table->integer('accepted')->default(0);
-            $table->enum("source", ['Kementerian Agama', 'Provinsi Jawa Timur'])->default('Kementerian Agama');
+            $table->jsonb('sources')->nullable();
             $table->timestamps();
 
             // Unique constraint untuk mencegah duplikasi data

@@ -14,12 +14,16 @@ class Application extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'sources' => 'array',
+    ];
+
     protected $fillable = [
         'city_feature_id',
         'period_id',
         'submitted',
         'accepted',
-        'source'
+        'sources',
     ];
 
     public function cityFeature(): BelongsTo

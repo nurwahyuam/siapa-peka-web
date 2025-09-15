@@ -1,27 +1,34 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {
-    CalendarClock,
     CirclePlus,
     Download,
     Eye,
-    FilePenLine,
     Import,
     Map,
     Pen,
     SquareKanban,
-    Trash,
-    Trash2,
     Search,
     X,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Index = () => {
-    const { cities } = usePage().props;
+    const { cities, flash } = usePage().props;
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+
+    // ⏩ Tampilkan toast kalau ada flash.success
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success, { duration: 4000 });
+        }
+        if (flash?.error) {
+            toast.error(flash.error, { duration: 4000 });
+        }
+    }, [flash]);
 
     // Akses data yang benar - cities adalah array langsung
     const allCities = useMemo(() => {
@@ -36,9 +43,10 @@ const Index = () => {
     const filteredCities = useMemo(() => {
         if (!searchTerm) return allCities;
 
-        return allCities.filter(city =>
-            city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (city.code && city.code.toString().includes(searchTerm))
+        return allCities.filter(
+            (city) =>
+                city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (city.code && city.code.toString().includes(searchTerm))
         );
     }, [allCities, searchTerm]);
 
@@ -70,12 +78,35 @@ const Index = () => {
         }
     };
 
+    // Fungsi untuk mendapatkan period_id terbaru
+    const getLatestPeriodId = (city) => {
+        if (!city.applications || city.applications.length === 0) {
+            return "";
+        }
+
+        // Urutkan aplikasi: pertama oleh tahun (descending), lalu oleh period_id (descending)
+        const sortedApplications = [...city.applications].sort((a, b) => {
+            const yearA = a.period?.year || 0;
+            const yearB = b.period?.year || 0;
+
+            if (yearB !== yearA) {
+                return yearB - yearA; // Tahun lebih baru dulu
+            }
+            return b.period_id - a.period_id; // Period_id lebih besar dulu
+        });
+
+        return sortedApplications[0]?.period_id || "";
+    };
+
     // Generate pagination links
     const generatePaginationLinks = () => {
         const links = [];
         const maxVisiblePages = 5;
 
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let startPage = Math.max(
+            1,
+            currentPage - Math.floor(maxVisiblePages / 2)
+        );
         let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
         if (endPage - startPage + 1 < maxVisiblePages) {
@@ -158,46 +189,50 @@ const Index = () => {
                                 </h2>
                                 <div className="flex items-center justify-center gap-2">
                                     {/* Input Pencarian */}
-                                    <div className="relative mr-2">
+                                    <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <Search className="h-4 w-4 text-gray-400" />
                                         </div>
                                         <input
                                             type="text"
                                             placeholder="Cari kabupaten/kota..."
-                                            className="pl-10 pr-8 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 w-64"
+                                            className="pl-10 pr-8 py-2 border border-gray-300 rounded-md focus:ring-violet-500 focus:border-violet-500 w-64"
                                             value={searchTerm}
-                                            onChange={(e) => handleSearchChange(e.target.value)}
+                                            onChange={(e) =>
+                                                handleSearchChange(
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                         {searchTerm && (
                                             <button
                                                 onClick={clearSearch}
                                                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                                             >
-                                                <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                                                <X className="h-4 w-4 text-indigo-400 hover:text-indigo-600" />
                                             </button>
                                         )}
                                     </div>
 
                                     <Link
                                         href={route("manage.create")}
-                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
+                                        className="inline-flex gap-2    items-center px-4 py-2 text-md font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                                     >
-                                        <CirclePlus className="h-5 w-5" />
+                                        <CirclePlus className="h-4 w-4" />
                                         Baru
                                     </Link>
                                     <Link
                                         href={route("manage.import")}
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
+                                        className="inline-flex gap-2    items-center px-4 py-2 text-md font-medium text-white bg-amber-600 border border-transparent rounded-md shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50"
                                     >
-                                        <Import className="h-5 w-5" />
+                                        <Import className="h-4 w-4" />
                                         Impor
                                     </Link>
                                     <a
                                         href={route("manage.export")}
-                                        className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-3 rounded flex items-center gap-1"
+                                        className="inline-flex gap-2    items-center px-4 py-2 text-md font-medium text-white bg-green-500 border border-transparent rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:opacity-50"
                                     >
-                                        <Download className="h-5 w-5" />
+                                        <Download className="h-4 w-4" />
                                         Unduh
                                     </a>
                                 </div>
@@ -221,8 +256,10 @@ const Index = () => {
                                     {/* Informasi hasil pencarian */}
                                     {searchTerm && (
                                         <div className="mb-4 text-sm text-gray-600">
-                                            Menampilkan {filteredCities.length} hasil pencarian
-                                            {searchTerm && ` untuk "${searchTerm}"`}
+                                            Menampilkan {filteredCities.length}{" "}
+                                            hasil pencarian
+                                            {searchTerm &&
+                                                ` untuk "${searchTerm}"`}
                                             <button
                                                 className="ml-2 text-blue-500 hover:text-blue-700"
                                                 onClick={clearSearch}
@@ -244,7 +281,7 @@ const Index = () => {
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Jumlah Data
                                                 </th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Aksi
                                                 </th>
                                             </tr>
@@ -252,8 +289,13 @@ const Index = () => {
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {paginatedCities.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                                                        Tidak ada data yang cocok dengan pencarian "{searchTerm}"
+                                                    <td
+                                                        colSpan="4"
+                                                        className="px-6 py-4 text-center text-gray-500"
+                                                    >
+                                                        Tidak ada data yang
+                                                        cocok dengan pencarian "
+                                                        {searchTerm}"
                                                     </td>
                                                 </tr>
                                             ) : (
@@ -266,20 +308,20 @@ const Index = () => {
                                                             {city.code}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                            {
-                                                                city.applications
-                                                                    ? city.applications.length
-                                                                    : 0
-                                                            }{" "}
-                                                            periode
+                                                            {city.applications
+                                                                ? city
+                                                                      .applications
+                                                                      .length
+                                                                : 0}{" "}
+                                                            Periode Tahunan
                                                         </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center gap-2">
+                                                        <td className=" px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center justify-center gap-2">
                                                             <Link
                                                                 href={route(
                                                                     "manage.show",
                                                                     city.slug
                                                                 )}
-                                                                className="text-blue-600 hover:text-blue-900 mr-3 flex items-center gap-2"
+                                                                className="text-cyan-600 hover:text-cyan-900 mr-3 flex items    -center gap-2"
                                                             >
                                                                 <Eye />
                                                                 Lihat
@@ -290,9 +332,12 @@ const Index = () => {
                                                                     {
                                                                         city: city.slug,
                                                                         year: new Date().getFullYear(),
+                                                                        period: getLatestPeriodId(
+                                                                            city
+                                                                        ),
                                                                     }
                                                                 )}
-                                                                className="text-yellow-600 hover:text-yellow-900 mr-3 flex items-center gap-2"
+                                                                className="text-yellow-600 hover:text-yellow-800 mr-3 flex items-center gap-2"
                                                             >
                                                                 <Pen className="w-5 h-5" />
                                                                 Ubah
@@ -309,9 +354,18 @@ const Index = () => {
                                         <div className="mt-4">
                                             <div className="flex justify-between items-center">
                                                 <div className="text-sm text-gray-700">
-                                                    Menampilkan {((currentPage - 1) * itemsPerPage) + 1}{" "}
-                                                    sampai {Math.min(currentPage * itemsPerPage, filteredCities.length)} dari{" "}
-                                                    {filteredCities.length} data
+                                                    Menampilkan{" "}
+                                                    {(currentPage - 1) *
+                                                        itemsPerPage +
+                                                        1}{" "}
+                                                    sampai{" "}
+                                                    {Math.min(
+                                                        currentPage *
+                                                            itemsPerPage,
+                                                        filteredCities.length
+                                                    )}{" "}
+                                                    dari {filteredCities.length}{" "}
+                                                    data
                                                 </div>
                                                 <div className="flex space-x-2">
                                                     {generatePaginationLinks()}

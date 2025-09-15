@@ -100,7 +100,10 @@ class ApplicationsExport implements FromCollection, WithHeadings, WithMapping, W
             $application->period->name ?? '-',
             $this->getSafeValue($application, 'submitted'),
             $this->getSafeValue($application, 'accepted'),
-            $application->source ?? '-',
+            // Sources (gabung semua nama)
+            !empty($application->sources) && is_array($application->sources)
+                ? implode(', ', array_map(fn($s) => $s['name'], $application->sources))
+                : '-',
 
             // Education
             $this->getSafeValue($education, 'no_school'),
@@ -123,9 +126,6 @@ class ApplicationsExport implements FromCollection, WithHeadings, WithMapping, W
             $this->getSafeValue($reason, 'economy'),
             $this->getSafeValue($reason, 'traditional_culture'),
             $this->getSafeValue($reason, 'avoiding_adultery'),
-
-            $application->created_at?->format('d/m/Y H:i') ?? '-',
-            $application->updated_at?->format('d/m/Y H:i') ?? '-',
         ];
     }
 
@@ -153,8 +153,6 @@ class ApplicationsExport implements FromCollection, WithHeadings, WithMapping, W
             'Ekonomi',
             'Budaya Tradisional',
             'Menghindari Zina',
-            'Dibuat Pada',
-            'Diupdate Pada'
         ];
     }
 
