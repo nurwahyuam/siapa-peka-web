@@ -1,7 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes bounce-once {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
 
+.animate-bounce-once {
+  animation: bounce-once 2s ease-in-out;
+}
+
+/* Transisi untuk panel */
+.panel-enter {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.panel-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 500ms ease-in-out, opacity 500ms ease-in-out;
+}
+
+.panel-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.panel-exit-active {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 500ms ease-in-out, opacity 500ms ease-in-out;
+}
 /* Style untuk tile layer abu-abu transparan */
 .gray-map-tiles {
     filter: grayscale(70%) brightness(110%) opacity(0.7);
