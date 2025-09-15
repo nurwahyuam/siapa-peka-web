@@ -14,31 +14,11 @@ export default function Legenda({
 
     return (
         <>
-            {/* Tombol Toggle dengan animasi */}
-            {!isOpen && (
-                <div className="fixed bottom-6 inset-x-0 flex justify-center z-10">
-                    <button
-                        onClick={() => setIsOpen(true)}
-                        className="bg-blue-600 px-10 text-white py-2 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 animate-bounce-once"
-                    >
-                        <ChevronsUp />
-                    </button>
-                </div>
-            )}
-
-            {/* Panel Filter dengan animasi */}
-            <div className={`fixed bottom-0 w-full flex justify-center transition-all duration-500 ease-in-out z-20 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'}`}>
-                <div className="relative bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 m-4">
-
-                    {/* Tombol X */}
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition-colors duration-200"
-                    >
-                        <X size={18} />
-                    </button>
-
-                    <div className="space-y-5 h-full w-full">
+            {/* Panel Filter */}
+            <div className={`fixed bottom-4 w-full flex justify-center`}>
+                <div className="w-100 sm:w-1/2 lg:w-1/3 h-50 bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 animate-slide-up block md:flex justify-between items-center gap-6">
+                    {/* Konten Filter */}
+                    <div className="space-y-4 w-full">
                         {/* Filter Tahun */}
                         <div>
                             <label className="text-sm font-medium text-gray-700">
@@ -76,33 +56,9 @@ export default function Legenda({
                                 <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
                                 <span>500+</span>
                             </div>
-                        ) : (
-                            <div className="space-y-2">
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#E2E2E2] mr-2"></div>
-                                    <span>0 Diterima</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
-                                    <span>1-100 Diterima</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#F4A582] mr-2"></div>
-                                    <span>100-250 Diterima</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#B2182B] mr-2"></div>
-                                    <span>251-500 Diterima</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
-                                    <span>500+ Diterima</span>
-                                </div>
-                            </div>
-                        )}
+                        </div>
                     </div>
-
-
+                    </div>
                 </div>
             </div>
         </>
