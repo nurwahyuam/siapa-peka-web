@@ -19,7 +19,6 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
     const [reasonData, setreasonData] = useState([]);
     const [educationData, setEducationData] = useState([]);
     const [ageData, setAgeData] = useState([]);
-
     // Handle escape key press
     useEffect(() => {
         const handleEscape = (e) => {
@@ -52,6 +51,11 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                     name: "Diterima",
                     value: feature.application.submitted || 0,
                     color: "#33A02C",
+                },
+                {
+                    name: "Ditolak",
+                    value: feature.application.rejected || 0,
+                    color: "#ff0000",
                 },
             ].filter((item) => item.value > 0);
 
@@ -139,11 +143,9 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
     // Don't render if not open
     if (!isOpen || !feature) return null;
 
-    const totalEducation = educationData.reduce(
-        (sum, item) => sum + item.value,
-        0
-    );
+    const totalEducation = educationData.reduce((sum, item) => sum + item.value,0);
     const totalAge = ageData.reduce((sum, item) => sum + item.value, 0);
+    const totalReason = reasonData.reduce((sum, item) => sum + item.value, 0);
 
     // Custom tooltip untuk pie chart
     const PieTooltip = ({ active, payload }) => {
@@ -288,42 +290,28 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {/* Bar Chart */}
                                 <div className="h-64 w-75%">
-                                    <ResponsiveContainer
-                                        width="100%"
-                                        height="100%"
-                                    >
+                                    <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
-                                            data={applicationData}
-                                            margin={{
-                                                top: 20,
-                                                right: 30,
-                                                left: 20,
-                                                bottom: 5,
-                                            }}
+                                        data={applicationData}
+                                        margin={{
+                                            top: 20,
+                                            right: 30,
+                                            left: 20,
+                                            bottom: 5,
+                                        }}
                                         >
-                                            <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="name" />
-                                            <YAxis />
-                                            <Tooltip content={<BarTooltip />} />
-                                            <Bar
-                                                dataKey="value"
-                                                fill="#8884d8"
-                                                shape={<TriangleBar />}
-                                                label={{ position: "top" }}
-                                            >
-                                                {applicationData.map(
-                                                    (entry, index) => (
-                                                        <Cell
-                                                            key={`cell-${index}`}
-                                                            fill={entry.color}
-                                                        />
-                                                    )
-                                                )}
-                                            </Bar>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip content={<BarTooltip />} />
+                                        <Bar dataKey="value" label={{ position: "top" }}>
+                                            {applicationData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Bar>
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
-
                                 {/* Data Table */}
                                 <div>
                                     <div className="bg-gray-50 rounded-lg p-4">
@@ -355,14 +343,6 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                                                     </div>
                                                 )
                                             )}
-                                            <div className="border-t pt-2 mt-2">
-                                                <div className="flex justify-between items-center font-semibold">
-                                                    <span>Total:</span>
-                                                    <span>
-                                                        {totalAge.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -411,7 +391,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                                                 <div className="flex justify-between items-center font-semibold">
                                                     <span>Total:</span>
                                                     <span>
-                                                        {totalAge.toLocaleString()}
+                                                        {totalReason.toLocaleString()}
                                                     </span>
                                                 </div>
                                             </div>
