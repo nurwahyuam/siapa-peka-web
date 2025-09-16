@@ -77,25 +77,30 @@ export default function Statistik({
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 w-full h-full bg-white shadow-2xl z-50 flex flex-col md:inset-auto md:bottom-4 md:right-4 md:w-[640px] md:h-[440px] md:rounded-lg md:border md:border-gray-200 animate-slide-up">
-                    <div className="relative flex items-center justify-center p-4 pl-8 md:pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
-                        <button
-                            onClick={() => handleToggle(false)}
-                            className="absolute right-4 p-2 transition-transform hover:text-gray-500 rounded-full"
-                        >
-                            <XCircle size={24} />
-                        </button>
-                        <h2 className="text-xl font-bold text-center flex items-center gap-2">
+                <div className="fixed inset-0 w-full h-full bg-white shadow-2xl z-50 flex flex-col
+  md:inset-auto md:top-1/2 md:right-4 md:bottom-auto md:-translate-y-1/2 
+  md:w-[360px] md:h-[280px] md:rounded-lg md:border md:border-gray-200 md:text-xs
+  lg:w-[640px] lg:h-[440px] lg:text-base
+  animate-slide-up
+">
+                    <div className="relative flex items-center justify-between p-4 pl-8 md:pl-12 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+                        <h2 className=" text-md lg:text-xl font-bold text-center flex items-center gap-2 flex-1 justify-center">
                             <Users className="hidden sm:block" size={24} />
                             Statistik Pencegahan Perkawinan Anak
                         </h2>
+                        <button
+                            onClick={() => handleToggle(false)}
+                            className="p-2 transition-transform hover:text-gray-500 rounded-full"
+                        >
+                            <XCircle size={24} />
+                        </button>
                     </div>
 
                     {/* Tab Navigation */}
                     <div className="flex border-b border-gray-200 bg-gray-50">
                         <button
                             onClick={() => setActiveTab("overview")}
-                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
+                            className={`px-6 py-2 w-full text-xs font-medium transition-colors ${
                                 activeTab === "overview"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
@@ -105,7 +110,7 @@ export default function Statistik({
                         </button>
                         <button
                             onClick={() => setActiveTab("cities")}
-                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
+                            className={`px-6 py-2 w-full text-xs  font-medium transition-colors ${
                                 activeTab === "cities"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
@@ -115,7 +120,7 @@ export default function Statistik({
                         </button>
                         <button
                             onClick={() => setActiveTab("survey")}
-                            className={`px-6 py-2 w-full text-sm font-medium transition-colors ${
+                            className={`px-6 py-2 w-full text-xs  font-medium transition-colors ${
                                 activeTab === "survey"
                                     ? "text-blue-600 border-b-2 border-blue-600 bg-white"
                                     : "text-gray-600 hover:text-gray-800"
@@ -130,11 +135,11 @@ export default function Statistik({
                         {activeTab === "overview" && (
                             <div>
                                 <div className="mb-4">
-                                    <h3 className="text-lg font-semibold">
+                                    <h3 className=" text-md lg:text-lg font-semibold">
                                         Tren Dispensasi Kawin{" "}
                                         {dispensasiData.length} Tahun Terakhir
                                     </h3>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-xs lg:text-sm  text-gray-600">
                                         Data Dispensasi Kawin di Jawa Timur
                                     </p>
                                 </div>
@@ -199,11 +204,11 @@ export default function Statistik({
                                             size={48}
                                             className="text-gray-500 mb-3"
                                         />
-                                        <p className="text-lg font-medium mb-1">
+                                        <p className="text-lg  font-medium mb-1">
                                             Data Data Dispensasi Kawin di Jawa
                                             Timur Tidak Tersedia
                                         </p>
-                                        <p className="text-sm">
+                                        <p className="text-sm ">
                                             Untuk Periode {year}
                                         </p>
                                     </div>
@@ -214,7 +219,7 @@ export default function Statistik({
                         {/* Chart Data Pengantin Dibawah 19 Tahun */}
                         {activeTab === "cities" && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">
+                                <h3 className="text-md lg:text-lg font-semibold mb-4">
                                     5 Kota Kabupaten Dengan Pengantin Dibawah 19
                                     Tahun (Periode {year})
                                 </h3>
@@ -325,10 +330,10 @@ export default function Statistik({
                                             <h4 className="font-semibold mb-3">
                                                 Detail Data
                                             </h4>
-                                            <div className="overflow-x-auto">
+                                            <div className="overflow-x-auto text-xs">
                                                 <table className="min-w-full bg-white border border-gray-200">
                                                     <thead>
-                                                        <tr className="bg-gray-50">
+                                                        <tr className="bg-gray-50 ">
                                                             <th className="px-4 py-2 border-b text-left">
                                                                 Kota
                                                             </th>
@@ -380,26 +385,26 @@ export default function Statistik({
                                                                                 : "bg-white"
                                                                         }
                                                                     >
-                                                                        <td className="px-4 py-2 border-b">
+                                                                        <td className="px-4 py-2 border-b ">
                                                                             {
                                                                                 city.name
                                                                             }
                                                                         </td>
-                                                                        <td className="px-4 py-2 border-b text-center">
+                                                                        <td className="px-4 py-2 border-b text-center ">
                                                                             {formatNumber(
                                                                                 city
                                                                                     .child_bride_data
                                                                                     .men_under_19
                                                                             )}
                                                                         </td>
-                                                                        <td className="px-4 py-2 border-b text-center">
+                                                                        <td className="px-4 py-2 border-b text-center ">
                                                                             {formatNumber(
                                                                                 city
                                                                                     .child_bride_data
                                                                                     .women_under_19
                                                                             )}
                                                                         </td>
-                                                                        <td className="px-4 py-2 border-b text-center font-semibold">
+                                                                        <td className="px-4 py-2 border-b text-center font-semibold ">
                                                                             {formatNumber(
                                                                                 city
                                                                                     .child_bride_data
@@ -420,11 +425,11 @@ export default function Statistik({
                                             size={48}
                                             className="text-gray-500 mb-3"
                                         />
-                                        <p className="text-lg font-medium mb-1">
+                                        <p className="text-lg font-medium mb-1 ">
                                             Data pengantin dibawah 19 Tahun
                                             Tidak Tersedia
                                         </p>
-                                        <p className="text-sm">
+                                        <p className="text-sm ">
                                             Untuk Periode {year}
                                         </p>
                                     </div>
@@ -435,7 +440,7 @@ export default function Statistik({
                         {/* Data Survey Form Anak */}
                         {activeTab === "survey" && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-1">
+                                <h3 className="text-md lg:text-lg font-semibold mb-1">
                                     Hasil Survey Forum Anak (Periode {year})
                                 </h3>
 
@@ -456,12 +461,12 @@ export default function Statistik({
                                                             size={48}
                                                             className="text-gray-500 mb-3"
                                                         />
-                                                        <p className="text-lg font-medium mb-1">
+                                                        <p className="text-lg font-medium mb-1 ">
                                                             Data Hasil Survey
                                                             Forum Anak Tidak
                                                             Tersedia
                                                         </p>
-                                                        <p className="text-sm">
+                                                        <p className="text-sm ">
                                                             Untuk Periode {year}
                                                         </p>
                                                     </div>
@@ -604,7 +609,7 @@ export default function Statistik({
                                                             </ResponsiveContainer>
                                                         </div>
 
-                                                        <div className="text-sm text-gray-600 text-center">
+                                                        <div className="text-sm text-gray-600 text-center ">
                                                             Total Responden:{" "}
                                                             <span className="font-semibold">
                                                                 {formatNumber(
@@ -623,11 +628,11 @@ export default function Statistik({
                                             size={48}
                                             className="text-gray-500 mb-3"
                                         />
-                                        <p className="text-lg font-medium mb-1">
+                                        <p className="text-lg font-medium mb-1 ">
                                             Data Hasil Survey Forum Anak Tidak
                                             Tersedia
                                         </p>
-                                        <p className="text-sm">
+                                        <p className="text-sm ">
                                             Untuk Periode {year}
                                         </p>
                                     </div>

@@ -5,6 +5,9 @@ import {
     TrendingUp,
     Users,
     Calendar,
+    CheckCircle,
+    BarChart2,
+    BarChart,
     Award,
     Frown,
     XCircle,
@@ -136,7 +139,7 @@ export default function Navbar({
                         </div>
                         <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
                             <div className="flex items-center space-x-3">
-                                <Award className="w-8 h-8 text-green-600" />
+                                <CheckCircle className="w-8 h-8 text-green-600" />
                                 <div>
                                     <p className="text-sm text-green-600 font-medium">
                                         Total Data Diterima
@@ -149,7 +152,7 @@ export default function Navbar({
                         </div>
                         <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
                             <div className="flex items-center space-x-3">
-                                <BadgeAlert className="w-8 h-8 text-purple-600" />
+                                <BarChart className="w-8 h-8 text-purple-600" />
                                 <div>
                                     <p className="text-sm text-purple-600 font-medium">
                                         Rata-rata Diajukan
@@ -164,7 +167,7 @@ export default function Navbar({
                         </div>
                         <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-4 rounded-xl border border-sky-200">
                             <div className="flex items-center space-x-3">
-                                <BadgeCheck className="w-8 h-8 text-sky-600" />
+                                <BarChart2 className="w-8 h-8 text-sky-600" />
                                 <div>
                                     <p className="text-sm text-sky-600 font-medium">
                                         Rata-rata Diterima
