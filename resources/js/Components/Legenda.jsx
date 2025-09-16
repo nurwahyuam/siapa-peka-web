@@ -14,11 +14,32 @@ export default function Legenda({
 
     return (
         <>
-            {/* Panel Filter */}
-            <div className={`fixed bottom-4 w-full flex justify-center`}>
-                <div className="w-100 sm:w-1/2 lg:w-1/3 h-50 bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 animate-slide-up block md:flex justify-between items-center gap-6">
-                    {/* Konten Filter */}
-                    <div className="space-y-4 w-full">
+            {/* Tombol Toggle dengan animasi */}
+            {!isOpen && (
+                <div className="fixed bottom-0 left-0 right-0 flex justify-center items-center p-6 z-10 pointer-events-none">
+                    <button
+                        onClick={() => setIsOpen(true)}
+                        className="bg-blue-600 px-10 text-white py-2 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 animate-bounce-once pointer-events-auto"
+                    >
+                        <ChevronsUp />
+                    </button>
+                </div>
+
+            )}
+
+            {/* Panel Filter dengan animasi */}
+            <div className={`fixed bottom-0 w-full flex justify-center transition-all duration-500 ease-in-out -z-1 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'}`}>
+                <div className="relative w-[250px] bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 m-4 mx-auto">
+                    
+                    {/* Tombol X */}
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition-colors duration-200"
+                    >
+                        <X size={18} />
+                    </button>
+
+                    <div className="w-full mb-3">
                         {/* Filter Tahun */}
                         <div>
                             <label className="text-sm font-medium text-gray-700">
@@ -36,31 +57,32 @@ export default function Legenda({
                                 ))}
                             </select>
                         </div>
-                        {/* Konten Filter */}
+                    </div>
+                    {/* Konten Filter */}
                     <div className="block w-full">
-                        <h4 className="block text-sm font-medium text-gray-700 mb-2">Warna Peta Berdasarkan yang Disetujui:</h4>
+                        <h4 className="block text-sm font-medium text-gray-700 mb-2">Warna Peta Berdasarkan :</h4>
                         <div className="space-y-2">
                             <div className="flex items-center">
                                 <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
-                                <span>0-100</span>
+                                <span>1-100 Disetujui</span>
                             </div>
                             <div className="flex items-center">
                                 <div className="w-4 h-4 bg-[#F4A582] mr-2"></div>
-                                <span>101-250</span>
+                                <span>100-250 Disetujui</span>
                             </div>
                             <div className="flex items-center">
                                 <div className="w-4 h-4 bg-[#B2182B] mr-2"></div>
-                                <span>251-500</span>
+                                <span>251-500 Disetujui</span>
                             </div>
                             <div className="flex items-center">
                                 <div className="w-4 h-4 bg-[#67001F] mr-2"></div>
-                                <span>500+</span>
+                                <span>500+ Disetujui</span>
                             </div>
                         </div>
                     </div>
-                    </div>
+
                 </div>
-            </div>
+            </div>        
         </>
     );
 }
