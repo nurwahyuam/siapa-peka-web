@@ -151,13 +151,15 @@ const Edit = ({
         let isValid = true;
         const newErrors = {};
 
+        console.log(data);
+
         if (!data.period_id) {
             newErrors.period_id = "Periode harus dipilih";
             isValid = false;
         }
 
         if (!data.sources || data.sources.length === 0) {
-            newErrors.sources = "Sumber data harus dipilih";
+            newErrors.sources = "Minimal 1 sumber data ditambah";
             isValid = false;
         }
 
@@ -167,7 +169,7 @@ const Edit = ({
             parseInt(data.accepted) > parseInt(data.submitted)
         ) {
             newErrors.accepted =
-                "Jumlah dikabulkan tidak boleh lebih dari jumlah diajukan";
+                "Jumlah disetujui tidak boleh lebih dari jumlah diajukan";
             isValid = false;
         }
 
@@ -357,65 +359,67 @@ const Edit = ({
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Data Pengajuan Dispensasi
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {/* Jumlah Diajukan */}
-                            <div>
-                                <label
-                                    htmlFor="submitted"
-                                    className="block text-sm font-medium text-gray-700 mb-2"
-                                >
-                                    Jumlah Diajukan
-                                </label>
-                                <input
-                                    id="submitted"
-                                    name="submitted"
-                                    type="number"
-                                    value={data.submitted ?? ""}
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            "submitted",
-                                            e.target.value
-                                        )
-                                    }
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                                        fieldErrors.submitted
-                                            ? "border-red-500"
-                                            : "border-gray-300"
-                                    }`}
-                                    min="0"
-                                />
-                            </div>
+                        <div className="gap-6">
+                            <div className="grid grid-cols-2 gap-6">
+                                {/* Jumlah Diajukan */}
+                                <div>
+                                    <label
+                                        htmlFor="submitted"
+                                        className="block text-sm font-medium text-gray-700 mb-2"
+                                    >
+                                        Jumlah Diajukan
+                                    </label>
+                                    <input
+                                        id="submitted"
+                                        name="submitted"
+                                        type="number"
+                                        value={data.submitted ?? ""}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "submitted",
+                                                e.target.value
+                                            )
+                                        }
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                                            fieldErrors.submitted
+                                                ? "border-red-500"
+                                                : "border-gray-300"
+                                        }`}
+                                        min="0"
+                                    />
+                                </div>
 
-                            {/* Jumlah Dikabulkan */}
-                            <div>
-                                <label
-                                    htmlFor="accepted"
-                                    className="block text-sm font-medium text-gray-700 mb-2"
-                                >
-                                    Jumlah Dikabulkan
-                                </label>
-                                <input
-                                    id="accepted"
-                                    name="accepted"
-                                    type="number"
-                                    value={data.accepted ?? ""}
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            "accepted",
-                                            e.target.value
-                                        )
-                                    }
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                                        fieldErrors.accepted
-                                            ? "border-red-500"
-                                            : "border-gray-300"
-                                    }`}
-                                    min="0"
-                                />
+                                {/* Jumlah Dikabulkan */}
+                                <div>
+                                    <label
+                                        htmlFor="accepted"
+                                        className="block text-sm font-medium text-gray-700 mb-2"
+                                    >
+                                        Jumlah Dikabulkan
+                                    </label>
+                                    <input
+                                        id="accepted"
+                                        name="accepted"
+                                        type="number"
+                                        value={data.accepted ?? ""}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "accepted",
+                                                e.target.value
+                                            )
+                                        }
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                                            fieldErrors.accepted
+                                                ? "border-red-500"
+                                                : "border-gray-300"
+                                        }`}
+                                        min="0"
+                                    />
+                                </div>
                             </div>
 
                             {/* Sumber Data */}
-                            <div>
+                            <div className="mt-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Sumber Data{" "}
                                     <span className="text-red-500">*</span>
@@ -444,10 +448,10 @@ const Edit = ({
                                     </button>
                                 </div>
 
-                                <div className="flex flex-col gap-2">
+                                <div className="flex justify-between gap-2">
                                     {/* Daftar sumber tersedia */}
                                     {available_sources?.length > 0 && (
-                                        <div>
+                                        <div className="w-full">
                                             <p className="text-xs text-gray-500 mb-1">
                                                 Sumber tersedia:
                                             </p>
@@ -471,7 +475,7 @@ const Edit = ({
                                                                     s
                                                                 )
                                                             }
-                                                            className="px-3 py-1 bg-gray-100 hover:bg-indigo-200 rounded text-xs"
+                                                            className="px-3 py-2 bg-gray-100 hover:text-indigo-600 hover:bg-indigo-200 rounded text-xs"
                                                         >
                                                             {s.name}
                                                         </button>
@@ -480,7 +484,7 @@ const Edit = ({
                                         </div>
                                     )}
 
-                                    <div>
+                                    <div className="w-full">
                                         <p className="text-xs text-gray-500 mb-1">
                                             Sumber yang dipilih:
                                         </p>
@@ -488,9 +492,8 @@ const Edit = ({
                                             {data.sources.map((src, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className="bg-indigo-100 text-indigo-800 rounded-full px-3 py-1 text-xs flex items-center"
+                                                    className="text-xs flex items-center"
                                                 >
-                                                    {src.name}
                                                     <button
                                                         type="button"
                                                         onClick={() =>
@@ -498,9 +501,9 @@ const Edit = ({
                                                                 idx
                                                             )
                                                         }
-                                                        className="ml-1 text-indigo-600 hover:text-red-600"
+                                                        className="ml-1 rounded px-3 py-2 bg-indigo-100 text-indigo-800 hover:bg-red-100 hover:text-red-600 flex items-center gap-1"
                                                     >
-                                                        ×
+                                                        {src.name}
                                                     </button>
                                                 </span>
                                             ))}

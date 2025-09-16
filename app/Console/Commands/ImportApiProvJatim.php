@@ -16,80 +16,156 @@ class ImportApiProvJatim extends Command
 
     public function handle()
     {
-        $this->info("🗃️  Fetching data...");
-        $response = Http::timeout(30)->get(
-            "https://api.satudatadev.jatimprov.go.id/api/bigdata/dinas_pemberdayaan_perempuan_perlindungan_anak_dan_kependuduk/jumlah_anak_yang_menikah_di_bawah_19_tahun_berdasarkan_jk_di_ja"
-        );
+        $this->info("🗃️  Fetching daftar periode dari metadata...");
 
-        if (! $response->successful()) {
-            $this->error("❌ Gagal fetch data API");
+        $baseUrl = "https://opendata.jatimprov.go.id/api/cleaned-bigdata/dinas_pemberdayaan_perempuan_perlindungan_anak_dan_kependuduk/jumlah_anak_yang_menikah_di_bawah_19_tahun_berdasarkan_jk_di_ja";
+
+        // 1. Fetch metadata
+        $metaResponse = Http::timeout(60)
+            ->withoutVerifying()
+            ->withHeaders([
+                'accept' => 'application/json',
+            ])
+            ->get($baseUrl);
+
+        if (! $metaResponse->successful()) {
+            $this->error("❌ Gagal fetch metadata API");
             return;
         }
 
-        $json = $response->json();
-        $data = $json['data'] ?? [];
+        $metaJson = $metaResponse->json();
+        $filters  = $metaJson['metadata_filter'] ?? [];
 
-        foreach ($data as $item) {
-            // Normalisasi nama kota
-            $normalizedCity = $this->normalizeCityName($item['kabupaten_kota']);
+        // Cari filter periode_update
+        $periodeFilter = collect($filters)->firstWhere('key', 'periode_update');
+        $periodes = $periodeFilter['value'] ?? [];
 
-            // Cari city_feature berdasarkan nama hasil normalisasi
-            $city = CityFeature::whereRaw('LOWER(name) = ?', [strtolower($normalizedCity)])->first();
+        if (empty($periodes)) {
+            $this->warn("⚠️ Tidak ada periode di metadata_filter");
+            return;
+        }
 
-            if (! $city) {
-                $this->warn("⚠️ Kota tidak ditemukan: {$item['kabupaten_kota']} → hasil normalize: {$normalizedCity}");
-                continue;
-            }
+        $this->line("📅 Ditemukan periode: " . implode(', ', $periodes));
 
-            // Mapping periode: romawi → enum di DB
-            $periodeRaw = strtoupper($item['periode_update']); // contoh: "TRIWULAN I 2025"
-            $map = [
-                'I'   => 'Triwulan I',
-                'II'  => 'Triwulan II',
-                'III' => 'Triwulan III',
-                'IV'  => 'Triwulan IV',
-            ];
+        $map = ['Q1' => 'Triwulan I', 'Q2' => 'Triwulan II', 'Q3' => 'Triwulan III', 'Q4' => 'Triwulan IV'];
 
-            preg_match('/TRIWULAN\s+([IVX]+)/', $periodeRaw, $matches);
-            $periodeName = $map[$matches[1] ?? ''] ?? 'Setahun';
+        // Loop semua periode
+        foreach ($periodes as $periode) {
+            $this->line("➡️ Import periode_update={$periode}");
 
-            // Ambil tahun dari string "TRIWULAN I 2025"
-            preg_match('/(\d{4})$/', $periodeRaw, $yearMatch);
-            $year = $yearMatch[1] ?? null;
-
-            if (!$year) {
-                $this->warn("⚠️ Tahun tidak ditemukan dari periode_update: {$periodeRaw}");
-                continue;
-            }
-
-            $period = Period::firstOrCreate(
-                ['name' => $periodeName, 'year' => $year]
-            );
-
-            // Insert/update child_brides
-            ChildBride::updateOrCreate(
-                [
-                    'city_feature_id' => $city->id,
-                    'period_id'       => $period->id,
-                ],
-                [
-                    'number_of_men_under_19'   => $item['jumlah_pengantin_laki_laki_di_bawah_19_tahun'],
-                    'number_of_women_under_19' => $item['jumlah_pengantin_perempuan_di_bawah_19_tahun'],
-                    'total'                    => $item['total_jumlah_pengantin_di_bawah_19_tahun'],
-                ]
-            );
-
-            Application::updateOrCreate(
-                [
-                    'city_feature_id' => $city->id,
-                    'period_id'       => $period->id,
-                ],
-                [
-                    'sources' => ([
-                        'name' => 'Provinsi Jawa Timur',
+            $response = Http::timeout(60)
+                ->withoutVerifying()
+                ->withHeaders([
+                    'accept' => 'application/json',
+                ])
+                ->get($baseUrl, [
+                    'where' => json_encode([
+                        'periode_update' => $periode,
                     ]),
+                ]);
+
+            if (! $response->successful()) {
+                $this->error("❌ Gagal fetch data untuk {$periode}");
+                continue;
+            }
+
+            $json  = $response->json();
+            $data  = $json['data'] ?? [];
+
+            if (empty($data)) {
+                $this->warn("⚠️ Data kosong untuk {$periode}");
+                continue;
+            }
+
+            $this->info("✅ Berhasil fetch periode_update={$periode}, jumlah data: " . count($data));
+
+            [$year, $q] = explode('-', $periode); // ex: 2025-Q1
+            $periodeName = $map[$q] ?? 'Setahun';
+
+            // Simpan periode di DB
+            $period = Period::firstOrCreate(
+                [
+                    'name' => $periodeName,
+                    'year' => $year,
                 ]
             );
+
+            // ---- Grouping per city + period
+            $grouped = [];
+
+            foreach ($data as $item) {
+                // Normalisasi nama kota
+                $normalizedCity = $this->normalizeCityName($item['nama_kabupaten_kota']);
+                $city = CityFeature::whereRaw('LOWER(name) = ?', [strtolower($normalizedCity)])->first();
+                if (! $city) {
+                    $this->warn("⚠️ Kota tidak ditemukan: {$item['nama_kabupaten_kota']} → hasil normalize: {$normalizedCity}");
+                    continue;
+                }
+
+                $key = $city->id . '-' . $period->id;
+
+                if (!isset($grouped[$key])) {
+                    $grouped[$key] = [
+                        'city_feature_id' => $city->id,
+                        'period_id'       => $period->id,
+                        'number_of_men_under_19'   => 0,
+                        'number_of_women_under_19' => 0,
+                        'total'                    => 0,
+                        'sources'                  => $item['sumber'] ?? null,
+                    ];
+                }
+
+                switch (strtoupper(trim($item['kategori']))) {
+                    case "JUMLAH PENGANTIN LAKI LAKI DI BAWAH 19 TAHUN":
+                        $grouped[$key]['number_of_men_under_19'] = $item['jumlah'] ?? 0;
+                        break;
+
+                    case "JUMLAH PENGANTIN PEREMPUAN DI BAWAH 19 TAHUN":
+                        $grouped[$key]['number_of_women_under_19'] = $item['jumlah'] ?? 0;
+                        break;
+
+                    case "TOTAL JUMLAH PENGANTIN DI BAWAH 19 TAHUN":
+                        $grouped[$key]['total'] = $item['jumlah'] ?? 0;
+                        break;
+                }
+            }
+
+            $this->output->progressStart(count($grouped));
+
+            // Setelah looping, simpan ke DB
+            foreach ($grouped as $values) {
+                ChildBride::updateOrCreate(
+                    [
+                        'city_feature_id' => $values['city_feature_id'],
+                        'period_id'       => $values['period_id'],
+                    ],
+                    [
+                        'number_of_men_under_19'   => $values['number_of_men_under_19'],
+                        'number_of_women_under_19' => $values['number_of_women_under_19'],
+                        'total'                    => $values['total'],
+                    ]
+                );
+
+                // Simpan sources
+                $sources = $values['sources'] ?? null;
+                $sources = $sources
+                    ? collect(explode(',', $sources))->map(fn($s) => ['name' => trim($s)])->toArray()
+                    : [['name' => 'Provinsi Jawa Timur']];
+
+                Application::updateOrCreate(
+                    [
+                        'city_feature_id' => $values['city_feature_id'],
+                        'period_id'       => $values['period_id'],
+                    ],
+                    [
+                        'sources' => $sources,
+                    ]
+                );
+
+                $this->output->progressAdvance();
+            }
+
+            $this->output->progressFinish();
         }
 
         $this->info("✅ Import selesai pada " . now());
@@ -99,19 +175,16 @@ class ImportApiProvJatim extends Command
     {
         $name = strtoupper(trim($name));
 
-        // case: ada prefix "KOTA"
         if (str_starts_with($name, 'KOTA ')) {
             $clean = ucwords(strtolower(str_replace('KOTA ', '', $name)));
             return "Kota " . $clean;
         }
 
-        // case: ada prefix "KABUPATEN"
         if (str_starts_with($name, 'KABUPATEN ')) {
             $clean = ucwords(strtolower(str_replace('KABUPATEN ', '', $name)));
             return "Kabupaten " . $clean;
         }
 
-        // case: tidak ada prefix → default ke Kabupaten
         $clean = ucwords(strtolower($name));
         return "Kabupaten " . $clean;
     }

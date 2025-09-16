@@ -437,7 +437,7 @@ const Create = () => {
                                                         onClick={() =>
                                                             handleAddSource(s)
                                                         }
-                                                        className="px-3 py-2 bg-gray-100 hover:bg-indigo-200 rounded text-xs"
+                                                        className="px-3 py-2 bg-gray-100 hover:text-indigo-600 hover:bg-indigo-200 rounded text-xs"
                                                     >
                                                         {s.name}
                                                     </button>
@@ -461,7 +461,7 @@ const Create = () => {
                                                     onClick={() =>
                                                         handleRemoveSource(idx)
                                                     }
-                                                    className="px-3 py-2 bg-indigo-100 hover:bg-red-200 rounded"
+                                                    className="px-3 py-2 bg-indigo-100 text-indigo-600 hover:text-red-600 hover:bg-red-200 rounded"
                                                 >
                                                     {src.name}
                                                 </button>

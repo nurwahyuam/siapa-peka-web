@@ -29,8 +29,6 @@ const Show = () => {
     const { city } = usePage().props;
     const [selectedYear, setSelectedYear] = useState(2025); // Default tahun 2024
 
-    console.log(city);
-
     // Extract available years from the data
     const availableYears = useMemo(() => {
         const years = new Set();
