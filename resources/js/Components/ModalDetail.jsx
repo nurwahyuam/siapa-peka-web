@@ -44,12 +44,12 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
             const data = [
                 {
                     name: "Diajukan",
-                    value: feature.application.accepted || 0,
+                    value: feature.application.submitted || 0,
                     color: "#1F78B4",
                 },
                 {
                     name: "Diterima",
-                    value: feature.application.submitted || 0,
+                    value: feature.application.accepted || 0,
                     color: "#33A02C",
                 },
                 {

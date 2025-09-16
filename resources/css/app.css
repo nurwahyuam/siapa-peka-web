@@ -1,6 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slide-down-fade {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.4s ease-out forwards;
+}
+
+.animate-slide-down-fade {
+  animation: slide-down-fade 0.3s ease-in forwards;
+}
+.responsive-text {
+  font-size: clamp(12px, 2vw, 16px);
+}
+.responsive-title {
+  font-size: clamp(16px, 3vw, 24px);
+  font-weight: bold;
+}
+
 @keyframes bounce-once {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
