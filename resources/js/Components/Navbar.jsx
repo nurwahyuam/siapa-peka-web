@@ -44,7 +44,7 @@ export default function Navbar({
             0
         );
 
-        const totalDiterima = cityFeatures.reduce(
+        const totalDisetujui = cityFeatures.reduce(
             (sum, city) => sum + (parseInt(city.total_accepted) || 0),
             0
         );
@@ -106,7 +106,7 @@ export default function Navbar({
 
         return {
             totalData,
-            totalDiterima,
+            totalDisetujui,
             pendidikanData,
             citiesWithData,
             sortedCities,
@@ -142,10 +142,10 @@ export default function Navbar({
                                 <CheckCircle className="w-8 h-8 text-green-600" />
                                 <div>
                                     <p className="text-sm text-green-600 font-medium">
-                                        Total Data Diterima
+                                        Total Data Disetujui
                                     </p>
                                     <p className="text-2xl font-bold text-green-800">
-                                        {computedData.totalDiterima.toLocaleString()}
+                                        {computedData.totalDisetujui.toLocaleString()}
                                     </p>
                                 </div>
                             </div>
@@ -170,46 +170,57 @@ export default function Navbar({
                                 <BarChart2 className="w-8 h-8 text-sky-600" />
                                 <div>
                                     <p className="text-sm text-sky-600 font-medium">
-                                        Rata-rata Diterima
+                                        Rata-rata Disetujui
                                     </p>
                                     <p className="text-2xl font-bold text-sky-800">
                                         {(
-                                            computedData.totalDiterima / 38
+                                            computedData.totalDisetujui / 38
                                         ).toFixed(2)}
                                     </p>
                                 </div>
                             </div>
                         </div>
+                        {/* Kabupaten Tertinggi */}
                         <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
                             <div className="flex items-center space-x-3">
                                 <ArrowUpToLine className="w-8 h-8 text-orange-600" />
                                 <div>
                                     <p className="text-sm text-orange-600 font-medium">
                                         Kabupaten Tertinggi :{" "}
-                                        {computedData.highestCity.name}
+                                        {computedData?.highestCity?.name ||
+                                            "N/A"}
                                     </p>
                                     <p className="text-2xl font-bold text-orange-800">
-                                        {parseInt(
-                                            computedData.highestCity
-                                                .total_accepted
-                                        ).toLocaleString()}
+                                        {computedData?.highestCity
+                                            ?.total_accepted !== undefined
+                                            ? parseInt(
+                                                  computedData.highestCity
+                                                      .total_accepted
+                                              ).toLocaleString()
+                                            : 0}
                                     </p>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Kabupaten Terendah */}
                         <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
                             <div className="flex items-center space-x-3">
                                 <ArrowDownToLine className="w-8 h-8 text-orange-600" />
                                 <div>
                                     <p className="text-sm text-orange-600 font-medium">
                                         Kabupaten Terendah :{" "}
-                                        {computedData.lowestCity.name}
+                                        {computedData?.lowestCity?.name ||
+                                            "N/A"}
                                     </p>
                                     <p className="text-2xl font-bold text-orange-800">
-                                        {parseInt(
-                                            computedData.lowestCity
-                                                .total_accepted
-                                        ).toLocaleString()}
+                                        {computedData?.lowestCity
+                                            ?.total_accepted !== undefined
+                                            ? parseInt(
+                                                  computedData.lowestCity
+                                                      .total_accepted
+                                              ).toLocaleString()
+                                            : 0}
                                     </p>
                                 </div>
                             </div>
@@ -244,7 +255,7 @@ export default function Navbar({
                                             {city.name}
                                         </span>
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden hidden md:block">
                                                 <div
                                                     className={`h-full ${progressColor} transition-all duration-300`}
                                                     style={{
@@ -366,7 +377,7 @@ export default function Navbar({
                                 <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
                                     {modalContent[activeModal].icon}
                                 </div>
-                                <h2 className="text-2xl font-bold text-gray-800">
+                                <h2 className="text-xl md:text-2xl font-bold text-gray-800">
                                     {modalContent[activeModal].title}
                                 </h2>
                             </div>

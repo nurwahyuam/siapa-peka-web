@@ -24,11 +24,14 @@ export default function Welcome() {
     const [isStatsOpen, setIsStatsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    console.log("cityFeatures:", cityFeatures);
+
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
-        if (accepted <= 100) return "#FDDBC7";
-        if (accepted <= 250) return "#F4A582";
-        if (accepted <= 500) return "#B2182B";
+        if (accepted <= 0) return "#E2E2E2";
+        if (accepted > 0 && accepted <= 100) return "#FDDBC7";
+        if (accepted > 100 && accepted <= 250) return "#F4A582";
+        if (accepted > 250 && accepted <= 500) return "#B2182B";
         if (accepted > 500) return "#67001F";
         return "#E2E2E2";
     };
@@ -36,6 +39,8 @@ export default function Welcome() {
     // Fungsi untuk mendapatkan warna berdasarkan kategori risiko
     const getColorByCategory = (category) => {
         switch (category) {
+            case "Tidak Ada Data":
+                return "#E2E2E2";
             case "Rendah":
                 return "#FDDBC7";
             case "Cukup":
@@ -222,7 +227,7 @@ export default function Welcome() {
         } catch (error) {
             console.error("Error adding GeoJSON data:", error);
         }
-    }, [showHighRiskOnly, cityFeatures, currentYear, colorScheme]);
+    }, [cityFeatures, currentYear, colorScheme]);
 
     return (
         <>
@@ -247,7 +252,6 @@ export default function Welcome() {
                         onYearChange={handleYearChange}
                         colorScheme={colorScheme}
                         onColorSchemeChange={handleColorSchemeChange}
-                        showHighRiskOnly={showHighRiskOnly}
                         onHighRiskChange={handleHighRiskChange}
                     />
                 </div>

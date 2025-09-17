@@ -78,7 +78,7 @@ export default function Statistik({
 
             {isOpen && (
                 <div className="fixed inset-0 w-full h-full bg-white shadow-2xl z-50 flex flex-col
-  md:inset-auto md:top-1/2 md:right-4 md:bottom-auto md:-translate-y-1/2 
+  md:inset-auto md:top-1/2 md:right-4 md:bottom-auto md:-translate-y-1/2
   md:w-[360px] md:h-[280px] md:rounded-lg md:border md:border-gray-200 md:text-xs
   lg:w-[640px] lg:h-[440px] lg:text-base
   animate-slide-up
@@ -90,7 +90,7 @@ export default function Statistik({
                         </h2>
                         <button
                             onClick={() => handleToggle(false)}
-                            className="p-2 transition-transform hover:text-gray-500 rounded-full"
+                            className="transition-transform hover:text-gray-500 rounded-full"
                         >
                             <XCircle size={24} />
                         </button>
@@ -171,7 +171,7 @@ export default function Statistik({
                                                             ];
                                                         return [
                                                             formatNumber(value),
-                                                            "Diterima",
+                                                            "Disetujui",
                                                         ];
                                                     }}
                                                     labelFormatter={(label) =>
@@ -190,7 +190,7 @@ export default function Statistik({
                                                 <Line
                                                     type="monotone"
                                                     dataKey="accepted"
-                                                    name="Total Diterima"
+                                                    name="Total Disetujui"
                                                     stroke="#10B981"
                                                     strokeWidth={2}
                                                     dot={{ r: 3 }}
@@ -425,11 +425,11 @@ export default function Statistik({
                                             size={48}
                                             className="text-gray-500 mb-3"
                                         />
-                                        <p className="text-lg font-medium mb-1 ">
+                                        <p className="text-lg text-center font-medium mb-1 ">
                                             Data pengantin dibawah 19 Tahun
                                             Tidak Tersedia
                                         </p>
-                                        <p className="text-sm ">
+                                        <p className="text-sm text-center">
                                             Untuk Periode {year}
                                         </p>
                                     </div>
@@ -445,7 +445,7 @@ export default function Statistik({
                                 </h3>
 
                                 {forumChildren && forumChildren.length > 0 ? (
-                                    <div className="flex justify-between gap-2">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                         {forumChildren.map((item, index) => {
                                             // Pastikan data ada sebelum membuat chart
                                             if (
@@ -456,7 +456,7 @@ export default function Statistik({
                                                     "undefined"
                                             ) {
                                                 return (
-                                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                                    <div className="w-full text-gray-500">
                                                         <Frown
                                                             size={48}
                                                             className="text-gray-500 mb-3"
@@ -511,7 +511,7 @@ export default function Statistik({
                                             return (
                                                 <div
                                                     key={index}
-                                                    className="w-full md:w-[48%] bg-white"
+                                                    className="w-full bg-white"
                                                 >
                                                     <h4 className="font-medium text-gray-700 mb-2 text-center text-sm">
                                                         {item.question ||

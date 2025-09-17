@@ -48,18 +48,25 @@ class WelcomeController extends Controller
             }
 
             $applicationsChildBrideData = Application::whereIn('period_id', $periodsForYear->pluck('id'))
-                ->select('city_feature_id', DB::raw('SUM(accepted) as accepted'), DB::raw('SUM(submitted) as submitted'))
+                ->select(
+                    'city_feature_id',
+                    DB::raw('SUM(accepted) as accepted'),
+                    DB::raw('SUM(submitted) as submitted'),
+                    DB::raw("json_agg(DISTINCT sources) as sources")
+                )
                 ->groupBy('city_feature_id')
                 ->get();
 
             foreach ($applicationsChildBrideData as $app) {
                 $applicationsChildBrideData[$app->city_feature_id] = [
-                    'accepted' => (int) $app->accepted,
+                    'accepted'  => (int) $app->accepted,
                     'submitted' => (int) $app->submitted,
-                    'rejected' => $app->submitted > $app->accepted ? $app->submitted - $app->accepted : 0,
-                    'total' => (int) $app->submitted + (int) $app->accepted,
+                    'rejected'  => $app->submitted > $app->accepted ? $app->submitted - $app->accepted : 0,
+                    'total'     => (int) $app->submitted + (int) $app->accepted,
+                    'sources'   => $app->sources ? json_decode(json_encode($app->sources), true) : [],
                 ];
             }
+
 
             // Data Education Levels - TOTAL
             $educationLevels = EducationLevel::whereIn('period_id', $periodsForYear->pluck('id'))
@@ -167,7 +174,11 @@ class WelcomeController extends Controller
 
             if ($periods->count() > 0) {
                 $apps = Application::whereIn('period_id', $periods->pluck('id'))
-                    ->select(DB::raw('SUM(submitted) as total_submitted'), DB::raw('SUM(accepted) as total_accepted'))
+                    ->select(
+                        DB::raw('SUM(submitted) as total_submitted'),
+                        DB::raw('SUM(accepted) as total_accepted'),
+                        DB::raw('json_agg(DISTINCT sources) as sources')
+                    )
                     ->first();
 
                 $yearlyData['years'][] = $yr;
@@ -202,10 +213,6 @@ class WelcomeController extends Controller
             'cityFeatures' => $cityFeatures,
             'availableYears' => $availableYears,
             'selectedYear' => $year,
-            'periodInfo' => [
-                'count' => $periodsForYear->count(),
-                'types' => $periodsForYear->pluck('name')
-            ],
             'yearlyData' => $yearlyData,
             'forumChildren' => $forumChildrenData
         ]);
@@ -216,65 +223,16 @@ class WelcomeController extends Controller
      */
     private function getKategori($totalAccepted)
     {
-        if ($totalAccepted <= 100) {
+        if ($totalAccepted <= 0) {
+            return "Tidak Ada Data";
+        } elseif ($totalAccepted > 0 && $totalAccepted <= 100) {
             return "Rendah";
-        } elseif ($totalAccepted <= 250) {
+        } elseif ($totalAccepted > 100 && $totalAccepted <= 250) {
             return "Cukup";
-        } elseif ($totalAccepted <= 500) {
+        } elseif ($totalAccepted > 250 && $totalAccepted <= 500) {
             return "Tinggi";
         } else {
             return "Sangat Tinggi";
         }
-    }
-
-    /**
-     * API untuk mendapatkan data detail per periode
-     */
-    public function getCityDetail($cityId, $year)
-    {
-        $periods = Period::where('year', $year)->get();
-
-        if ($periods->isEmpty()) {
-            return response()->json(['error' => 'No data found for this year'], 404);
-        }
-
-        // Data per periode (bukan aggregate)
-        $data = [
-            'applications' => Application::where('city_feature_id', $cityId)
-                ->whereIn('period_id', $periods->pluck('id'))
-                ->with('period')
-                ->get()
-                ->groupBy('period.name'),
-
-            'education' => EducationLevel::where('city_feature_id', $cityId)
-                ->whereIn('period_id', $periods->pluck('id'))
-                ->with('period')
-                ->get()
-                ->groupBy('period.name'),
-
-            'age_classification' => AgeClassification::where('city_feature_id', $cityId)
-                ->whereIn('period_id', $periods->pluck('id'))
-                ->with('period')
-                ->get()
-                ->groupBy('period.name'),
-
-            'reasons' => Reason::where('city_feature_id', $cityId)
-                ->whereIn('period_id', $periods->pluck('id'))
-                ->with('period')
-                ->get()
-                ->groupBy('period.name'),
-
-            'child_brides' => ChildBride::where('city_feature_id', $cityId)
-                ->whereIn('period_id', $periods->pluck('id'))
-                ->with('period')
-                ->get()
-                ->groupBy('period.name'),
-        ];
-
-        return response()->json([
-            'city' => CityFeature::find($cityId),
-            'periods' => $periods,
-            'data' => $data
-        ]);
     }
 }

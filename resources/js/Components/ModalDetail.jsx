@@ -48,7 +48,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                     color: "#1F78B4",
                 },
                 {
-                    name: "Diterima",
+                    name: "Disetujui",
                     value: feature.application.accepted || 0,
                     color: "#33A02C",
                 },
@@ -143,7 +143,10 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
     // Don't render if not open
     if (!isOpen || !feature) return null;
 
-    const totalEducation = educationData.reduce((sum, item) => sum + item.value,0);
+    const totalEducation = educationData.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
     const totalAge = ageData.reduce((sum, item) => sum + item.value, 0);
     const totalReason = reasonData.reduce((sum, item) => sum + item.value, 0);
 
@@ -192,11 +195,11 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
         return `M${x},${y + height}C${x + width / 3},${y + height} ${
             x + width / 2
         },${y + height / 3}
-        ${x + width / 2}, ${y}
-        C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${
+            ${x + width / 2}, ${y}
+            C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${
             y + height
         } ${x + width}, ${y + height}
-        Z`;
+            Z`;
     };
 
     const TriangleBar = (props) => {
@@ -214,23 +217,25 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                 className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="p-6">
+                <div className="px-6 pb-6">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-bold capitalize">
-                            {feature.name || "N/A"}
-                        </h3>
-                        <button
-                            onClick={onClose}
-                            className="text-gray-500 hover:text-gray-700 transition-colors"
-                            aria-label="Tutup modal"
-                        >
-                            <XCircle className="w-7 h-7" />
-                        </button>
+                    <div className="mb-4 sticky top-0 bg-white z-10 border-b pb-4 pt-4">
+                        <div className="flex justify-between items-center">
+                            <h3 className="text-xl font-bold capitalize">
+                                {feature?.name || "N/A"}
+                            </h3>
+                            <button
+                                onClick={onClose}
+                                className="text-gray-500 hover:text-gray-700 transition-colors"
+                                aria-label="Tutup modal"
+                            >
+                                <XCircle className="w-7 h-7" />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Basic Information */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-6">
                         <div className="flex justify-between items-center py-2 border-b">
                             <span className="font-semibold text-gray-700">
                                 Kode :
@@ -251,22 +256,49 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
 
                         <div className="flex justify-between items-center py-2 border-b">
                             <span className="font-semibold text-gray-700">
-                                Kategori :
+                                Jumlah Dispensasi:
                             </span>
                             <span
                                 className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                    feature.kategori === "Sangat Tinggi"
-                                        ? "bg-red-100 text-red-800"
-                                        : feature.kategori === "Tinggi"
-                                        ? "bg-orange-100 text-orange-800"
-                                        : feature.kategori === "Cukup"
-                                        ? "bg-yellow-100 text-yellow-800"
-                                        : feature.kategori === "Rendah"
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-gray-100 text-gray-800"
+                                    feature?.application?.accepted > 0 &&
+                                    feature?.application?.accepted <= 100
+                                        ? "bg-[#FDDBC7]"
+                                        : feature?.application?.accepted >
+                                              100 &&
+                                          feature?.application?.accepted <= 250
+                                        ? "bg-[#F4A582]"
+                                        : feature?.application?.accepted >
+                                              250 &&
+                                          feature?.application?.accepted <= 500
+                                        ? "bg-[#B2182B]"
+                                        : feature?.application?.accepted > 500
+                                        ? "bg-[#67001F]"
+                                        : "bg-[#E2E2E2]"
                                 }`}
                             >
-                                {feature.kategori || "N/A"}
+                                {typeof feature?.application?.accepted ===
+                                "number" ? (
+                                    <>
+                                        {feature.application.accepted > 0 &&
+                                        feature.application.accepted <= 100
+                                            ? "1-100 Disetujui"
+                                            : feature.application.accepted >
+                                                  100 &&
+                                              feature.application.accepted <=
+                                                  250
+                                            ? "100-250 Disetujui"
+                                            : feature.application.accepted >
+                                                  250 &&
+                                              feature.application.accepted <=
+                                                  500
+                                            ? "251-500 Disetujui"
+                                            : feature.application.accepted > 500
+                                            ? "500+ Disetujui"
+                                            : "0 Disetujui"}
+                                    </>
+                                ) : (
+                                    <>0 Disetujui</>
+                                )}
                             </span>
                         </div>
 
@@ -274,8 +306,43 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                             <span className="font-semibold text-gray-700">
                                 Sumber :
                             </span>
-                            <span className="text-blue-600 font-medium">
-                                Pengadilan Tinggi Agama
+                            <span className="block md:hidden text-blue-600 font-medium">
+                                {(() => {
+                                    const srcArr = Array.isArray(
+                                        feature?.application?.sources
+                                    )
+                                        ? feature?.application?.sources.flat()
+                                        : [];
+                                    const names = srcArr
+                                        .map((s) => s?.name)
+                                        .filter(Boolean);
+
+                                    if (names.length === 0) return "N/A";
+                                    if (names.length <= 1)
+                                        return names.join(", ");
+                                    return `${names
+                                        .slice(0, 1)
+                                        .join(", ")}, ...`;
+                                })()}
+                            </span>
+                            <span className="hidden md:block text-blue-600 font-medium">
+                                {(() => {
+                                    const srcArr = Array.isArray(
+                                        feature?.application?.sources
+                                    )
+                                        ? feature?.application?.sources.flat()
+                                        : [];
+                                    const names = srcArr
+                                        .map((s) => s?.name)
+                                        .filter(Boolean);
+
+                                    if (names.length === 0) return "N/A";
+                                    if (names.length <= 2)
+                                        return names.join(", ");
+                                    return `${names
+                                        .slice(0, 2)
+                                        .join(", ")}, ...`;
+                                })()}
                             </span>
                         </div>
                     </div>
@@ -290,25 +357,36 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {/* Bar Chart */}
                                 <div className="h-64 w-75%">
-                                    <ResponsiveContainer width="100%" height="100%">
+                                    <ResponsiveContainer
+                                        width="100%"
+                                        height="100%"
+                                    >
                                         <BarChart
-                                        data={applicationData}
-                                        margin={{
-                                            top: 20,
-                                            right: 30,
-                                            left: 20,
-                                            bottom: 5,
-                                        }}
+                                            data={applicationData}
+                                            margin={{
+                                                top: 20,
+                                                right: 30,
+                                                left: 20,
+                                                bottom: 5,
+                                            }}
                                         >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="name" />
-                                        <YAxis />
-                                        <Tooltip content={<BarTooltip />} />
-                                        <Bar dataKey="value" label={{ position: "top" }}>
-                                            {applicationData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Bar>
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="name" />
+                                            <YAxis />
+                                            <Tooltip content={<BarTooltip />} />
+                                            <Bar
+                                                dataKey="value"
+                                                label={{ position: "top" }}
+                                            >
+                                                {applicationData.map(
+                                                    (entry, index) => (
+                                                        <Cell
+                                                            key={`cell-${index}`}
+                                                            fill={entry.color}
+                                                        />
+                                                    )
+                                                )}
+                                            </Bar>
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>

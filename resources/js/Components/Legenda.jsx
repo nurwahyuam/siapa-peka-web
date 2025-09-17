@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ChevronsUp } from "lucide-react";
+import { X, ChevronsUp, XCircle } from "lucide-react";
 
 export default function Legenda({
     currentYear,
@@ -7,7 +7,6 @@ export default function Legenda({
     onYearChange,
     colorScheme,
     onColorSchemeChange,
-    showHighRiskOnly,
     onHighRiskChange,
 }) {
     const [isOpen, setIsOpen] = useState(true);
@@ -24,27 +23,32 @@ export default function Legenda({
                         <ChevronsUp />
                     </button>
                 </div>
-
             )}
 
             {/* Panel Filter dengan animasi */}
-            <div className={`fixed bottom-0 w-full flex justify-center transition-all duration-500 ease-in-out -z-1 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'}`}>
+            <div
+                className={`fixed bottom-0 w-full flex justify-center transition-all duration-500 ease-in-out -z-1 ${
+                    isOpen
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-full opacity-0 pointer-events-none"
+                }`}
+            >
                 <div className="relative w-[250px] bg-white shadow-xl rounded-lg px-4 py-3 border border-gray-200 m-4 mx-auto">
-                    
-                    {/* Tombol X */}
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition-colors duration-200"
-                    >
-                        <X size={18} />
-                    </button>
-
                     <div className="w-full mb-3">
                         {/* Filter Tahun */}
                         <div>
-                            <label className="text-sm font-medium text-gray-700">
-                                Periode Tahun :
-                            </label>
+                            <div className="flex justify-between items-center mb-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Periode Tahun :
+                                </label>
+                                {/* Tombol X */}
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="text-gray-500 hover:text-gray-800 transition-colors duration-200"
+                                >
+                                    <XCircle size={20} />
+                                </button>
+                            </div>
                             <select
                                 value={currentYear}
                                 onChange={(e) => onYearChange(e.target.value)}
@@ -60,7 +64,9 @@ export default function Legenda({
                     </div>
                     {/* Konten Filter */}
                     <div className="block w-full">
-                        <h4 className="block text-sm font-medium text-gray-700 mb-2">Warna Peta Berdasarkan :</h4>
+                        <h4 className="block text-sm font-medium text-gray-700 mb-2">
+                            Warna Peta Berdasarkan :
+                        </h4>
                         <div className="space-y-2">
                             <div className="flex items-center">
                                 <div className="w-4 h-4 bg-[#FDDBC7] mr-2"></div>
@@ -80,9 +86,8 @@ export default function Legenda({
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div>        
+            </div>
         </>
     );
 }
