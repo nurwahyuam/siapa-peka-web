@@ -24,8 +24,6 @@ export default function Welcome() {
     const [isStatsOpen, setIsStatsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    console.log("cityFeatures:", cityFeatures);
-
     // Fungsi untuk mendapatkan warna berdasarkan jumlah accepted
     const getColorByAccepted = (accepted) => {
         if (accepted <= 0) return "#E2E2E2";
