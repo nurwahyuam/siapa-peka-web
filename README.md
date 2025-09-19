@@ -84,6 +84,7 @@ Ikuti langkah berikut untuk menjalankan projek:
 ```bash
 # 1. Clone Repository
 git clone https://github.com/nurwahyuam/siapa-peka-web.git
+cd siapa-peka-web
 # 2. Install Dependencies
 composer install
 npm install
@@ -92,7 +93,6 @@ cp .env.example .env
 # 4. Migrasi Database + Seeder & Import Data
 php artisan migrate --seed
 php artisan import:city-features
-php artisan import:api-prov-jatim (Opsional)
 php artisan db:seed --class=ForumChildrenSeeder
 # 5. Optimisasi 
 php artisan optimize:clear
@@ -100,6 +100,11 @@ php artisan storege:link
 # 6. Jalankan Server
 php artisan serve
 npm run dev
+# 7. Import Data Jumlah Pengantin Laki-Laki & Perempuan
+# Disarankan menggunakan fitur import Excel terlebih dahulu (2022–2025)
+# Template: [Download Template](#)
+# Alternatif via API (opsional):
+php artisan import:api-prov-jatim
 ```
 ---
 
