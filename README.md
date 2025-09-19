@@ -87,33 +87,14 @@ composer install
 npm install
 # 2. Setup Environment
 cp .env.example .env
-# 3. Migrasi Database + Seeder
+# 3. Migrasi Database + Seeder & Import Data
 php artisan migrate --seed
-php artisan db:seed --class=ForumChildrenSeeder
-# 4. Optimisasi & Import Data
-php artisan optimize:clear
 php artisan import:city-features
 php artisan import:api-prov-jatim
-# 5. Jalankan Server
-php artisan serve
-npm run dev
-```
----
-
-
-```bash
-# 1. Install Dependencies
-composer install
-npm install
-# 2. Setup Environment
-cp .env.example .env
-# 3. Migrasi Database + Seeder
-php artisan migrate --seed
 php artisan db:seed --class=ForumChildrenSeeder
-# 4. Optimisasi & Import Data
+# 4. Optimisasi 
 php artisan optimize:clear
-php artisan import:city-features
-php artisan import:api-prov-jatim
+php artisan storege:link
 # 5. Jalankan Server
 php artisan serve
 npm run dev
