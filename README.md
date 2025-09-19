@@ -90,7 +90,7 @@ cp .env.example .env
 # 3. Migrasi Database + Seeder & Import Data
 php artisan migrate --seed
 php artisan import:city-features
-php artisan import:api-prov-jatim
+php artisan import:api-prov-jatim (Opsional)
 php artisan db:seed --class=ForumChildrenSeeder
 # 4. Optimisasi 
 php artisan optimize:clear
