@@ -16,4 +16,10 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_not_found_page(): void
+    {
+        $response = $this->get('/admin/unknown-page');
+        $response->assertStatus(404);
+    }
 }

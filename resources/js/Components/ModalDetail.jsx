@@ -268,9 +268,9 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                                         : feature?.application?.accepted >
                                               250 &&
                                           feature?.application?.accepted <= 500
-                                        ? "bg-[#B2182B]"
+                                        ? "bg-[#B2182B] text-white"
                                         : feature?.application?.accepted > 500
-                                        ? "bg-[#67001F]"
+                                        ? "bg-[#67001F] text-white"
                                         : "bg-[#E2E2E2]"
                                 }`}
                             >

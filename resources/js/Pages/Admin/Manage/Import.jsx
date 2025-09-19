@@ -46,29 +46,14 @@ const Import = () => {
             toast.error(errors.file, { duration: 5000 });
             resetFile();
         }
-    }, [errors]);
-
-    useEffect(() => {
         if (flash?.error && flash.import_errors?.length === 0) {
             toast.error(flash.error, { duration: 6000 });
             resetFile();
         }
-
-        if (flash?.error && flash.import_errors?.length > 0) {
-            toast.error(
-                <div>
-                    <p className="font-semibold">{flash.error}</p>
-                    <ul className="list-disc pl-5 mt-1 text-sm max-h-32 overflow-y-auto">
-                        {flash.import_errors.map((err, i) => (
-                            <li key={i}>{err}</li>
-                        ))}
-                    </ul>
-                </div>,
-                { duration: 8000 }
-            );
+        if (flash.import_errors?.length > 0){
             resetFile();
         }
-    }, [flash]);
+    }, [flash, errors]);
 
     return (
         <AuthenticatedLayout
@@ -116,6 +101,32 @@ const Import = () => {
                                     Impor Data Baru
                                 </h1>
                             </div>
+
+                            {flash?.error &&
+                                flash.import_errors?.length > 0 && (
+                                    <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
+                                        <div className="flex w-full">
+                                            <div className="ml-3 w-full">
+                                                <div className="text-sm text-red-700">
+                                                    <strong>
+                                                        {flash.error}
+                                                    </strong>
+                                                    <div className="mt-2 w-full">
+                                                        <ul className="list-disc pl-5 mt-1 text-sm max-h-32 overflow-y-auto w-full">
+                                                            {flash.import_errors.map(
+                                                                (err, i) => (
+                                                                    <li key={i}>
+                                                                        {err}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
                             <div className="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
                                 <div className="flex">

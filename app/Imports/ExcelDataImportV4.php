@@ -80,6 +80,7 @@ class ExcelDataImportV4 implements ToCollection, WithStartRow
             $namaKota = trim($row[1] ?? '');
             $tahun    = trim($row[2] ?? '');
             $periode  = trim($row[3] ?? '');
+            $sources  = trim($row[6] ?? '');
 
             // Validasi kolom dasar
             if ($kodeKota === '' || $namaKota === '' || $tahun === '' || $periode === '') {
@@ -90,11 +91,28 @@ class ExcelDataImportV4 implements ToCollection, WithStartRow
                 $this->errors[] = "Baris {$rowNumber}: Tahun harus berupa angka.";
                 continue;
             }
+            if (is_numeric($sources)) {
+                $this->errors[] = "Baris {$rowNumber}: Sumber berupa huruf.";
+                continue;
+            }
 
             $cityFeature = CityFeature::where('code', $kodeKota)->first();
             if (!$cityFeature) {
                 $this->errors[] = "Baris {$rowNumber}: Kode kota '{$kodeKota}' tidak ditemukan di database.";
                 continue;
+            }
+
+            // 🔴 Validasi data duplikat kota + tahun + periode
+            $period = Period::where('year', $tahun)->where('name', $periode)->first();
+            if ($period) {
+                $exists = Application::where('city_feature_id', $cityFeature->id)
+                    ->where('period_id', $period->id)
+                    ->exists();
+
+                if ($exists) {
+                    $this->errors[] = "Baris {$rowNumber}: Data kota '{$namaKota}' di tahun {$tahun} periode '{$periode}' sudah ada.";
+                    continue;
+                }
             }
 
             // Validasi kolom angka lainnya
@@ -146,10 +164,11 @@ class ExcelDataImportV4 implements ToCollection, WithStartRow
                 }
             }
 
-            // Lolos validasi → simpan
+            // ✅ Lolos validasi → simpan
             $this->validRows[] = $row;
         }
     }
+
 
     /**
      * Simpan baris valid ke database
