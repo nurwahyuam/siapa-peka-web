@@ -82,20 +82,22 @@ Ikuti langkah berikut untuk menjalankan projek:
 
 
 ```bash
-# 1. Install Dependencies
+# 1. Clone Repository
+git clone https://github.com/nurwahyuam/siapa-peka-web.git
+# 2. Install Dependencies
 composer install
 npm install
-# 2. Setup Environment
+# 3. Setup Environment
 cp .env.example .env
-# 3. Migrasi Database + Seeder & Import Data
+# 4. Migrasi Database + Seeder & Import Data
 php artisan migrate --seed
 php artisan import:city-features
 php artisan import:api-prov-jatim (Opsional)
 php artisan db:seed --class=ForumChildrenSeeder
-# 4. Optimisasi 
+# 5. Optimisasi 
 php artisan optimize:clear
 php artisan storege:link
-# 5. Jalankan Server
+# 6. Jalankan Server
 php artisan serve
 npm run dev
 ```
