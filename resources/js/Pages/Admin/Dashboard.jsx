@@ -14,6 +14,27 @@ import {
 
 export default function Dashboard() {
     const { yearlyData } = usePage().props;
+
+    if (!yearlyData || !yearlyData.years) {
+        return (
+            <AuthenticatedLayout
+                header={
+                    <div className="flex items-center gap-2">
+                        <LayoutDashboard />
+                        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                            Beranda
+                        </h2>
+                    </div>
+                }
+            >
+                <Head title="Beranda - SIAPA PEKA" />
+                <div className="m-6 p-6 bg-white rounded-lg shadow-sm">
+                    <p className="text-gray-600 text-center">Data belum tersedia</p>
+                </div>
+            </AuthenticatedLayout>
+        );
+    }
+
     const stats = yearlyData.years.map((year, index) => ({
         year,
         accepted: yearlyData.accepted[index],
