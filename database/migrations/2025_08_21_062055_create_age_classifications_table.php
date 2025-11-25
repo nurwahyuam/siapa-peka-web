@@ -18,8 +18,6 @@ return new class extends Migration
             $table->integer('less_than_15')->default(0);
             $table->integer('between_15_19')->default(0);
             $table->timestamps();
-
-            // Unique constraint untuk mencegah duplikasi data
             $table->unique(['city_feature_id', 'period_id']);
         });
     }

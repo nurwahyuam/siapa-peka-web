@@ -9,25 +9,10 @@ use Illuminate\Support\Facades\Http;
 
 class ImportCityFeatures extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'import:city-features';
 
-
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Import city/regency geo data from external API';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $allData = [];

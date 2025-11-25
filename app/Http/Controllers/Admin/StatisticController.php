@@ -20,12 +20,9 @@ class StatisticController extends Controller
 {
     public function index(Request $request)
     {
-        // Hanya ambil data Jawa Timur
         $cityFeatures = CityFeature::where('province', 'like', '%Jawa Timur%')->get();
         $year = $request->input('year', date('Y'));
         $availableYears = Period::distinct()->pluck('year')->sortDesc()->values();
-
-        // Data collections
         $applicationsData = [];
         $applicationsChildBrideData = [];
         $educationData = [];
@@ -33,34 +30,25 @@ class StatisticController extends Controller
         $reasonData = [];
         $childBrideData = [];
         $forumChildrenData = [];
-
-        // Dapatkan semua periode untuk tahun yang dipilih
         $periodsForYear = Period::where('year', $year)->get();
-
         if ($periodsForYear->count() > 0) {
-            // Data Applications - TOTAL (bukan rata-rata)
             $applications = Application::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select('city_feature_id', DB::raw('SUM(accepted) as total_accepted'))
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($applications as $app) {
                 $applicationsData[$app->city_feature_id] = $app->total_accepted;
             }
-
             $applicationsChildBrideData = Application::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select('city_feature_id', DB::raw('SUM(accepted) as accepted'), DB::raw('SUM(submitted) as submitted'))
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($applicationsChildBrideData as $app) {
                 $applicationsChildBrideData[$app->city_feature_id] = [
                     'accepted' => (int) $app->accepted,
                     'submitted' => (int) $app->submitted,
                 ];
             }
-
-            // Data Education Levels - TOTAL
             $educationLevels = EducationLevel::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select(
                     'city_feature_id',
@@ -71,7 +59,6 @@ class StatisticController extends Controller
                 )
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($educationLevels as $edu) {
                 $educationData[$edu->city_feature_id] = [
                     'no_school' => (int) $edu->total_no_school,
@@ -80,8 +67,6 @@ class StatisticController extends Controller
                     'sma' => (int) $edu->total_sma
                 ];
             }
-
-            // Data Age Classification - TOTAL
             $ageClassifications = AgeClassification::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select(
                     'city_feature_id',
@@ -90,15 +75,12 @@ class StatisticController extends Controller
                 )
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($ageClassifications as $age) {
                 $ageData[$age->city_feature_id] = [
                     'less_than_15' => (int) $age->total_less_than_15,
                     'between_15_19' => (int) $age->total_between_15_19
                 ];
             }
-
-            // Data Reasons - TOTAL
             $reasons = Reason::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select(
                     'city_feature_id',
@@ -110,7 +92,6 @@ class StatisticController extends Controller
                 )
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($reasons as $reason) {
                 $reasonData[$reason->city_feature_id] = [
                     'pregnant' => (int) $reason->total_pregnant,
@@ -120,8 +101,6 @@ class StatisticController extends Controller
                     'avoiding_adultery' => (int) $reason->total_avoiding_adultery
                 ];
             }
-
-            // Data Child Brides - TOTAL
             $childBrides = ChildBride::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select(
                     'city_feature_id',
@@ -131,7 +110,6 @@ class StatisticController extends Controller
                 )
                 ->groupBy('city_feature_id')
                 ->get();
-
             foreach ($childBrides as $bride) {
                 $childBrideData[$bride->city_feature_id] = [
                     'men_under_19' => (int) $bride->total_men_under_19,
@@ -139,8 +117,6 @@ class StatisticController extends Controller
                     'total' => (int) $bride->total_children
                 ];
             }
-
-            // Data Forum Child - TOTAL
             $forumChildren = ForumChild::whereIn('period_id', $periodsForYear->pluck('id'))
                 ->select(
                     'question',
@@ -149,18 +125,13 @@ class StatisticController extends Controller
                 )
                 ->groupBy('question')
                 ->get();
-
             $forumChildrenData = $forumChildren;
         }
-
-        // Data tahunan untuk grafik
         $yearlyData = [
             'years' => [],
             'submitted' => [],
             'accepted' => []
         ];
-
-        // Ambil data untuk semua tahun
         foreach ($availableYears as $yr) {
             $periods = Period::where('year', $yr)->get();
 
@@ -174,8 +145,6 @@ class StatisticController extends Controller
                 $yearlyData['accepted'][] = (int)($apps->total_accepted ?? 0);
             }
         }
-
-        // Tambahkan semua data ke cityFeatures
         foreach ($cityFeatures as $city) {
             $city->total_accepted = $applicationsData[$city->id] ?? 0;
             $city->year = $periodsForYear->pluck('year') ?? 0;
@@ -194,7 +163,6 @@ class StatisticController extends Controller
             $city->period_count = $periodsForYear->count();
             $city->period_types = $periodsForYear->pluck('name')->toArray();
         }
-
         return Inertia::render('Admin/Statistic/Index', [
             'canLogin'    => Route::has('login'),
             'canRegister' => Route::has('register'),

@@ -32,7 +32,6 @@ const Edit = ({
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customSourceInput, setCustomSourceInput] = useState("");
 
-    // Parse sources dari string ke array jika perlu
     const parseSources = (sources) => {
         if (Array.isArray(sources)) return sources;
         if (typeof sources === "string" && sources.trim() !== "") {
@@ -41,7 +40,6 @@ const Edit = ({
         return [];
     };
 
-    // Inisialisasi form dengan data existing
     const { data, setData, put, processing, errors } = useForm({
         city_feature_id: city?.id || "",
         selected_year: selectedYear || new Date().getFullYear(),
@@ -206,14 +204,12 @@ const Edit = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-
-        // Format data untuk dikirim ke backend
         const formData = {
             city_feature_id: data.city_feature_id,
             period_id: data.period_id,
             submitted: data.submitted || 0,
             accepted: data.accepted || 0,
-            source: data.sources.map((s) => s.name).join(", "), // Konversi array ke string
+            source: data.sources.map((s) => s.name).join(", "),
             no_school: data.no_school || 0,
             sd: data.sd || 0,
             smp: data.smp || 0,
@@ -228,7 +224,6 @@ const Edit = ({
             traditional_culture: data.traditional_culture || 0,
             avoiding_adultery: data.avoiding_adultery || 0,
         };
-
         put(
             route("manage.update", {
                 city: city.slug,

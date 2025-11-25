@@ -5,9 +5,6 @@ export default function Legenda({
     currentYear,
     availableYears,
     onYearChange,
-    colorScheme,
-    onColorSchemeChange,
-    onHighRiskChange,
 }) {
     const [isOpen, setIsOpen] = useState(true);
 

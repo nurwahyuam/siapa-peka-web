@@ -20,8 +20,6 @@ return new class extends Migration
             $table->integer('smp')->default(0);
             $table->integer('sma')->default(0);
             $table->timestamps();
-
-            // Unique constraint untuk mencegah duplikasi data
             $table->unique(['city_feature_id', 'period_id']);
         });
     }

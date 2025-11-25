@@ -19,7 +19,7 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
     const [reasonData, setreasonData] = useState([]);
     const [educationData, setEducationData] = useState([]);
     const [ageData, setAgeData] = useState([]);
-    // Handle escape key press
+
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === "Escape") {
@@ -257,46 +257,9 @@ export default function ModalDetail({ isOpen, onClose, feature, currentYear }) {
                                 Jumlah Dispensasi:
                             </span>
                             <span
-                                className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                    feature?.application?.accepted > 0 &&
-                                    feature?.application?.accepted <= 100
-                                        ? "bg-[#FDDBC7]"
-                                        : feature?.application?.accepted >
-                                              100 &&
-                                          feature?.application?.accepted <= 250
-                                        ? "bg-[#F4A582]"
-                                        : feature?.application?.accepted >
-                                              250 &&
-                                          feature?.application?.accepted <= 500
-                                        ? "bg-[#B2182B] text-white"
-                                        : feature?.application?.accepted > 500
-                                        ? "bg-[#67001F] text-white"
-                                        : "bg-[#E2E2E2]"
-                                }`}
+                                className={`text-gray-900`}
                             >
-                                {typeof feature?.application?.accepted ===
-                                "number" ? (
-                                    <>
-                                        {feature.application.accepted > 0 &&
-                                        feature.application.accepted <= 100
-                                            ? "1-100 Disetujui"
-                                            : feature.application.accepted >
-                                                  100 &&
-                                              feature.application.accepted <=
-                                                  250
-                                            ? "100-250 Disetujui"
-                                            : feature.application.accepted >
-                                                  250 &&
-                                              feature.application.accepted <=
-                                                  500
-                                            ? "251-500 Disetujui"
-                                            : feature.application.accepted > 500
-                                            ? "500+ Disetujui"
-                                            : "0 Disetujui"}
-                                    </>
-                                ) : (
-                                    <>0 Disetujui</>
-                                )}
+                                {feature?.application?.accepted}
                             </span>
                         </div>
 

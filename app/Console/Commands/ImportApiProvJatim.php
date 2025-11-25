@@ -13,12 +13,11 @@ class ImportApiProvJatim extends Command
 {
     protected $signature = 'import:api-prov-jatim';
     protected $description = 'Import data jumlah pernikahan anak di bawah 19 tahun dari API Jatim';
-
     public function handle()
     {
         $this->info("🗃️  Fetching daftar periode dari metadata...");
 
-        $baseUrl = "https://opendata.jatimprov.go.id/api/cleaned-bigdata/dinas_pemberdayaan_perempuan_perlindungan_anak_dan_kependuduk/jumlah_anak_yang_menikah_di_bawah_19_tahun_berdasarkan_jk_di_ja";
+        $baseUrl = "https://opendata.jatimprov.go.id/api/cleaned-bigdata/dinas_pemberdayaan_perempuan_perlindungan_anak_dan_kependuduk/jumlah_anak_yang_menikah_di_bawah_19_tahun_berdasarkan_jk";
 
         // 1. Fetch metadata
         $metaResponse = Http::timeout(60)

@@ -104,40 +104,40 @@ class ExcelDataImportV4 implements ToCollection, WithStartRow
 
             // 🔴 Validasi data duplikat kota + tahun + periode
             $period = Period::where('year', $tahun)->where('name', $periode)->first();
-            if ($period) {
-                $cityId = $cityFeature->id;
+            // if ($period) {
+            //     $cityId = $cityFeature->id;
 
-                // Cek apakah semua tabel terkait punya data non-null
-                $application     = Application::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
-                $educationLevel  = EducationLevel::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
-                $ageClass        = AgeClassification::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
-                $childBride      = ChildBride::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
-                $reason          = Reason::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
+            //     // Cek apakah semua tabel terkait punya data non-null
+            //     $application     = Application::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
+            //     $educationLevel  = EducationLevel::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
+            //     $ageClass        = AgeClassification::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
+            //     $childBride      = ChildBride::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
+            //     $reason          = Reason::where('city_feature_id', $cityId)->where('period_id', $period->id)->first();
 
-                // Kalau salah satu sudah punya nilai (bukan null atau kosong) → error
-                $hasData = false;
+            //     // Kalau salah satu sudah punya nilai (bukan null atau kosong) → error
+            //     $hasData = false;
 
-                if ($application && ($application->submitted !== null || $application->accepted !== null)) {
-                    $hasData = true;
-                }
-                if ($educationLevel && ($educationLevel->no_school !== null || $educationLevel->sd !== null || $educationLevel->smp !== null || $educationLevel->sma !== null)) {
-                    $hasData = true;
-                }
-                if ($ageClass && ($ageClass->less_than_15 !== null || $ageClass->between_15_19 !== null)) {
-                    $hasData = true;
-                }
-                if ($childBride && ($childBride->number_of_men_under_19 !== null || $childBride->number_of_women_under_19 !== null || $childBride->total !== null)) {
-                    $hasData = true;
-                }
-                if ($reason && ($reason->pregnant !== null || $reason->promiscuity !== null || $reason->economy !== null || $reason->traditional_culture !== null || $reason->avoiding_adultery !== null)) {
-                    $hasData = true;
-                }
+            //     if ($application && ($application->submitted !== null || $application->accepted !== null)) {
+            //         $hasData = true;
+            //     }
+            //     if ($educationLevel && ($educationLevel->no_school !== null || $educationLevel->sd !== null || $educationLevel->smp !== null || $educationLevel->sma !== null)) {
+            //         $hasData = true;
+            //     }
+            //     if ($ageClass && ($ageClass->less_than_15 !== null || $ageClass->between_15_19 !== null)) {
+            //         $hasData = true;
+            //     }
+            //     if ($childBride && ($childBride->number_of_men_under_19 !== null || $childBride->number_of_women_under_19 !== null || $childBride->total !== null)) {
+            //         $hasData = true;
+            //     }
+            //     if ($reason && ($reason->pregnant !== null || $reason->promiscuity !== null || $reason->economy !== null || $reason->traditional_culture !== null || $reason->avoiding_adultery !== null)) {
+            //         $hasData = true;
+            //     }
 
-                if ($hasData) {
-                    $this->errors[] = "Baris {$rowNumber}: Data kota '{$namaKota}' di tahun {$tahun} periode '{$periode}' sudah ada.";
-                    continue;
-                }
-            }
+            //     if ($hasData) {
+            //         $this->errors[] = "Baris {$rowNumber}: Data kota '{$namaKota}' di tahun {$tahun} periode '{$periode}' sudah ada.";
+            //         continue;
+            //     }
+            // }
 
 
             // Validasi kolom angka lainnya
@@ -189,7 +189,6 @@ class ExcelDataImportV4 implements ToCollection, WithStartRow
                 }
             }
 
-            // ✅ Lolos validasi → simpan
             $this->validRows[] = $row;
         }
     }

@@ -19,8 +19,6 @@ return new class extends Migration
             $table->integer('number_of_women_under_19')->default(0);
             $table->integer('total')->default(0);
             $table->timestamps();
-
-            // Unique constraint untuk mencegah duplikasi data
             $table->unique(['city_feature_id', 'period_id']);
         });
     }

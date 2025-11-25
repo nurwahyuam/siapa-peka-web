@@ -12,7 +12,7 @@ import { Toaster, toast } from "react-hot-toast";
 
 const Import = () => {
     const [file, setFile] = useState(null);
-    const fileInputRef = useRef(null); // 🔹 tambahkan ref
+    const fileInputRef = useRef(null);
     const { data, setData, errors, post, processing } = useForm({
         file: null,
     });

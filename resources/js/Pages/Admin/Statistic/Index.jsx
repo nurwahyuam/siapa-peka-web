@@ -14,13 +14,13 @@ import { BarChart3, Search } from "lucide-react";
 
 const COLORS = {
     application: {
-        accepted: "#4B0082", // Dark Indigo
-        submitted: "#5C3D99", // Medium Indigo
+        accepted: "#4B0082",
+        submitted: "#5C3D99",
     },
     childBride: {
-        men: "#7B68EE", // Soft Indigo
-        women: "#9FA8DA", // Light Indigo
-        total: "#C5CAE9", // Creamy Indigo Accent
+        men: "#7B68EE",
+        women: "#9FA8DA",
+        total: "#C5CAE9",
     },
 };
 

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Models\Period;
 
-
 class DashboardController extends Controller
 {
     public function index() {

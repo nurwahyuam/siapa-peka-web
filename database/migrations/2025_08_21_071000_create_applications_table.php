@@ -19,8 +19,6 @@ return new class extends Migration
             $table->integer('accepted')->default(0);
             $table->jsonb('sources')->nullable();
             $table->timestamps();
-
-            // Unique constraint untuk mencegah duplikasi data
             $table->unique(['city_feature_id', 'period_id']);
         });
     }

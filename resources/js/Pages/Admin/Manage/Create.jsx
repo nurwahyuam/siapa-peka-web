@@ -10,12 +10,9 @@ import {
     BarChart3,
     CircleArrowLeft,
     AlertCircle,
-    SquareKanban,
     PlusCircle,
-    InfoIcon,
     Clock,
     CalendarClock,
-    Info,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -45,48 +42,32 @@ const Create = () => {
         selected_year: new Date().getFullYear(),
         manual_period_name: "",
         period_id: "",
-
-        // Applications
         submitted: "",
         accepted: "",
         sources: [],
-
-        // Education Levels
         no_school: "",
         sd: "",
         smp: "",
         sma: "",
-
-        // Age Classifications
         less_than_15: "",
         between_15_19: "",
-
-        // Child Brides
         number_of_men_under_19: "",
         number_of_women_under_19: "",
-
-        // Reasons
         pregnant: "",
         promiscuity: "",
         economy: "",
         traditional_culture: "",
         avoiding_adultery: "",
     });
-
-    // Handle server errors
     useEffect(() => {
         if (serverErrors && Object.keys(serverErrors).length > 0) {
             setFieldErrors(serverErrors);
-
-            // Tampilkan error sebagai toast
             Object.values(serverErrors).forEach((error) => {
                 toast.error(error, {
                     duration: 5000,
                     position: "top-right",
                 });
             });
-
-            // Scroll to the first error field
             const firstErrorField = Object.keys(serverErrors)[0];
             if (firstErrorField) {
                 const errorElement = document.querySelector(
@@ -104,11 +85,8 @@ const Create = () => {
             }
         }
     }, [serverErrors]);
-
     const handleInputChange = (name, value) => {
         setData(name, value);
-
-        // Clear field error when user starts typing
         if (fieldErrors[name]) {
             setFieldErrors((prev) => {
                 const newErrors = { ...prev };
@@ -117,64 +95,46 @@ const Create = () => {
             });
         }
     };
-
-    // Tambah sumber
     const handleAddSource = (source) => {
         if (!source) return;
-
-        // Kalau source berupa string dari input manual
         const newSource =
             typeof source === "string" ? { name: source } : source;
-
-        // Cek duplikasi
         const exists = data.sources.some(
             (s) => s.name.toLowerCase() === newSource.name.toLowerCase()
         );
-
         if (!exists) {
             setData((prev) => ({
                 ...prev,
                 sources: [...prev.sources, newSource],
             }));
         }
-
-        // Reset input manual
         setCustomSourceInput("");
     };
-
-    // Hapus sumber
     const handleRemoveSource = (index) => {
         setData((prev) => ({
             ...prev,
             sources: prev.sources.filter((_, i) => i !== index),
         }));
     };
-
     const validateForm = () => {
         let isValid = true;
         const newErrors = {};
-
-        // Validasi informasi dasar
         if (!data.city_feature_id) {
             newErrors.city_feature_id = "Kabupaten/Kota harus dipilih";
             isValid = false;
         }
-
         if (!data.selected_year) {
             newErrors.selected_year = "Tahun data harus dipilih";
             isValid = false;
         }
-
         if (!data.manual_period_name) {
             newErrors.manual_period_name = "Periode harus dipilih";
             isValid = false;
         }
-
         if (!data.sources.length) {
             newErrors.sources = "Minimal 1 sumber data ditambah";
             isValid = false;
         }
-
         if (
             data.submitted &&
             data.accepted &&
@@ -202,9 +162,7 @@ const Create = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (!validateForm()) {
-            // Scroll ke error pertama
             const firstErrorField = Object.keys(fieldErrors)[0];
             if (firstErrorField) {
                 const errorElement = document.querySelector(
@@ -222,8 +180,6 @@ const Create = () => {
             }
             return;
         }
-
-        // Prepare the data to be sent
         const formData = {
             city_feature_id: data.city_feature_id,
             selected_year: data.selected_year,
@@ -255,7 +211,6 @@ const Create = () => {
             traditional_culture: data.traditional_culture || 0,
             avoiding_adultery: data.avoiding_adultery || 0,
         };
-
         post(route("manage.create.store"), formData, {
             onSuccess: () => {
                 toast.success("Data berhasil disimpan!", {
@@ -292,7 +247,6 @@ const Create = () => {
         );
     }, [existingData, data.city_feature_id, data.selected_year]);
 
-    // Ambil nama periode yang sudah ada untuk kota dan tahun tertentu
     const existingPeriodNames = existingDataForCityYear.map(
         (item) => item.period_name
     );
@@ -301,11 +255,9 @@ const Create = () => {
         ["Triwulan I", "Triwulan II", "Triwulan III", "Triwulan IV"].includes(p)
     );
     const hasSetahun = existingPeriodNames.includes("Setahun");
-
-    // Filter option berdasarkan periode yang sudah ada untuk kota dan tahun tertentu
     const filteredManualOptions =
         existingPeriodNames.length === 0
-            ? manualOptions // kalau belum ada data sama sekali → tampilkan semua
+            ? manualOptions
             : manualOptions.filter((option) => {
                   if (hasTriwulan && option === "Setahun") return false;
                   if (hasSetahun && option.startsWith("Triwulan")) return false;
@@ -884,14 +836,11 @@ const Create = () => {
                                     onSubmit={handleSubmit}
                                     className="space-y-8"
                                 >
-                                    {/* Basic Information */}
                                     <div className="bg-indigo-50 rounded-lg p-4">
                                         <h3 className="text-xl font-semibold text-indigo-600 mb-4">
                                             Informasi Dasar
                                         </h3>
-
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            {/* Kabupaten/Kota */}
                                             <div>
                                                 <label
                                                     htmlFor="city_feature_id"
@@ -930,8 +879,6 @@ const Create = () => {
                                                     ))}
                                                 </select>
                                             </div>
-
-                                            {/* Tahun Data */}
                                             <div>
                                                 <label
                                                     htmlFor="selected_year"
@@ -974,8 +921,6 @@ const Create = () => {
                                                     ))}
                                                 </select>
                                             </div>
-
-                                            {/* Periode */}
                                             <div>
                                                 <label className="flex items-center gap-1 text-sm font-medium text-gray-700 mb-2">
                                                     <Clock className="h-5 w-5 text-indigo-600" />
