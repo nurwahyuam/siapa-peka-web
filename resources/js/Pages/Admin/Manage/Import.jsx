@@ -50,7 +50,7 @@ const Import = () => {
             toast.error(flash.error, { duration: 6000 });
             resetFile();
         }
-        if (flash.import_errors?.length > 0){
+        if (flash.import_errors?.length > 0) {
             resetFile();
         }
     }, [flash, errors]);
@@ -146,10 +146,9 @@ const Import = () => {
                                                     Struktur file wajib sesuai
                                                     dengan{" "}
                                                     <a
-                                                        href="/storage/templates/template.xlsx"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-blue-600 hover:underline"
+                                                        href="/public/templates/template.xlsx"
+                                                        download
+                                                        className="inline-flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                                                     >
                                                         template
                                                     </a>{" "}
