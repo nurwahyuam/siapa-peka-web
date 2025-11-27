@@ -6,6 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <link rel="icon" href="{{ url('favicon.png') }}">
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

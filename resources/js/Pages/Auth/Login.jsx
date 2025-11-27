@@ -5,16 +5,28 @@ import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login({ status }) {
     const [eyePassword, setEyePassword] = useState(false);
+    const [captcha, setCaptcha] = useState(null);
+    const [error, setError] = useState("");
+
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
         password: "",
+        "g-recaptcha-response": "",
     });
 
     const submit = (e) => {
         e.preventDefault();
+
+        if (!captcha) {
+            setError("Silakan selesaikan CAPTCHA terlebih dahulu.");
+            return;
+        }
+
+        setData("g-recaptcha-response", captcha);
 
         post(route("login"), {
             onFinish: () => reset("password"),
@@ -54,22 +66,19 @@ export default function Login({ status }) {
                         className="w-2/5 max-w-md sm:max-w-lg space-y-4 sm:space-y-6 z-0"
                     >
                         <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <InputLabel
-                                    htmlFor="username"
-                                    value="Username"
-                                    className="block text-sm font-medium text-gray-700"
-                                />
-                            </div>
+                            <InputLabel
+                                htmlFor="username"
+                                value="Username"
+                            />
                             <TextInput
                                 id="username"
                                 type="text"
                                 name="username"
                                 value={data.username}
-                                className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
-                                        transition-all duration-200 ease-in-out
-                                        focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
-                                        hover:border-indigo-400"
+                                className="w-full px-4 py-3 border-2 border-indigo-300 rounded-full shadow-sm bg-white
+                                    transition-all duration-200 ease-in-out
+                                    focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
+                                    hover:border-indigo-400"
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -80,35 +89,30 @@ export default function Login({ status }) {
                         </div>
 
                         <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <InputLabel
-                                    htmlFor="password"
-                                    value="Password"
-                                    className="block text-sm font-medium text-gray-700"
-                                />
-                            </div>
+                            <InputLabel
+                                htmlFor="password"
+                                value="Password"
+                            />
                             <div className="relative">
                                 <TextInput
                                     id="password"
                                     type={eyePassword ? "text" : "password"}
                                     name="password"
                                     value={data.password}
-                                    className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
-                                            transition-all duration-200 ease-in-out
-                                            focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
-                                            hover:border-indigo-400 pr-12"
+                                    className="w-full px-4 py-3 border-2 border-indigo-300 rounded-full shadow-sm bg-white
+                                        transition-all duration-200 ease-in-out
+                                        focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
+                                        hover:border-indigo-400 pr-12"
                                     autoComplete="current-password"
                                     onChange={(e) =>
                                         setData("password", e.target.value)
                                     }
                                 />
+
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        setEyePassword((prev) => !prev)
-                                    }
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600 focus:outline-none"
-                                    tabIndex={-1}
+                                    onClick={() => setEyePassword(prev => !prev)}
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600"
                                 >
                                     {eyePassword ? (
                                         <EyeOff className="w-5 h-5" />
@@ -120,16 +124,22 @@ export default function Login({ status }) {
                             <InputError message={errors.password} />
                         </div>
 
+                        {/* CAPTCHA */}
+                        <div className="flex justify-center pt-2">
+                            <ReCAPTCHA
+                                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                                onChange={(value) => setCaptcha(value)}
+                            />
+                        </div>
+                        <InputError message={errors["g-recaptcha-response"] || error} />
+
                         <div className="pt-3">
                             <PrimaryButton
-                                className="w-full flex justify-center py-3 sm:py-3 px-4 border border-transparent
-                                        rounded-full shadow-lg text-sm font-semibold text-white
-                                        bg-gradient-to-r from-indigo-600 to-indigo-700
-                                        hover:from-indigo-700 hover:to-indigo-800
-                                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                                        active:from-indigo-800 active:to-indigo-900
-                                        transition-all duration-200 ease-in-out
-                                        disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full flex justify-center py-3 rounded-full shadow-lg text-sm font-semibold text-white
+                                    bg-gradient-to-r from-indigo-600 to-indigo-700
+                                    hover:from-indigo-700 hover:to-indigo-800
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                                    disabled:opacity-50"
                                 disabled={processing}
                             >
                                 {processing ? "Memuat..." : "Masuk"}
@@ -137,18 +147,16 @@ export default function Login({ status }) {
                         </div>
                     </form>
                 </div>
+
                 <div className="w-full sm:w-2/5 bg-gradient-to-br from-indigo-400 via-indigo-300 to-indigo-200 h-screen flex items-center justify-center p-10">
                     <div className="text-center max-w-md space-y-8">
-                        <h1 className="text-white text-4xl font-bold">
-                            SIAPA PEKA
-                        </h1>
+                        <h1 className="text-white text-4xl font-bold">SIAPA PEKA</h1>
                         <p className="text-white leading-relaxed">
                             Sistem aplikasi berbasis digital yang mampu
                             memantau, menyajikan data terkait pencegahan
                             perkawinan anak di Provinsi Jawa Timur secara
                             berkelanjutan serta menjadi media Komunikasi
-                            Informasi dan Edukasi (KIE) dalam Pencegahan
-                            Perkawinan Anak.
+                            Informasi dan Edukasi (KIE).
                         </p>
                         <div className="flex justify-center">
                             <img src="/assets/dp3ak.png" alt="logo kominfo" />

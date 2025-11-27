@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\SkipsErrors;
 class ExcelDataImportV2 implements ToModel
 {
     use SkipsErrors;
-
+    
     public function startRow(): int
     {
         return 2;
