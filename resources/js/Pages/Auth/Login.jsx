@@ -5,12 +5,17 @@ import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 export default function Login({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
         password: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState(null);
+    const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
@@ -86,23 +91,35 @@ export default function Login({ status }) {
                                     className="block text-sm font-medium text-gray-700"
                                 />
                             </div>
-                            <div className="relative">
-                                <TextInput
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    value={data.password}
-                                    className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
+                                <div className="relative">
+                                    <TextInput
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        value={data.password}
+                                        className="w-full px-4 py-3 sm:py-2 border-2 border-indigo-300 rounded-full shadow-sm bg-white
                                             transition-all duration-200 ease-in-out
                                             focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
                                             hover:border-indigo-400"
-                                    autoComplete="current-password"
-                                    onChange={(e) =>
-                                        setData("password", e.target.value)
-                                    }
-                                />
-                            </div>
+                                        autoComplete="current-password"
+                                        onChange={(e) => setData("password", e.target.value)}
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-4 flex items-center"
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
                             <InputError message={errors.password} />
+                            <ReCAPTCHA
+                                sitekey="6LfaTjcsAAAAAP4NTkAMorZKfJGG3bJjIuUrVO4d"
+                                onChange={() => setCaptchaVerified(true)}
+                                onExpired={() => setCaptchaVerified(false)}
+                            />
+
                         </div>
 
                         <div className="pt-3">
@@ -115,7 +132,7 @@ export default function Login({ status }) {
                                         active:from-indigo-800 active:to-indigo-900
                                         transition-all duration-200 ease-in-out
                                         disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled={processing}
+                                disabled={!captchaVerified || processing}
                             >
                                 {processing ? "Memuat..." : "Masuk"}
                             </PrimaryButton>
